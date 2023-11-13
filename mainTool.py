@@ -1,5 +1,5 @@
-import requests
 import argparse
+
 import import_and_save_issue
 import import_issue
 import import_requests
@@ -9,7 +9,13 @@ def main():
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
-    parser.add_argument('--azione', choices=['importIssue', 'ImportCommits', 'esci'], help='Azione da eseguire.')
+    parser.add_argument('--azione', choices=['importIssue', 'importCommits', 'import_saveIssue', 'esci'], help='Azione da eseguire.')
+
+    print('Benvenut* nel nuovo tool di mining per GitHub. Le azioni consentite sono:'
+          '--azione importIssue'
+          '--azione importCommits'
+          '--azione import_saveIssue'
+          '--azione esci ')
 
     while True:
         args = parser.parse_args()
@@ -18,14 +24,17 @@ def main():
             args.AccessToken = input("Inserisci il tuo Token di accesso API GitHub: ")
 
         if args.azione == 'importIssue':
-            import_issue.print_github_issues()
-        elif args.azione == 'ImportCommits':
-            import_requests.fetch_github_data()
+            import_issue.print_github_issues(args.AccessToken)
+        elif args.azione == 'importCommits':
+            import_requests.fetch_github_data(args.AccessToken)
+        elif args.azione == 'import_saveIssue':
+            import_and_save_issue.print_and_save_github_issues(args.AccessToken)
         elif args.azione == 'esci':
             print('Arrivederci!')
             break  # Esci dal loop
         else:
             print(f'Azione non riconosciuta. Le opzioni valide sono: saluta, calcola, esci.')
+
 
 if __name__ == '__main__':
     main()
