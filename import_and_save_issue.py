@@ -2,7 +2,8 @@ import requests
 import json
 from datetime import datetime
 
-def print_and_save_github_issues():
+
+def print_and_save_github_issues(token):
     # Richiedi all'utente di inserire l'owner e il repository
     owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
     repository = input("Inserisci il nome del repository su GitHub: ")
@@ -10,8 +11,11 @@ def print_and_save_github_issues():
     # Costruisci l'URL dell'API GitHub per ottenere le issue
     api_url = f'https://api.github.com/repos/{owner}/{repository}/issues'
 
-    # Esegui la richiesta GET all'API di GitHub
-    response = requests.get(api_url)
+    # Provide your GitHub API token if you have one
+    headers = {'Authorization': 'Bearer '+token}  # Replace with your GitHub token
+
+    # Make the GET request to the GitHub API
+    response = requests.get(api_url, headers=headers)
 
     if response.status_code == 200:
         # La risposta è avvenuta con successo
@@ -42,6 +46,3 @@ def print_and_save_github_issues():
         print(f"Le informazioni delle issue sono state salvate con successo nel file '{file_name}'")
     else:
         print(f"Errore nella richiesta: {response.status_code}")
-
-# Chiamare la funzione per ottenere, stampare e salvare le issue di un repository specifico
-print_and_save_github_issues()
