@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 from datetime import datetime
@@ -20,8 +21,18 @@ def print_and_save_pull_requests_with_comments():
         # Aggiungi un timestamp alle informazioni delle pull requests
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-        # Costruisci il nome del file JSON con il timestamp nel titolo
-        file_name = f'pull_requests_with_comments_{timestamp}.json'
+        # Creare la cartella principale con il nome del repository
+        repository_folder = f'{repository}_data'
+        if not os.path.exists(repository_folder):
+            os.makedirs(repository_folder)
+
+        # Creare la sottocartella con il nome "pull_requests"
+        pull_requests_folder = os.path.join(repository_folder, 'pull_requests')
+        if not os.path.exists(pull_requests_folder):
+            os.makedirs(pull_requests_folder)
+
+        # Costruisci il percorso del file JSON con il timestamp nel titolo
+        file_path = os.path.join(pull_requests_folder, f'pull_requests_with_comments_{timestamp}.json')
 
         # Stampa le informazioni sulle pull requests e i relativi commenti sulla console
         for pull_request in pull_requests:
@@ -43,10 +54,10 @@ def print_and_save_pull_requests_with_comments():
             print('\n' + '-'*30 + '\n')  # Separatore per chiarezza
 
         # Salva le informazioni delle pull requests e dei commenti in un file JSON
-        with open(file_name, 'w', encoding='utf-8') as json_file:
+        with open(file_path, 'w', encoding='utf-8') as json_file:
             json.dump(pull_requests, json_file, ensure_ascii=False, indent=4)
 
-        print(f"Le informazioni delle pull requests sono state salvate con successo nel file '{file_name}'")
+        print(f"Le informazioni delle pull requests sono state salvate con successo nel file '{file_path}'")
     else:
         print(f"Errore nella richiesta: {response.status_code}")
 
