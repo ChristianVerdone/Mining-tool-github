@@ -16,19 +16,24 @@ def main():
           '--azione importCommits'
           '--azione import_saveIssue'
           '--azione esci ')
-
+    args = parser.parse_args()
     while True:
-        args = parser.parse_args()
 
         if args.AccessToken is None:
             args.AccessToken = input("Inserisci il tuo Token di accesso API GitHub: ")
 
+        if args.azione is None:
+            args.azione = input("Inserisci l'azione che desideri effettuare: ")
+
         if args.azione == 'importIssue':
             import_issue.print_github_issues(args.AccessToken)
+            args.azione = None
         elif args.azione == 'importCommits':
             import_requests.fetch_github_data(args.AccessToken)
+            args.azione = None
         elif args.azione == 'import_saveIssue':
             import_and_save_issue.print_and_save_github_issues(args.AccessToken)
+            args.azione = None
         elif args.azione == 'esci':
             print('Arrivederci!')
             break  # Esci dal loop
