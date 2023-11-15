@@ -39,7 +39,7 @@ def main():
             break  # Esci dal loop
         else:
             print(f'Azione non riconosciuta. Le opzioni valide sono: saluta, calcola, esci.')
-
+            args.azione = None
 
 if __name__ == '__main__':
     main()
