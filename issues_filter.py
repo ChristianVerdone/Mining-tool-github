@@ -17,7 +17,7 @@ def filter_github_issues():
         return
 
     status_filter = input("Inserisci lo stato delle issue da filtrare (es. open, closed, etc.): ")
-    #author_filter = input("Inserisci il nome dell'utente (login) delle issue da filtrare: ")
+    author_filter = input("Inserisci il nome dell'utente (login) delle issue da filtrare: ")
 
     with open(path_file, 'r') as file:
         issues = json.load(file)
@@ -27,8 +27,8 @@ def filter_github_issues():
         if status_filter:
             filtered_issues = [issue for issue in filtered_issues if issue.get('state') == status_filter]
 
-       # if author_filter:
-        #    filtered_issues = [issue for issue in filtered_issues if issue.get('user') and issue['user'].get('login') == author_filter]
+        if author_filter:
+           filtered_issues = [issue for issue in filtered_issues if issue.get('user') and issue['user'].get('login') == author_filter]
 
         filtered_issues_path = f"{repository}_filter_issues"
         os.makedirs(filtered_issues_path, exist_ok=True)
