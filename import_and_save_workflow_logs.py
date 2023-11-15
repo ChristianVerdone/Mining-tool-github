@@ -1,4 +1,5 @@
 import requests
+import os
 import json
 from datetime import datetime
 
@@ -17,6 +18,10 @@ def print_and_save_workflow_logs():
         # La risposta è avvenuta con successo
         workflow_runs = response.json()
 
+        # Crea una directory per i log dei flussi di lavoro
+        workflow_dir = os.path.join(repository, "workflow_logs")
+        os.makedirs(workflow_dir, exist_ok=True)
+
         # Aggiungi un timestamp alle informazioni dei workflow logs
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
@@ -34,7 +39,9 @@ def print_and_save_workflow_logs():
             print('\n' + '-'*30 + '\n')  # Separatore per chiarezza
 
         # Salva le informazioni dei workflow logs in un file JSON
-        with open(file_name, 'w', encoding='utf-8') as json_file:
+        # Salva i dati localmente (esempio: in un file JSON)
+        log_file_path = os.path.join(workflow_dir, file_name)
+        with open(log_file_path, 'w', encoding='utf-8') as json_file:
             json.dump(workflow_runs, json_file, ensure_ascii=False, indent=4)
 
         print(f"I logs dei workflow sono stati salvati con successo nel file '{file_name}'")
