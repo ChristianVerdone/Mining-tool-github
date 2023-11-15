@@ -3,6 +3,7 @@ import requests
 import json
 from datetime import datetime
 
+
 def print_and_save_pull_requests_with_comments():
     # Richiedi all'utente di inserire l'owner e il repository
     owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
@@ -60,6 +61,7 @@ def print_and_save_pull_requests_with_comments():
         print(f"Le informazioni delle pull requests sono state salvate con successo nel file '{file_path}'")
     else:
         print(f"Errore nella richiesta: {response.status_code}")
+
 
 # Chiamare la funzione per ottenere, stampare e salvare le pull requests con i relativi commenti di un repository specifico
 print_and_save_pull_requests_with_comments()
