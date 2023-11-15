@@ -42,8 +42,8 @@ def main():
             print('Arrivederci!')
             break  # Esci dal loop
         else:
-            print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importCommits, import_saveIssue, esci ')
-
+            print(f'Azione non riconosciuta. Le opzioni valide sono: saluta, calcola, esci.')
+            args.azione = None
 
 if __name__ == '__main__':
     main()
