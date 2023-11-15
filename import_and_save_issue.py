@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 from datetime import datetime
@@ -23,26 +24,46 @@ def print_and_save_github_issues(token):
 
         # Aggiungi un timestamp alle informazioni delle issue
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-        for issue in issues:
-            issue['timestamp'] = timestamp
 
-        # Costruisci il nome del file JSON con il timestamp nel titolo
-        file_name = f'issues_{timestamp}.json'
+        # Creare la cartella principale con il nome del repository
+        repository_folder = f'{repository}_data'
+        if not os.path.exists(repository_folder):
+            os.makedirs(repository_folder)
 
-        # Stampa le informazioni sulle issue sulla console
+        # Creare la sottocartella con il nome "issues"
+        issues_folder = os.path.join(repository_folder, 'issues')
+        if not os.path.exists(issues_folder):
+            os.makedirs(issues_folder)
+
+        # Costruisci il percorso del file JSON con il timestamp nel titolo
+        file_path = os.path.join(issues_folder, f'issues_with_comments_{timestamp}.json')
+
+        # Stampa le informazioni sulle issue e i relativi commenti sulla console
         for issue in issues:
             print(f"Issue #{issue['number']}:")
             print(f"  Titolo: {issue['title']}")
             print(f"  Stato: {issue['state']}")
-            print(f"  Autore: {issue['user']['login']}")
             print(f"  URL: {issue['html_url']}")
-            print(f"  Timestamp: {issue['timestamp']}")
+
+            # Ottieni i commenti della issue
+            comments_url = f'https://api.github.com/repos/{owner}/{repository}/issues/{issue["number"]}/comments'
+            comments_response = requests.get(comments_url)
+            comments = comments_response.json()
+
+            # Stampa i commenti
+            print("  Commenti:")
+            for comment in comments:
+                print(f"    {comment['user']['login']}: {comment['body']}")
+
             print('\n' + '-'*30 + '\n')  # Separatore per chiarezza
 
-        # Salva le informazioni delle issue in un file JSON
-        with open(file_name, 'w', encoding='utf-8') as json_file:
+        # Salva le informazioni delle issue e dei commenti in un file JSON
+        with open(file_path, 'w', encoding='utf-8') as json_file:
             json.dump(issues, json_file, ensure_ascii=False, indent=4)
 
-        print(f"Le informazioni delle issue sono state salvate con successo nel file '{file_name}'")
+        print(f"Le informazioni delle issue sono state salvate con successo nel file '{file_path}'")
     else:
         print(f"Errore nella richiesta: {response.status_code}")
+
+# Chiamare la funzione per ottenere, stampare e salvare le issue con i relativi commenti di un repository specifico
+print_and_save_issues_with_comments()
