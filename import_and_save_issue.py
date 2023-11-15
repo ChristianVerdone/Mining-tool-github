@@ -65,5 +65,3 @@ def print_and_save_github_issues(token):
     else:
         print(f"Errore nella richiesta: {response.status_code}")
 
-# Chiamare la funzione per ottenere, stampare e salvare le issue con i relativi commenti di un repository specifico
-print_and_save_issues_with_comments()
