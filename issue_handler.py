@@ -38,11 +38,12 @@ def save_github_issues(token):
         # Costruisci il percorso del file JSON con il timestamp nel titolo
         file_path = os.path.join(issues_folder, f'issues_with_comments_{timestamp}.json')
         
-        print_issues(issues)
-        
         for issue in issues:
-            comments = import_issues_comments(owner, repository, issue)
-            print_issues_comments(comments)
+            print_issue(issue)
+            comments = import_issue_comments(owner, repository, issue)
+            print_issue_comments(comments)
+            if comments:
+                 issue['comments_content'] = comments
             
         # Salva le informazioni delle issue e dei commenti in un file JSON
         with open(file_path, 'w', encoding='utf-8') as json_file:
@@ -67,7 +68,7 @@ def make_issues_directory(repository):
     return issues_folder    
     
         
-def import_issues_comments(owner, repository, issue):
+def import_issue_comments(owner, repository, issue):
     # Ottieni i commenti della issue
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/issues/{issue["number"]}/comments'
     comments_response = requests.get(comments_url)
@@ -76,16 +77,15 @@ def import_issues_comments(owner, repository, issue):
     return comments
     
 
-def print_issues(issues):
+def print_issue(issue):
     # Stampa le informazioni sulle issue e i relativi commenti sulla console
-    for issue in issues:
         print(f"Issue #{issue['number']}:")
         print(f"  Titolo: {issue['title']}")
         print(f"  Stato: {issue['state']}")
         print(f"  URL: {issue['html_url']}")
         
         
-def print_issues_comments(comments):
+def print_issue_comments(comments):
     # Stampa i commenti
         print("  Commenti:")
         for comment in comments:

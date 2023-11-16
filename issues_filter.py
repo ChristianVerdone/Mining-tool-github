@@ -1,11 +1,12 @@
 import os
 import json
 
+
 def filter_github_issues():
     while True:
         repository = input("\nDi quale repository vuoi filtrare le issues? Per uscire digita esc \n")
         path = f"{repository}_data/issues"
-        
+
         if repository == 'esc':
             print("Uscita dalla funzione.")
             break  # Esci dal ciclo while
@@ -13,9 +14,9 @@ def filter_github_issues():
         if not os.path.exists(path):
             print(f"Il percorso '{path}' non esiste.")
             return
-        
+
         file = input("Indica il nome del file json: ")
-        path_file=f"{path}/{file}.json"
+        path_file = f"{path}/{file}.json"
 
         if not os.path.exists(path_file):
             print(f"Il percorso '{path_file}' non esiste.")
@@ -39,7 +40,8 @@ def filter_github_issues():
                 filtered_issues = [issue for issue in filtered_issues if issue.get('state') == status_filter]
 
             if author_filter:
-                filtered_issues = [issue for issue in filtered_issues if issue.get('user') and issue['user'].get('login') == author_filter]
+                filtered_issues = [issue for issue in filtered_issues if
+                                   issue.get('user') and issue['user'].get('login') == author_filter]
 
             filtered_issues_path = f"{repository}_filter_issues"
             os.makedirs(filtered_issues_path, exist_ok=True)
@@ -49,6 +51,7 @@ def filter_github_issues():
                 json.dump(filtered_issues, filtered_file, indent=4)
 
             print(f"Issue filtrate salvate con successo in: {filtered_issues_file_path}")
+
 
 # Esempio di utilizzo dello script
 filter_github_issues()
