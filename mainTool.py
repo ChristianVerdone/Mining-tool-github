@@ -4,6 +4,7 @@ import import_and_save_issue
 import import_and_save_pull_request_with_their_comments
 import issue_handler
 import import_requests
+import issues_filter
 import request_error_handler
 
 
@@ -12,14 +13,15 @@ def main():
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importCommits', 'import_saveIssue', 'import_PullRequests',
-                                             'esci', 'newAuth'], help='Azione da eseguire.')
+                                             'esci', 'newAuth', 'filterOutputIssue'], help='Azione da eseguire.')
 
     print('Benvenut* nel nuovo tool di mining per GitHub. Le azioni consentite sono:'
           '\n --azione importIssue'
           '\n --azione importCommits'
           '\n --azione import_saveIssue'
           '\n --azione esci '
-          '\n --azione newAuth')
+          '\n --azione newAuth'
+          '\n --azione filterOutputIssue')
     args = parser.parse_args()
     auth = False
     while True:
@@ -71,6 +73,9 @@ def main():
                 args.azione = None
                 args.AccessToken = None
                 auth = False
+            elif args.azione == 'filterOutputIssue':
+                issues_filter.filter_github_issues()
+                args.azione = None
             else:
                 print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importCommits, import_saveIssue, import_PullRequests, esci.')
                 args.azione = None
