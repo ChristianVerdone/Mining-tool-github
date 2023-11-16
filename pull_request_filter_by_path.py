@@ -41,14 +41,14 @@ def filter_pull_request_by_path():
                 filtered_pull_request = [pull_request for pull_request in filtered_pull_request if
                                    pull_request.get('user') and pull_request['user'].get('login') == author_filter]
 
-            filtered_pull_request_path = f"{file}_by_path"
+            filtered_pull_request_path = "p_requests_by_path"
             os.makedirs(filtered_pull_request_path, exist_ok=True)
 
             # Costruisci il percorso del file JSON
-            filtered_pull_request_file_path = os.path.join(filtered_pull_request_path, f'filter_pull_request_by_path_{timestamp}.json')
+            filtered_pull_request_file_path = os.path.join(filtered_pull_request_path, f'_{timestamp}.json')
             with open(filtered_pull_request_file_path, 'w') as filtered_file:
                 json.dump(filtered_pull_request, filtered_file, indent=4)
 
-            print(f"Issue filtrate salvate con successo in: {filtered_pull_request_file_path}")
+            print(f"Pull requests filtrate salvate con successo in: {filtered_pull_request_file_path}")
 
-#filter_pull_request_by_path()
+filter_pull_request_by_path()

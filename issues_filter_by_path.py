@@ -41,14 +41,14 @@ def filter_issues_by_path():
                 filtered_issues = [issue for issue in filtered_issues if
                                    issue.get('user') and issue['user'].get('login') == author_filter]
 
-            filtered_issues_path = f"{file}_filter_issues_by_path"
+            filtered_issues_path = "issues_by_path"
             os.makedirs(filtered_issues_path, exist_ok=True)
 
             # Costruisci il percorso del file JSON
-            filtered_issues_file_path = os.path.join(filtered_issues_path, f'filter_issues_by_path_{timestamp}.json')
+            filtered_issues_file_path = os.path.join(filtered_issues_path, f'_{timestamp}.json')
             with open(filtered_issues_file_path, 'w') as filtered_file:
                 json.dump(filtered_issues, filtered_file, indent=4)
 
             print(f"Issue filtrate salvate con successo in: {filtered_issues_file_path}")
 
-#filter_issues_by_path()
+filter_issues_by_path()
