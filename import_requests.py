@@ -42,10 +42,14 @@ def save_github_pull_requests(token):
 
         for pull_request in pull_requests:
             print_pull_request(pull_request)
+            
             comments = import_pull_request_comments(owner, repository, pull_request)
+            #check comments request
+            if comments is None:
+                return
+            
             print_pull_request_comments(comments)
-            if comments:
-                pull_request['comments_content'] = comments
+            pull_request['comments_content'] = comments
 
         # Salva le informazioni delle issue e dei commenti in un file JSON
         with open(file_path, 'w', encoding='utf-8') as json_file:
@@ -76,12 +80,12 @@ def import_pull_request_comments(owner, repository, pull_request):
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/pulls/{pull_request["number"]}/comments'
     comments_response = requests.get(comments_url)
     
-    #if(comments_response != 200):
-    #    request_error_handler(comments_response.status_code)
-        #controllare cosa ritornare, se None oppure un altro valore...
+    if(comments_response.status_code != 200):
+       request_error_handler.request_error_handler(comments_response.status_code)
+       comments = None
+       return comments
     
     comments = comments_response.json()
-
     return comments
 
 
