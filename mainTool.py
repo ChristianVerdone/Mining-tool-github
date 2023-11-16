@@ -11,13 +11,15 @@ def main():
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
-    parser.add_argument('--azione', choices=['importIssue', 'importCommits', 'import_saveIssue', 'import_PullRequests', 'esci'], help='Azione da eseguire.')
+    parser.add_argument('--azione', choices=['importIssue', 'importCommits', 'import_saveIssue', 'import_PullRequests',
+                                             'esci', 'newAuth'], help='Azione da eseguire.')
 
     print('Benvenut* nel nuovo tool di mining per GitHub. Le azioni consentite sono:'
           '\n --azione importIssue'
           '\n --azione importCommits'
           '\n --azione import_saveIssue'
-          '\n --azione esci ')
+          '\n --azione esci '
+          '\n --azione newAuth')
     args = parser.parse_args()
     auth = False
     while True:
@@ -65,6 +67,10 @@ def main():
             elif args.azione == 'esci':
                 print('Arrivederci!')
                 break  # Esci dal loop
+            elif args.azione == 'newAuth':
+                args.azione = None
+                args.AccessToken = None
+                auth = False
             else:
                 print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importCommits, import_saveIssue, import_PullRequests, esci.')
                 args.azione = None
