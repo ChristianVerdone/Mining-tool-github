@@ -41,7 +41,7 @@ def save_github_issues(token):
         for issue in issues:
             print_issue(issue)
             comments = import_issue_comments(owner, repository, issue)
-            #print_issue_comments(comments)
+            print_issue_comments(comments)
             if comments:
                  issue['comments_content'] = comments
             
