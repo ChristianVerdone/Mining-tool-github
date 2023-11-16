@@ -1,3 +1,4 @@
+import os
 import requests
 import os
 import json
@@ -25,8 +26,18 @@ def print_and_save_workflow_logs():
         # Aggiungi un timestamp alle informazioni dei workflow logs
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-        # Costruisci il nome del file JSON con il timestamp nel titolo
-        file_name = f'workflow_logs_{timestamp}.json'
+        # Creare la cartella principale con il nome del repository
+        repository_folder = f'{repository}_data'
+        if not os.path.exists(repository_folder):
+            os.makedirs(repository_folder)
+
+        # Creare la sottocartella con il nome "workflow_logs"
+        workflow_logs_folder = os.path.join(repository_folder, 'workflow_logs')
+        if not os.path.exists(workflow_logs_folder):
+            os.makedirs(workflow_logs_folder)
+
+        # Costruisci il percorso del file JSON con il timestamp nel titolo
+        file_path = os.path.join(workflow_logs_folder, f'workflow_logs_{timestamp}.json')
 
         # Stampa le informazioni sui workflow logs sulla console
         for run in workflow_runs['workflow_runs']:
@@ -44,7 +55,7 @@ def print_and_save_workflow_logs():
         with open(log_file_path, 'w', encoding='utf-8') as json_file:
             json.dump(workflow_runs, json_file, ensure_ascii=False, indent=4)
 
-        print(f"I logs dei workflow sono stati salvati con successo nel file '{file_name}'")
+        print(f"I logs dei workflow sono stati salvati con successo nel file '{file_path}'")
     else:
         print(f"Errore nella richiesta: {response.status_code}")
 
