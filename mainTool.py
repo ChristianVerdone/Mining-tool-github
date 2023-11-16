@@ -4,6 +4,7 @@ import import_and_save_issue
 import import_and_save_pull_request_with_their_comments
 import issue_handler
 import import_requests
+import issues_filter
 import request_error_handler
 
 
@@ -11,15 +12,16 @@ def main():
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
-    parser.add_argument('--azione', choices=['importIssue', 'importCommits', 'import_saveIssue', 'import_PullRequests',
-                                             'esci', 'newAuth'], help='Azione da eseguire.')
+    parser.add_argument('--azione', choices=['importIssue', 'importPullrequests',
+                                             'esci', 'newAuth', 'filterOutputIssue'], help='Azione da eseguire.')
 
     print('Benvenut* nel nuovo tool di mining per GitHub. Le azioni consentite sono:'
           '\n --azione importIssue'
-          '\n --azione importCommits'
-          '\n --azione import_saveIssue'
-          '\n --azione esci '
-          '\n --azione newAuth')
+          '\n --azione importPullrequests'
+          '\n --azione newAuth'
+          '\n --azione filterOutputIssue'
+          '\n --azione esci ')
+
     args = parser.parse_args()
     auth = False
     while True:
@@ -55,14 +57,8 @@ def main():
             if args.azione == 'importIssue':
                 issue_handler.save_github_issues(args.AccessToken)
                 args.azione = None
-            elif args.azione == 'importCommits':
-                import_requests.fetch_github_data(args.AccessToken)
-                args.azione = None
-            elif args.azione == 'import_saveIssue':
-                import_and_save_issue.print_and_save_github_issues(args.AccessToken)
-                args.azione = None
-            elif args.azione == 'import_PullRequests':
-                import_and_save_pull_request_with_their_comments.print_and_save_pull_requests_with_comments(args.AccessToken)
+            elif args.azione == 'importPullrequests':
+                import_requests.save_github_pull_requests(args.AccessToken)
                 args.azione = None
             elif args.azione == 'esci':
                 print('Arrivederci!')
@@ -71,8 +67,11 @@ def main():
                 args.azione = None
                 args.AccessToken = None
                 auth = False
+            elif args.azione == 'filterOutputIssue':
+                issues_filter.filter_github_issues()
+                args.azione = None
             else:
-                print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importCommits, import_saveIssue, import_PullRequests, esci.')
+                print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, newAuth, filterOutputIssue, esci')
                 args.azione = None
 
 
