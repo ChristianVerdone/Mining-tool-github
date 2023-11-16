@@ -1,10 +1,8 @@
 import argparse
-
 import requests
-
 import import_and_save_issue
 import import_and_save_pull_request_with_their_comments
-import import_issue
+import issue_handler
 import import_requests
 import request_error_handler
 
@@ -53,7 +51,7 @@ def main():
                 args.azione = input("Inserisci l'azione che desideri effettuare: ")
 
             if args.azione == 'importIssue':
-                import_issue.print_github_issues(args.AccessToken)
+                issue_handler.save_github_issues(args.AccessToken)
                 args.azione = None
             elif args.azione == 'importCommits':
                 import_requests.fetch_github_data(args.AccessToken)
