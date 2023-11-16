@@ -70,6 +70,7 @@ def main():
             elif args.azione == 'newAuth':
                 args.azione = None
                 args.AccessToken = None
+                auth = False
             else:
                 print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importCommits, import_saveIssue, import_PullRequests, esci.')
                 args.azione = None
