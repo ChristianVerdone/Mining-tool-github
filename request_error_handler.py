@@ -7,5 +7,10 @@ def request_error_handler(status_code):
     elif(status_code == 304):
         print(f"Request error: {status_code}")
         print("NOT MODIFIED: There is no new data to return.")
+        
+    elif(status_code == 403):
+        print(f"Request error: {status_code}")
+        print("403 FORBIDDEN: The request has been refused. See the accompanying message for the specific reason (most likely for exceeding rate limit).")
+   
     else:
        print("Generic request error")
