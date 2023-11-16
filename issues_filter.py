@@ -34,7 +34,7 @@ def filter_github_issues():
         # Aggiungi un timestamp
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-        with open(path_file, 'r') as file:
+        with open(path_file, 'r', encoding='utf-8') as file:
             issues = json.load(file)
 
             filtered_issues = issues
@@ -57,4 +57,4 @@ def filter_github_issues():
             print(f"Issue filtrate salvate con successo in: {filtered_issues_file_path}")
 
 # Esempio di utilizzo dello script
-filter_github_issues()
+#filter_github_issues()
