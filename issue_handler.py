@@ -52,6 +52,7 @@ def save_github_issues(token):
         print(f"Le informazioni delle issue sono state salvate con successo nel file '{file_path}'")     
     else:
         request_error_handler(response.status_code)
+        return  #esci dalla funzione 
         
         
 def make_issues_directory(repository):
@@ -72,6 +73,13 @@ def import_issue_comments(owner, repository, issue):
     # Ottieni i commenti della issue
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/issues/{issue["number"]}/comments'
     comments_response = requests.get(comments_url)
+    
+    if(comments_response != 200):
+        request_error_handler(comments_response.status_code)
+        comments = None
+        return comments
+        #controllare se comments vuoto vale none oppure diversamente...
+    
     comments = comments_response.json()
     
     return comments
