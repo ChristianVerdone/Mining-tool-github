@@ -42,6 +42,8 @@ def save_github_issues(token):
             print_issue(issue)
             comments = import_issue_comments(owner, repository, issue)
             print_issue_comments(comments)
+            if comments:
+                 issue['comments_content'] = comments
             
         # Salva le informazioni delle issue e dei commenti in un file JSON
         with open(file_path, 'w', encoding='utf-8') as json_file:
