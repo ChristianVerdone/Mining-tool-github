@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime
 
 def filter_github_issues():
     while True:
@@ -30,6 +31,9 @@ def filter_github_issues():
             print("L'utente non è presente")
             return
 
+        # Aggiungi un timestamp
+        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
         with open(path_file, 'r') as file:
             issues = json.load(file)
 
@@ -44,11 +48,12 @@ def filter_github_issues():
             filtered_issues_path = f"{repository}_filter_issues"
             os.makedirs(filtered_issues_path, exist_ok=True)
 
-            filtered_issues_file_path = os.path.join(filtered_issues_path, "filter_issues.json")
+            # Costruisci il percorso del file JSON
+            filtered_issues_file_path = os.path.join(filtered_issues_path, f'filter_issues_{timestamp}.json')
             with open(filtered_issues_file_path, 'w') as filtered_file:
                 json.dump(filtered_issues, filtered_file, indent=4)
 
             print(f"Issue filtrate salvate con successo in: {filtered_issues_file_path}")
 
-# Esempio di utilizzo dello script
-filter_github_issues()
+#filter_github_issues()
+

@@ -1,7 +1,5 @@
 import argparse
 import requests
-import import_and_save_issue
-import import_and_save_pull_request_with_their_comments
 import issue_handler
 import import_requests
 import issues_filter
