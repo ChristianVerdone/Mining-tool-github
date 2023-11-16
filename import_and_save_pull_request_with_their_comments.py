@@ -65,6 +65,3 @@ def print_and_save_pull_requests_with_comments(token):
     else:
         print(f"Errore nella richiesta: {response.status_code}")
 
-
-# Chiamare la funzione per ottenere, stampare e salvare le pull requests con i relativi commenti di un repository specifico
-print_and_save_pull_requests_with_comments()
