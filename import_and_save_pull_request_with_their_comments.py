@@ -3,7 +3,8 @@ import requests
 import json
 from datetime import datetime
 
-def print_and_save_pull_requests_with_comments():
+
+def print_and_save_pull_requests_with_comments(token):
     # Richiedi all'utente di inserire l'owner e il repository
     owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
     repository = input("Inserisci il nome del repository su GitHub: ")
@@ -11,8 +12,11 @@ def print_and_save_pull_requests_with_comments():
     # Costruisci l'URL dell'API GitHub per ottenere le pull requests
     api_url = f'https://api.github.com/repos/{owner}/{repository}/pulls'
 
-    # Esegui la richiesta GET all'API di GitHub per ottenere le pull requests
-    response = requests.get(api_url)
+    # Provide your GitHub API token if you have one
+    headers = {'Authorization': 'Bearer ' + token}  # Replace with your GitHub token
+
+    # Make the GET request to the GitHub API
+    response = requests.get(api_url, headers=headers)
 
     if response.status_code == 200:
         # La risposta è avvenuta con successo
@@ -60,6 +64,7 @@ def print_and_save_pull_requests_with_comments():
         print(f"Le informazioni delle pull requests sono state salvate con successo nel file '{file_path}'")
     else:
         print(f"Errore nella richiesta: {response.status_code}")
+
 
 # Chiamare la funzione per ottenere, stampare e salvare le pull requests con i relativi commenti di un repository specifico
 print_and_save_pull_requests_with_comments()
