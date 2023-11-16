@@ -40,11 +40,16 @@ def save_github_pull_requests(token):
         # Costruisci il percorso del file JSON con il timestamp nel titolo
         file_path = os.path.join(pull_requests_folder, f'pull_requests_{timestamp}.json')
 
-        print_pull_requests(pull_requests)
-
         for pull_request in pull_requests:
+            print_pull_request(pull_request)
+            
             comments = import_pull_request_comments(owner, repository, pull_request)
+            #check comments request
+            if comments is None:
+                return
+            
             print_pull_request_comments(comments)
+            pull_request['comments_content'] = comments
 
         # Salva le informazioni delle issue e dei commenti in un file JSON
         with open(file_path, 'w', encoding='utf-8') as json_file:
@@ -53,6 +58,7 @@ def save_github_pull_requests(token):
         print(f"Le informazioni sulle pull request sono state salvate con successo nel file '{file_path}'")
     else:
         request_error_handler(response.status_code)
+        return #esce dalla funzione
 
 
 def make_pull_requests_directory(repository):
@@ -73,18 +79,22 @@ def import_pull_request_comments(owner, repository, pull_request):
     # Ottieni i commenti delle pull request
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/pulls/{pull_request["number"]}/comments'
     comments_response = requests.get(comments_url)
+    
+    if(comments_response.status_code != 200):
+       request_error_handler.request_error_handler(comments_response.status_code)
+       comments = None
+       return comments
+    
     comments = comments_response.json()
-
     return comments
 
 
-def print_pull_requests(pull_requests):
+def print_pull_request(pull_request):
     # Stampa le informazioni sulle issue e i relativi commenti sulla console
-    for pull_request in pull_requests:
-        print(f"Pull Request #{pull_request['number']}:")
-        print(f"  Titolo: {pull_request['title']}")
-        print(f"  Stato: {pull_request['state']}")
-        print(f"  URL: {pull_request['html_url']}")
+    print(f"Pull Request #{pull_request['number']}:")
+    print(f"  Titolo: {pull_request['title']}")
+    print(f"  Stato: {pull_request['state']}")
+    print(f"  URL: {pull_request['html_url']}")
 
 
 def print_pull_request_comments(comments):

@@ -51,7 +51,7 @@ def print_and_save_workflow_logs():
 
         # Salva le informazioni dei workflow logs in un file JSON
         # Salva i dati localmente (esempio: in un file JSON)
-        log_file_path = os.path.join(workflow_dir, file_name)
+        log_file_path = os.path.join(workflow_dir, file_path)
         with open(log_file_path, 'w', encoding='utf-8') as json_file:
             json.dump(workflow_runs, json_file, ensure_ascii=False, indent=4)
 
