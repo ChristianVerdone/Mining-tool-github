@@ -59,7 +59,7 @@ def main():
                 import_pull_requests.save_github_pull_requests(args.AccessToken)
                 args.azione = None
             elif args.azione == 'importWorkflowlogs':
-                import_and_save_workflow_logs.import_and_save_workflow_logs(args.AccessToken)
+                import_and_save_workflow_logs.save_github_workflow_logs(args.AccessToken)
                 args.azione = None    
             elif args.azione == 'esci':
                 print('Arrivederci!')
