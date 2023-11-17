@@ -2,7 +2,7 @@ import argparse
 import requests
 import issue_handler
 import import_requests
-from issues_filter import filter_github_issues
+from function_filter import filter_github
 import request_error_handler
 
 
@@ -11,7 +11,7 @@ def main():
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests',
-                                             'esci', 'newAuth', 'filterOutputIssue'], help='Azione da eseguire.')
+                                             'esci', 'newAuth', 'filterOutput'], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
@@ -37,7 +37,7 @@ def main():
                           '\n --azione importIssue'
                           '\n --azione importPullrequests'
                           '\n --azione newAuth'
-                          '\n --azione filterOutputIssue'
+                          '\n --azione filterOutput'
                           '\n --azione esci ')
                     auth = True
 
@@ -63,11 +63,11 @@ def main():
                 args.azione = None
                 args.AccessToken = None
                 auth = False
-            elif args.azione == 'filterOutputIssue':
-                filter_github_issues()
+            elif args.azione == 'filterOutput':
+                filter_github()
                 args.azione = None
             else:
-                print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, newAuth, filterOutputIssue, esci')
+                print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, newAuth, filterOutput, esci')
                 args.azione = None
 
 
