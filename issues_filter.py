@@ -2,6 +2,7 @@ import os
 import json
 from datetime import datetime
 
+
 def filter_github_issues():
     while True:
         repository = input("\nDi quale repository vuoi filtrare le issues? Per uscire digita esc \n")

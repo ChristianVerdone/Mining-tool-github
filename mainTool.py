@@ -12,10 +12,40 @@ def main():
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-                                             'esci', 'newAuth', 'filterOutputIssue'], help='Azione da eseguire.')
+                                             'esci', 'newAuth', 'filterOutputIssue', 'mineAlltxt'], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
+
+    with open('auth.txt', 'r') as file:
+        temp = file.readline()
+        # Imposta l'intestazione con il token di accesso
+        headers = {
+            'Authorization': f'token {temp}',
+            'Accept': 'application/vnd.github.v3+json'
+        }
+
+        # richiesta GET a GitHub API
+        url = 'https://api.github.com/user'
+        response = requests.get(url, headers=headers)
+
+        # Gestisci la risposta
+        if response.status_code == 200:
+            args.AccessToken = temp
+            auth = True
+            user = response.json()
+            print("Benvenut* :" + user[
+                'login'] + '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
+                           '\n --azione importIssue'
+                           '\n --azione importPullrequests'
+                           '\n --azione importWorkflowlogs'
+                           '\n --azione newAuth'
+                           '\n --azione filterOutputIssue'
+                           '\n --azione esci '
+                           '\n --azione mineAlltxt')
+        else:
+            request_error_handler.request_error_handler(response.status_code)
+
     while True:
         if not auth:
             if args.AccessToken is None:
@@ -40,8 +70,14 @@ def main():
                           '\n --azione importWorkflowlogs'
                           '\n --azione newAuth'
                           '\n --azione filterOutputIssue'
-                          '\n --azione esci ')
+                          '\n --azione esci '
+                          '\n --azione mineAlltxt')
                     auth = True
+                    with open('auth.txt', 'r+') as file:
+                        line = file.readline()
+                        line = args.AccessToken
+                        file.seek(0)
+                        file.writelines(line)
 
                 else:
                     request_error_handler.request_error_handler(response.status_code)
