@@ -5,7 +5,9 @@ from function_filter import filter_github
 import import_and_save_workflow_logs
 import import_pull_requests
 import request_error_handler
-
+import time
+import datetime
+import json
 
 def main():
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
@@ -49,6 +51,9 @@ def main():
                     args.AccessToken = None
 
         if auth:
+            # Attendi il reset del limite di richieste API
+            wait_for_rate_limit_reset(headers)  
+
             if args.azione is None:
                 args.azione = input("Inserisci l'azione che desideri effettuare: ")
 
@@ -75,6 +80,30 @@ def main():
                 print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, importWorkflowlogs, newAuth, filterOutput, esci')
                 args.azione = None
 
+def wait_for_rate_limit_reset(header):
+    # Imposta l'URL per ottenere i dettagli del limite di richieste API dal servizio di GitHub.
+    endpoint = "https://api.github.com/rate_limit"
+    # Esegue una richiesta GET all'endpoint del limite di richieste API di GitHub utilizzando la libreria requests. 
+    # Il parametro headers contiene l'autorizzazione necessaria per accedere all'API di GitHub.
+    rate = requests.get(endpoint, headers=header)
+    # Converte la risposta della richiesta in formato JSON per poter facilmente accedere ai dati contenuti.
+    rateData = json.loads(rate.text)
+    # Ottiene il timestamp Unix che indica quando il limite di richieste API sarà ripristinato. 
+    # Questo valore rappresenta il tempo in cui il limite verrà resettato, consentendo nuovamente le richieste.
+    resetTime = rateData['resources']['core']['reset']
+    # Ottiene l'istante attuale.
+    ms = datetime.datetime.now()
+    # Ottiene il timestamp Unix corrente.
+    nowTs = int(time.mktime(ms.timetuple()))
+    # Calcola la differenza tra il tempo di reset del limite di richieste e il tempo corrente.
+    diffTime = resetTime - nowTs
+    # Verifica se diffTime è maggiore di zero, cioè se il tempo rimanente prima del reset del limite è positivo.
+    if diffTime > 0:
+        # Stampa un messaggio che avverte che il limite di richieste API è stato superato e indica il tempo rimanente prima del reset.
+        print(f"Superato il limite di richieste API. Attendi {diffTime} secondi prima di continuare.")
+        # Fa dormire il programma per diffTime secondi, quindi attende fino a quando 
+        # il limite di richieste API è stato resettato prima di continuare con le richieste successive.
+        time.sleep(diffTime)
 
 if __name__ == '__main__':
     main()
