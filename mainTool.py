@@ -9,12 +9,13 @@ import time
 import datetime
 import json
 
+
 def main():
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-                                             'esci', 'newAuth', 'filterOutputIssue', 'mineAlltxt'], help='Azione da eseguire.')
+                                             'esci', 'newAuth', 'filterOutput', 'mineAlltxt'], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
@@ -42,7 +43,7 @@ def main():
                            '\n --azione importPullrequests'
                            '\n --azione importWorkflowlogs'
                            '\n --azione newAuth'
-                           '\n --azione filterOutputIssue'
+                           '\n --azione filterOutput'
                            '\n --azione esci '
                            '\n --azione mineAlltxt')
         else:
@@ -71,8 +72,8 @@ def main():
                           '\n --azione importPullrequests'
                           '\n --azione importWorkflowlogs'
                           '\n --azione newAuth'
-                          '\n --azione mineAlltxt')
-                          '\n --azione filterOutput'
+                          '\n --azione mineAlltxt'
+                          '\n --azione filterOutput')
                     auth = True
                     with open('auth.txt', 'r+') as file:
                         line = file.readline()
@@ -115,6 +116,7 @@ def main():
                 print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, importWorkflowlogs, newAuth, filterOutput, esci')
                 args.azione = None
 
+
 def wait_for_rate_limit_reset(header):
     # Imposta l'URL per ottenere i dettagli del limite di richieste API dal servizio di GitHub.
     endpoint = "https://api.github.com/rate_limit"
@@ -139,6 +141,7 @@ def wait_for_rate_limit_reset(header):
         # Fa dormire il programma per diffTime secondi, quindi attende fino a quando 
         # il limite di richieste API è stato resettato prima di continuare con le richieste successive.
         time.sleep(diffTime)
+
 
 if __name__ == '__main__':
     main()
