@@ -1,64 +1,108 @@
 import os
 import requests
 import json
+
+import mainTool
 import request_error_handler
+import time
 from datetime import datetime
 
+
+def get_rate_limit(token):
+    # Costruisci l'URL dell'API GitHub per ottenere le informazioni sul rate limit
+    rate_limit_url = 'https://api.github.com/rate_limit'
+
+    # Utilizza il token di GitHub per autenticarsi
+    headers = {'Authorization': 'Bearer ' + token}
+
+    # Fai una richiesta GET all'API di GitHub per ottenere le informazioni sul rate limit
+    response = requests.get(rate_limit_url, headers=headers)
+
+    if response.status_code == 200:
+        rate_limit_info = response.json()
+        return rate_limit_info
+    else:
+        print(f"Errore nell'ottenere le informazioni sul rate limit. Codice di stato: {response.status_code}")
+        try:
+            error_message = response.json().get('message', 'Nessun messaggio di errore fornito.')
+            print(f"Dettagli dell'errore: {error_message}")
+        except json.JSONDecodeError:
+            print("Errore nella decodifica della risposta JSON.")
+        return None
+    
 
 def request_github_pull_requests(token, owner, repository):
 
     # Costruisci l'URL dell'API GitHub per ottenere le pull request
-    api_url = f'https://api.github.com/repos/{owner}/{repository}/pulls'
+    api_url = f'https://api.github.com/repos/{owner}/{repository}/pulls?per_page=100&page=2'
 
     # Utilizza il token di Github per autenticarsi 
     headers = {'Authorization': 'Bearer ' + token}
 
-     # GET request al GitHub API
+    # GET request al GitHub API
     response = requests.get(api_url, headers=headers)
+    mainTool.wait_for_rate_limit_reset(headers)
 
     return response
 
 
-# Salva le pull request passando il token come parametro
 def save_github_pull_requests(token):
-
     # Richiedi all'utente di inserire l'owner e il repository
     owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
     repository = input("Inserisci il nome del repository su GitHub: ")
-
+    headers = {'Authorization': 'Bearer ' + token}
     response = request_github_pull_requests(token, owner, repository)
 
+    # Verifica lo stato corrente del rate limit
+    '''rate_limit_info = get_rate_limit(token)
+    if rate_limit_info:
+        remaining_requests = rate_limit_info['resources']['core']['remaining']
+        reset_timestamp = rate_limit_info['resources']['core']['reset']
+        reset_time = datetime.fromtimestamp(reset_timestamp)
+        print(f"Richieste rimanenti: {remaining_requests}")
+        print(f"Limite di frequenza si ripristina il: {reset_time}")
+
+        # Se le richieste rimanenti sono basse, potresti considerare di attendere prima di fare ulteriori richieste.
+        if remaining_requests < 10:
+            wait_time = reset_time - datetime.now()
+            print(f"Attesa per {wait_time.seconds} secondi prima di fare ulteriori richieste.")
+            time.sleep(wait_time.seconds)
+
+        # Continua solo se il rate limit consente ulteriori richieste
+        if remaining_requests <= 0:
+            print("Limite di frequenza raggiunto. Riprova più tardi.")
+            return
+        '''
+    # Continua con il resto del codice per ottenere le pull request
     if response.status_code == 200:
-        # La risposta è avvenuta con successo
         pull_requests = response.json()
 
-        # Aggiungi un timestamp alle informazioni delle pull request
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-
         pull_requests_folder = make_pull_requests_directory(repository)
-
-        # Costruisci il percorso del file JSON con il timestamp nel titolo
         file_path = os.path.join(pull_requests_folder, f'pull_requests_{timestamp}.json')
 
         for pull_request in pull_requests:
             print_pull_request(pull_request)
-            
-            comments = import_pull_request_comments(owner, repository, pull_request)
-            #check comments request
+
+            comments = import_pull_request_comments(token, owner, repository, pull_request)
+
             if comments is None:
                 return
-            
+
             print_pull_request_comments(comments)
             pull_request['comments_content'] = comments
 
-        # Salva le informazioni delle issue e dei commenti in un file JSON
         with open(file_path, 'w', encoding='utf-8') as json_file:
             json.dump(pull_requests, json_file, ensure_ascii=False, indent=4)
 
         print(f"Le informazioni sulle pull request sono state salvate con successo nel file '{file_path}'")
     else:
-        request_error_handler(response.status_code)
-        return #esce dalla funzione
+        request_error_handler.request_error_handler(response.status_code)
+        return  # Esce dalla funzione
+    '''else:
+        # Errore nel recupero delle informazioni sul rate limit
+        return
+'''
 
 
 def make_pull_requests_directory(repository):
@@ -75,15 +119,17 @@ def make_pull_requests_directory(repository):
     return pull_requests_folder
 
 
-def import_pull_request_comments(owner, repository, pull_request):
+def import_pull_request_comments(token, owner, repository, pull_request):
     # Ottieni i commenti delle pull request
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/pulls/{pull_request["number"]}/comments'
-    comments_response = requests.get(comments_url)
+    headers = {'Authorization': 'Bearer ' + token}
+    mainTool.wait_for_rate_limit_reset(headers)
+    comments_response = requests.get(comments_url, headers=headers)
     
-    if(comments_response.status_code != 200):
-       request_error_handler.request_error_handler(comments_response.status_code)
-       comments = None
-       return comments
+    if comments_response.status_code != 200:
+        request_error_handler.request_error_handler(comments_response.status_code)
+        comments = None
+        return comments
     
     comments = comments_response.json()
     return comments
@@ -102,5 +148,6 @@ def print_pull_request_comments(comments):
     print("  Commenti:")
     for comment in comments:
         print(f"    {comment['user']['login']}: {comment['body']}")
-    print('\n' + '-'*30 + '\n') # Separatore per chiarezza
+    print('\n' + '-'*50 + '\n')  # Separatore per chiarezza
+
 

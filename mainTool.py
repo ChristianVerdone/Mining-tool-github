@@ -10,15 +10,50 @@ import time
 import datetime
 import json
 
+
 def main():
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
+<<<<<<< HEAD
                                              'esci', 'newAuth', 'filterOutput', 'search_repo'], help='Azione da eseguire.')
+=======
+                                             'esci', 'newAuth', 'filterOutput', 'mineAlltxt'], help='Azione da eseguire.')
+>>>>>>> Christian
 
     args = parser.parse_args()
     auth = False
+
+    with open('auth.txt', 'r') as file:
+        temp = file.readline()
+        # Imposta l'intestazione con il token di accesso
+        headers = {
+            'Authorization': f'token {temp}',
+            'Accept': 'application/vnd.github.v3+json'
+        }
+
+        # richiesta GET a GitHub API
+        url = 'https://api.github.com/user'
+        response = requests.get(url, headers=headers)
+
+        # Gestisci la risposta
+        if response.status_code == 200:
+            args.AccessToken = temp
+            auth = True
+            user = response.json()
+            print("Benvenut* :" + user[
+                'login'] + '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
+                           '\n --azione importIssue'
+                           '\n --azione importPullrequests'
+                           '\n --azione importWorkflowlogs'
+                           '\n --azione newAuth'
+                           '\n --azione filterOutput'
+                           '\n --azione esci '
+                           '\n --azione mineAlltxt')
+        else:
+            request_error_handler.request_error_handler(response.status_code)
+
     while True:
         if not auth:
             if args.AccessToken is None:
@@ -42,10 +77,20 @@ def main():
                           '\n --azione importPullrequests'
                           '\n --azione importWorkflowlogs'
                           '\n --azione newAuth'
+<<<<<<< HEAD
                           '\n --azione filterOutput'
                           '\n --azione search_repo'
                           '\n --azione esci ')
+=======
+                          '\n --azione mineAlltxt'
+                          '\n --azione filterOutput')
+>>>>>>> Christian
                     auth = True
+                    with open('auth.txt', 'r+') as file:
+                        line = file.readline()
+                        line = args.AccessToken
+                        file.seek(0)
+                        file.writelines(line)
 
                 else:
                     request_error_handler.request_error_handler(response.status_code)
@@ -85,6 +130,7 @@ def main():
                 print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, importWorkflowlogs, newAuth, filterOutput, search_repo, esci')
                 args.azione = None
 
+
 def wait_for_rate_limit_reset(header):
     # Imposta l'URL per ottenere i dettagli del limite di richieste API dal servizio di GitHub.
     endpoint = "https://api.github.com/rate_limit"
@@ -94,21 +140,26 @@ def wait_for_rate_limit_reset(header):
     # Converte la risposta della richiesta in formato JSON per poter facilmente accedere ai dati contenuti.
     rateData = json.loads(rate.text)
     # Ottiene il timestamp Unix che indica quando il limite di richieste API sarà ripristinato. 
-    # Questo valore rappresenta il tempo in cui il limite verrà resettato, consentendo nuovamente le richieste.
-    resetTime = rateData['resources']['core']['reset']
-    # Ottiene l'istante attuale.
-    ms = datetime.datetime.now()
-    # Ottiene il timestamp Unix corrente.
-    nowTs = int(time.mktime(ms.timetuple()))
-    # Calcola la differenza tra il tempo di reset del limite di richieste e il tempo corrente.
-    diffTime = resetTime - nowTs
-    # Verifica se diffTime è maggiore di zero, cioè se il tempo rimanente prima del reset del limite è positivo.
-    if diffTime > 0:
-        # Stampa un messaggio che avverte che il limite di richieste API è stato superato e indica il tempo rimanente prima del reset.
-        print(f"Superato il limite di richieste API. Attendi {diffTime} secondi prima di continuare.")
-        # Fa dormire il programma per diffTime secondi, quindi attende fino a quando 
-        # il limite di richieste API è stato resettato prima di continuare con le richieste successive.
-        time.sleep(diffTime)
+    # Il numero di richieste rimanenti per lo slot time attuale
+    remaining = rateData['resources']['core']['remaining']
+    print(f"remaining requests : {remaining}")
+    if remaining == 0:
+        # Questo valore rappresenta il tempo in cui il limite verrà resettato, consentendo nuovamente le richieste.
+        resetTime = rateData['resources']['core']['reset']
+        # Ottiene l'istante attuale.
+        ms = datetime.datetime.now()
+        # Ottiene il timestamp Unix corrente.
+        nowTs = int(time.mktime(ms.timetuple()))
+        # Calcola la differenza tra il tempo di reset del limite di richieste e il tempo corrente.
+        diffTime = resetTime - nowTs
+        # Verifica se diffTime è maggiore di zero, cioè se il tempo rimanente prima del reset del limite è positivo.
+        if diffTime > 0:
+            # Stampa un messaggio che avverte che il limite di richieste API è stato superato e indica il tempo rimanente prima del reset.
+            print(f"Superato il limite di richieste API. Attendi {diffTime} secondi prima di continuare.")
+            # Fa dormire il programma per diffTime secondi, quindi attende fino a quando
+            # il limite di richieste API è stato resettato prima di continuare con le richieste successive.
+            time.sleep(diffTime)
+
 
 if __name__ == '__main__':
     main()
