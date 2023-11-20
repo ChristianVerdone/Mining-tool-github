@@ -9,15 +9,46 @@ import time
 import datetime
 import json
 
+
 def main():
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-                                             'esci', 'newAuth', 'filterOutput'], help='Azione da eseguire.')
+                                             'esci', 'newAuth', 'filterOutput', 'mineAlltxt'], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
+
+    with open('auth.txt', 'r') as file:
+        temp = file.readline()
+        # Imposta l'intestazione con il token di accesso
+        headers = {
+            'Authorization': f'token {temp}',
+            'Accept': 'application/vnd.github.v3+json'
+        }
+
+        # richiesta GET a GitHub API
+        url = 'https://api.github.com/user'
+        response = requests.get(url, headers=headers)
+
+        # Gestisci la risposta
+        if response.status_code == 200:
+            args.AccessToken = temp
+            auth = True
+            user = response.json()
+            print("Benvenut* :" + user[
+                'login'] + '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
+                           '\n --azione importIssue'
+                           '\n --azione importPullrequests'
+                           '\n --azione importWorkflowlogs'
+                           '\n --azione newAuth'
+                           '\n --azione filterOutput'
+                           '\n --azione esci '
+                           '\n --azione mineAlltxt')
+        else:
+            request_error_handler.request_error_handler(response.status_code)
+
     while True:
         if not auth:
             if args.AccessToken is None:
@@ -41,9 +72,14 @@ def main():
                           '\n --azione importPullrequests'
                           '\n --azione importWorkflowlogs'
                           '\n --azione newAuth'
-                          '\n --azione filterOutput'
-                          '\n --azione esci ')
+                          '\n --azione mineAlltxt'
+                          '\n --azione filterOutput')
                     auth = True
+                    with open('auth.txt', 'r+') as file:
+                        line = file.readline()
+                        line = args.AccessToken
+                        file.seek(0)
+                        file.writelines(line)
 
                 else:
                     request_error_handler.request_error_handler(response.status_code)
@@ -80,6 +116,7 @@ def main():
                 print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, importWorkflowlogs, newAuth, filterOutput, esci')
                 args.azione = None
 
+
 def wait_for_rate_limit_reset(header):
     # Imposta l'URL per ottenere i dettagli del limite di richieste API dal servizio di GitHub.
     endpoint = "https://api.github.com/rate_limit"
@@ -104,6 +141,7 @@ def wait_for_rate_limit_reset(header):
         # Fa dormire il programma per diffTime secondi, quindi attende fino a quando 
         # il limite di richieste API è stato resettato prima di continuare con le richieste successive.
         time.sleep(diffTime)
+
 
 if __name__ == '__main__':
     main()
