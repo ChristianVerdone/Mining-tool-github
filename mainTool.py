@@ -5,6 +5,7 @@ from function_filter import filter_github
 import import_and_save_workflow_logs
 import import_pull_requests
 import request_error_handler
+import search_repository
 import time
 import datetime
 import json
@@ -15,7 +16,7 @@ def main():
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-                                             'esci', 'newAuth', 'filterOutput', 'mineAlltxt'], help='Azione da eseguire.')
+                                             'esci', 'newAuth', 'filterOutput','mineAlltxt','search_repo'], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
@@ -44,6 +45,7 @@ def main():
                            '\n --azione importWorkflowlogs'
                            '\n --azione newAuth'
                            '\n --azione filterOutput'
+                           '\n --azione search_repo'
                            '\n --azione esci '
                            '\n --azione mineAlltxt')
         else:
@@ -73,7 +75,9 @@ def main():
                           '\n --azione importWorkflowlogs'
                           '\n --azione newAuth'
                           '\n --azione mineAlltxt'
-                          '\n --azione filterOutput')
+                          '\n --azione filterOutput'
+                          '\n --azione search_repo'
+                          '\n --azione esci ')
                     auth = True
                     with open('auth.txt', 'r+') as file:
                         line = file.readline()
@@ -101,7 +105,10 @@ def main():
                 args.azione = None
             elif args.azione == 'importWorkflowlogs':
                 import_and_save_workflow_logs.save_github_workflow_logs(args.AccessToken)
-                args.azione = None    
+                args.azione = None
+            elif args.azione == 'search_repo':
+                search_repository.controller_repo(args.AccessToken)
+                args.azione = None 
             elif args.azione == 'esci':
                 print('Arrivederci!')
                 break  # Esci dal loop
@@ -113,7 +120,7 @@ def main():
                 filter_github()
                 args.azione = None
             else:
-                print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, importWorkflowlogs, newAuth, filterOutput, esci')
+                print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, importWorkflowlogs, newAuth, filterOutput, search_repo, esci')
                 args.azione = None
 
 
