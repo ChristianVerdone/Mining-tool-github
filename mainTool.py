@@ -16,11 +16,7 @@ def main():
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-<<<<<<< HEAD
-                                             'esci', 'newAuth', 'filterOutput', 'search_repo'], help='Azione da eseguire.')
-=======
-                                             'esci', 'newAuth', 'filterOutput', 'mineAlltxt'], help='Azione da eseguire.')
->>>>>>> Christian
+                                             'esci', 'newAuth', 'filterOutput','mineAlltxt','search_repo'], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
@@ -49,6 +45,7 @@ def main():
                            '\n --azione importWorkflowlogs'
                            '\n --azione newAuth'
                            '\n --azione filterOutput'
+                           '\n --azione search_repo'
                            '\n --azione esci '
                            '\n --azione mineAlltxt')
         else:
@@ -77,14 +74,10 @@ def main():
                           '\n --azione importPullrequests'
                           '\n --azione importWorkflowlogs'
                           '\n --azione newAuth'
-<<<<<<< HEAD
+                          '\n --azione mineAlltxt'
                           '\n --azione filterOutput'
                           '\n --azione search_repo'
                           '\n --azione esci ')
-=======
-                          '\n --azione mineAlltxt'
-                          '\n --azione filterOutput')
->>>>>>> Christian
                     auth = True
                     with open('auth.txt', 'r+') as file:
                         line = file.readline()
