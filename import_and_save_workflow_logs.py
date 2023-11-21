@@ -3,7 +3,10 @@ import os
 import requests
 import json
 from datetime import datetime
+
+import mainTool
 import request_error_handler
+
 
 def save_github_workflow_logs(token):
 
@@ -36,17 +39,20 @@ def save_github_workflow_logs(token):
         print("Errore nel recupero dei workflow logs.")
         return
 
+
 def get_github_workflow_logs(token, owner, repository):
     # Ottieni i workflow logs
     api_url = f'https://api.github.com/repos/{owner}/{repository}/actions/runs'
     headers = {'Authorization': 'Bearer ' + token}
     response = requests.get(api_url, headers=headers)
+    mainTool.wait_for_rate_limit_reset(headers)
 
     if response.status_code == 200:
         return response.json()
     else:
-        request_error_handler(response.status_code)
+        request_error_handler.request_error_handler(response.status_code)
         return None
+
 
 def print_workflow_info(run):
     # Stampa le informazioni sui workflow logs sulla console
@@ -56,6 +62,7 @@ def print_workflow_info(run):
     print(f"  Concluso: {run['conclusion']}")
     print(f"  URL: {run['html_url']}")
     print('\n' + '-'*30 + '\n')  # Separatore per chiarezza
+
 
 def make_workflow_logs_directory(repository):
     # Creare la cartella principale con il nome del repository
