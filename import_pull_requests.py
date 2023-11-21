@@ -86,13 +86,13 @@ def save_github_pull_requests(token):
             print_pull_request(pull_request)
             if pull_request['comments']:
                 comments = import_pull_request_comments(token, owner, repository, pull_request)
+                # check comments requests
+                if comments is None:
+                    return
+                print_pull_request_comments(comments)
             else:
-                comments = None
-            if comments is None:
-                pull_request['comments_content'] = comments
-                return
-
-            print_pull_request_comments(comments)
+                comments = 0
+                
             pull_request['comments_content'] = comments
 
         with open(file_path, 'w', encoding='utf-8') as json_file:
