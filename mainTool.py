@@ -76,7 +76,6 @@ def main():
                           '\n --azione importPullrequests'
                           '\n --azione importWorkflowlogs'
                           '\n --azione newAuth'
-                          '\n --azione mineAlltxt'
                           '\n --azione filterOutput'
                           '\n --azione search_repo'
                           '\n --azione esci ')
@@ -123,8 +122,14 @@ def main():
                 filter_github()
                 args.azione = None
             else:
-                print(
-                    f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, importWorkflowlogs, newAuth, filterOutput, search_repo, esci')
+                print(f'Azione non riconosciuta. Le opzioni valide sono:'
+                      '\n --azione importIssue'
+                      '\n --azione importPullrequests'
+                      '\n --azione importWorkflowlogs'
+                      '\n --azione newAuth'
+                      '\n --azione filterOutput'
+                      '\n --azione search_repo'
+                      '\n --azione esci ')
                 args.azione = None
 
 

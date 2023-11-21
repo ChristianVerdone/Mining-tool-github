@@ -29,10 +29,9 @@ def get_rate_limit(token):
         except json.JSONDecodeError:
             print("Errore nella decodifica della risposta JSON.")
         return None
-    
+
 
 def request_github_pull_requests(token, owner, repository, i):
-
     # Costruisci l'URL dell'API GitHub per ottenere le pull request
     api_url = f'https://api.github.com/repos/{owner}/{repository}/pulls?per_page=100&page={i}'
 
@@ -60,42 +59,21 @@ def save_github_pull_requests(token):
     while True:
         response = request_github_pull_requests(token, owner, repository, i)
         i = i + 1
-        # Verifica lo stato corrente del rate limit
-        '''rate_limit_info = get_rate_limit(token)
-        if rate_limit_info:
-            remaining_requests = rate_limit_info['resources']['core']['remaining']
-            reset_timestamp = rate_limit_info['resources']['core']['reset']
-            reset_time = datetime.fromtimestamp(reset_timestamp)
-            print(f"Richieste rimanenti: {remaining_requests}")
-            print(f"Limite di frequenza si ripristina il: {reset_time}")
-    
-            # Se le richieste rimanenti sono basse, potresti considerare di attendere prima di fare ulteriori richieste.
-            if remaining_requests < 10:
-                wait_time = reset_time - datetime.now()
-                print(f"Attesa per {wait_time.seconds} secondi prima di fare ulteriori richieste.")
-                time.sleep(wait_time.seconds)
-    
-            # Continua solo se il rate limit consente ulteriori richieste
-            if remaining_requests <= 0:
-                print("Limite di frequenza raggiunto. Riprova più tardi.")
-                return
-            '''
         # Continua con il resto del codice per ottenere le pull request
         if response.status_code == 200:
             pull_requests = response.json()
             if not pull_requests:
                 break
 
-            # da testare
             for pull_request in pull_requests:
-                #print_pull_request(pull_request)
+                # print_pull_request(pull_request)
 
                 comments = import_pull_request_comments(token, owner, repository, pull_request)
                 if comments is None:
                     pull_request['comments_content'] = comments
                     return
 
-                #print_pull_request_comments(comments)
+                # print_pull_request_comments(comments)
                 pull_request['comments_content'] = comments
 
             if temp is None:
@@ -107,7 +85,6 @@ def save_github_pull_requests(token):
             request_error_handler.request_error_handler(response.status_code)
             return  # Esce dalla funzione
 
-    print(len(temp))
     with open(file_path, 'w', encoding='utf-8') as json_file:
         json.dump(temp, json_file, ensure_ascii=False, indent=4)
     print(f"Le informazioni sulle pull request sono state salvate con successo nel file '{file_path}'")
@@ -133,12 +110,12 @@ def import_pull_request_comments(token, owner, repository, pull_request):
     headers = {'Authorization': 'Bearer ' + token}
     mainTool.wait_for_rate_limit_reset(headers)
     comments_response = requests.get(comments_url, headers=headers)
-    
+
     if comments_response.status_code != 200:
         request_error_handler.request_error_handler(comments_response.status_code)
         comments = None
         return comments
-    
+
     comments = comments_response.json()
     return comments
 
@@ -156,6 +133,4 @@ def print_pull_request_comments(comments):
     print("  Commenti:")
     for comment in comments:
         print(f"    {comment['user']['login']}: {comment['body']}")
-    print('\n' + '-'*50 + '\n')  # Separatore per chiarezza
-
-
+    print('\n' + '-' * 50 + '\n')  # Separatore per chiarezza
