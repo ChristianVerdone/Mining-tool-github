@@ -42,15 +42,13 @@ def save_github_issues(token):
             print_issue(issue)
             if issue['comments']:
                 comments = import_issue_comments(token, owner, repository, issue)
-
+                 # check comments requests
+                if comments is None:
+                    return
+                print_issue_comments(comments)
             else:
-                comments = None
-            # check comments requests
-            if comments is None:
-                issue['comments_content'] = comments
-                return
-
-            print_issue_comments(comments)
+                comments = 0
+                
             issue['comments_content'] = comments
 
         # Salva le informazioni delle issue e dei commenti in un file JSON
