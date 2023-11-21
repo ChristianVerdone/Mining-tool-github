@@ -81,12 +81,15 @@ def save_github_pull_requests(token):
         pull_requests_folder = make_pull_requests_directory(repository)
         file_path = os.path.join(pull_requests_folder, f'pull_requests_{timestamp}.json')
 
+        # da testare
         for pull_request in pull_requests:
             print_pull_request(pull_request)
-
-            comments = import_pull_request_comments(token, owner, repository, pull_request)
-
+            if pull_request['comments']:
+                comments = import_pull_request_comments(token, owner, repository, pull_request)
+            else:
+                comments = None
             if comments is None:
+                pull_request['comments_content'] = comments
                 return
 
             print_pull_request_comments(comments)
@@ -102,7 +105,7 @@ def save_github_pull_requests(token):
     '''else:
         # Errore nel recupero delle informazioni sul rate limit
         return
-'''
+        '''
 
 
 def make_pull_requests_directory(repository):
