@@ -5,6 +5,9 @@ import request_error_handler
 def controller_repo(token):
     path=input("Indica il path del file: ")
     path_file=f_path_txt(path)
+
+    # Lista per memorizzare i repository trovati
+    repositories_found = []
     
     #Leggi da file .txt l'owner/repository
     with open(path_file, 'r') as file:
@@ -14,18 +17,31 @@ def controller_repo(token):
             owner, repository = line.strip().split('/')  # Assume che il formato sia 'owner/repository'
 
             response = request_github(token, owner, repository)
+            #print(f"Errore: '{response.status_code}")
+
             if response.status_code == 200:
-                print(f'{owner}/{repository}')
+                # Aggiungi il repository alla lista dei repository trovati
+                repositories_found.append(f'{owner}/{repository}')
+                # print(f'{owner}/{repository}')
             else:
+                print(f"Errore: '{response.status_code}")
                 # Il repository non è stato trovato
                 print(f"'{owner}/{repository}' (NOT Found)")
-            '''elif response.status_code == 404:
+            '''
+            elif response.status_code == 404:
                 # Il repository non è stato trovato
                 print(f"'{owner}/{repository}' (NOT Found)")
             else:
                 # Gestione degli altri possibili errori
                 request_error_handler.request_error_handler(response.status_code)
             '''
+    
+    # Scrivo i repository trovati nel file 'repo.txt'
+    with open('repo.txt', 'w') as repo_file:
+        for repo in repositories_found:
+            repo_file.write(f"{repo}\n")        
+            
+            
 
 def request_github(token, owner, repository):
      # Costruisci l'URL dell'API GitHub
