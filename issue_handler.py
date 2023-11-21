@@ -41,7 +41,7 @@ def save_github_issues(token):
         for issue in issues:
             print_issue(issue)
             
-            comments = import_issue_comments(owner, repository, issue)
+            comments = import_issue_comments(token, owner, repository, issue)
             #check comments requests
             if comments is None:
                 return                 
@@ -73,10 +73,11 @@ def make_issues_directory(repository):
     return issues_folder    
     
         
-def import_issue_comments(owner, repository, issue):
+def import_issue_comments(token, owner, repository, issue):
     # Ottieni i commenti della issue
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/issues/{issue["number"]}/comments'
-    comments_response = requests.get(comments_url)
+    headers = {'Authorization': 'Bearer ' + token}
+    comments_response = requests.get(comments_url, headers=headers)
     
     if(comments_response.status_code != 200):
         request_error_handler.request_error_handler(comments_response.status_code)
