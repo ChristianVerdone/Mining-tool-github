@@ -16,7 +16,8 @@ def main():
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-                                             'esci', 'newAuth', 'filterOutput','mineAlltxt','search_repo'], help='Azione da eseguire.')
+                                                                                  'esci', 'newAuth', 'filterOutput',
+                                             'mineAlltxt', 'search_repo'], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
@@ -38,16 +39,16 @@ def main():
             args.AccessToken = temp
             auth = True
             user = response.json()
-            print("Benvenut* :" + user[
-                'login'] + '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
-                           '\n --azione importIssue'
-                           '\n --azione importPullrequests'
-                           '\n --azione importWorkflowlogs'
-                           '\n --azione newAuth'
-                           '\n --azione filterOutput'
-                           '\n --azione search_repo'
-                           '\n --azione esci '
-                           '\n --azione mineAlltxt')
+            print("Benvenut* :" + user['login'] +
+                  '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
+                  '\n --azione importIssue'
+                  '\n --azione importPullrequests'
+                  '\n --azione importWorkflowlogs'
+                  '\n --azione newAuth'
+                  '\n --azione filterOutput'
+                  '\n --azione search_repo'
+                  '\n --azione esci '
+                  '\n --azione mineAlltxt')
         else:
             request_error_handler.request_error_handler(response.status_code)
 
@@ -69,7 +70,8 @@ def main():
                 if response.status_code == 200:
                     print("Richiesta riuscita!")
                     user = response.json()
-                    print("Benvenut* :" + user['login'] + '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
+                    print("Benvenut* :" + user['login'] +
+                          '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
                           '\n --azione importIssue'
                           '\n --azione importPullrequests'
                           '\n --azione importWorkflowlogs'
@@ -87,12 +89,13 @@ def main():
 
                 else:
                     request_error_handler.request_error_handler(response.status_code)
-                    print("Assicurati di aver inserito il token correttamente o che sia ancora valido per accedere all'API\n")
+                    print(
+                        "Assicurati di aver inserito il token correttamente o che sia ancora valido per accedere all'API\n")
                     args.AccessToken = None
 
         if auth:
             # Attendi il reset del limite di richieste API
-            wait_for_rate_limit_reset(headers)  
+            wait_for_rate_limit_reset(headers)
 
             if args.azione is None:
                 args.azione = input("Inserisci l'azione che desideri effettuare: ")
@@ -108,7 +111,7 @@ def main():
                 args.azione = None
             elif args.azione == 'search_repo':
                 search_repository.controller_repo(args.AccessToken)
-                args.azione = None 
+                args.azione = None
             elif args.azione == 'esci':
                 print('Arrivederci!')
                 break  # Esci dal loop
@@ -120,7 +123,8 @@ def main():
                 filter_github()
                 args.azione = None
             else:
-                print(f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, importWorkflowlogs, newAuth, filterOutput, search_repo, esci')
+                print(
+                    f'Azione non riconosciuta. Le opzioni valide sono: importIssue, importPullrequests, importWorkflowlogs, newAuth, filterOutput, search_repo, esci')
                 args.azione = None
 
 
@@ -135,7 +139,7 @@ def wait_for_rate_limit_reset(header):
     # Ottiene il timestamp Unix che indica quando il limite di richieste API sarà ripristinato. 
     # Il numero di richieste rimanenti per lo slot time attuale
     remaining = rateData['resources']['core']['remaining']
-    print(f"remaining requests : {remaining}")
+    # print(f"remaining requests : {remaining}")
     if remaining == 0:
         # Questo valore rappresenta il tempo in cui il limite verrà resettato, consentendo nuovamente le richieste.
         resetTime = rateData['resources']['core']['reset']
