@@ -1,20 +1,24 @@
 import os
 import requests
 import json
+
+import mainTool
 import request_error_handler
 from datetime import datetime
 
 
-def request_github_issues(token, owner, repository):
+def request_github_issues(token, owner, repository, i):
     # Costruisci l'URL dell'API GitHub per ottenere le issue
-    api_url = f'https://api.github.com/repos/{owner}/{repository}/issues'
+    api_url = f'https://api.github.com/repos/{owner}/{repository}/issues?per_page=100&page={i}'
 
     # Provide your GitHub API token if you have one
     headers = {'Authorization': 'Bearer ' + token}  # Replace with your GitHub token
 
+    mainTool.wait_for_rate_limit_reset(headers)
+
     # Make the GET request to the GitHub API
     response = requests.get(api_url, headers=headers)
-
+    print(f'richiesta {i}')
     return response
 
 
@@ -23,42 +27,52 @@ def save_github_issues(token):
     owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
     repository = input("Inserisci il nome del repository su GitHub: ")
 
-    response = request_github_issues(token, owner, repository)
+    # Aggiungi un timestamp alle informazioni delle issue
+    timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-    if response.status_code == 200:
-        # La risposta è avvenuta con successo
-        issues = response.json()
+    issues_folder = make_issues_directory(repository)
 
-        # Aggiungi un timestamp alle informazioni delle issue
-        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    # Costruisci il percorso del file JSON con il timestamp nel titolo
+    file_path = os.path.join(issues_folder, f'issues_with_comments_{timestamp}.json')
+    i = 1
+    temp = None
+    while True:
+        response = request_github_issues(token, owner, repository, i)
+        i = i + 1
+        if response.status_code == 200:
+            # La risposta è avvenuta con successo
+            issues = response.json()
+            # Se l'oggetto json issues è vuoto allora esco dal ciclo perchè ho raggiunto la fine degli elementi da collezionare
+            if not issues:
+                break
 
-        issues_folder = make_issues_directory(repository)
-
-        # Costruisci il percorso del file JSON con il timestamp nel titolo
-        file_path = os.path.join(issues_folder, f'issues_with_comments_{timestamp}.json')
-
-        # da testare
-        for issue in issues:
-            print_issue(issue)
-            if issue['comments']:
-                comments = import_issue_comments(token, owner, repository, issue)
-                 # check comments requests
-                if comments is None:
-                    return
-                print_issue_comments(comments)
+            for issue in issues:
+                # print_issue(issue)
+                # Se la issue ha almeno 1 commento allora mi preoccupo di effettuare una richiesta all'API altrimenti me la risparmio
+                if issue['comments'] > 0:
+                    comments = import_issue_comments(token, owner, repository, issue)
+                    # check comments requests
+                    if comments is None:
+                        return
+                    # print_issue_comments(comments)
+                else:
+                    comments = 0
+                # il nuovo campo 'comments_content' viene sempre creato per mantenere coerenti gli elementi del file json
+                issue['comments_content'] = comments
+            # alla prima iterazione temp sarà None e lo rendo un oggetto json assegnando il valore di issues
+            if temp is None:
+                temp = issues
+            # altrimenti inserisco in coda a temp gli elementi delle issues successive
             else:
-                comments = 0
-                
-            issue['comments_content'] = comments
+                temp.extend(issues)
+        else:
+            request_error_handler.request_error_handler(response.status_code)
+            return
 
-        # Salva le informazioni delle issue e dei commenti in un file JSON
-        with open(file_path, 'w', encoding='utf-8') as json_file:
-            json.dump(issues, json_file, ensure_ascii=False, indent=4)
-
-        print(f"Le informazioni delle issue sono state salvate con successo nel file '{file_path}'")
-    else:
-        request_error_handler.request_error_handler(response.status_code)
-        return
+    # Salva le informazioni delle issue e dei commenti in un file JSON
+    with open(file_path, 'w', encoding='utf-8') as json_file:
+        json.dump(temp, json_file, ensure_ascii=False, indent=4)
+    print(f"Le informazioni delle issue sono state salvate con successo nel file '{file_path}'")
 
 
 def make_issues_directory(repository):
@@ -79,6 +93,7 @@ def import_issue_comments(token, owner, repository, issue):
     # Ottieni i commenti della issue
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/issues/{issue["number"]}/comments'
     headers = {'Authorization': 'Bearer ' + token}
+    mainTool.wait_for_rate_limit_reset(headers)
     comments_response = requests.get(comments_url, headers=headers)
 
     if comments_response.status_code != 200:
