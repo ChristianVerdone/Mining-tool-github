@@ -1,11 +1,16 @@
 import os
 import requests
 import request_error_handler
+import rate_limit
+import time
 
 def controller_repo(token):
     path=input("Indica il path del file: ")
     path_file=f_path_txt(path)
 
+    start_time= time.time()
+    request_count = 0
+    
     # Lista per memorizzare i repository trovati
     repositories_found = []
     
@@ -14,6 +19,10 @@ def controller_repo(token):
         #Per ogni riga del file prendi l'owner e il repository 
         lines = file.readlines()
         for line in lines:
+
+            request_count += 1
+            rate_limit.rate_minute(start_time, request_count)
+
             owner, repository = line.strip().split('/')  # Assume che il formato sia 'owner/repository'
 
             response = request_github(token, owner, repository)
@@ -23,18 +32,14 @@ def controller_repo(token):
                 # Aggiungi il repository alla lista dei repository trovati
                 repositories_found.append(f'{owner}/{repository}')
                 # print(f'{owner}/{repository}')
-            else:
-                print(f"Errore: '{response.status_code}")
-                # Il repository non è stato trovato
-                print(f"'{owner}/{repository}' (NOT Found)")
-            '''
+            
             elif response.status_code == 404:
                 # Il repository non è stato trovato
                 print(f"'{owner}/{repository}' (NOT Found)")
             else:
                 # Gestione degli altri possibili errori
                 request_error_handler.request_error_handler(response.status_code)
-            '''
+            
     
     # Scrivo i repository trovati nel file 'repo.txt'
     with open('repo.txt', 'w') as repo_file:
