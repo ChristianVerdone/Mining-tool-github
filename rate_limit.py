@@ -10,11 +10,11 @@ def rate_minute(start_time, request_count):
     current_time = time.time()
     # Calcola il tempo trascorso dall'inizio del periodo
     elapsed_time = current_time - start_time  
-    if elapsed_time > 60 & request_count < 3:
+    if elapsed_time > 60 & request_count < 900:
         # Se è passato più di un minuto, resetta il conteggio delle richieste e il tempo di inizio
         start_time = 0
         request_count = 0
-    elif elapsed_time <= 60 & request_count > 3:
+    elif elapsed_time <= 60 & request_count > 900:
         # Stampa un messaggio che avverte che il limite di richieste API è stato superato e indica il tempo rimanente prima del reset.
         print(f"Superato il limite di richieste API. Attendi 60 secondi prima di continuare.")
         # Fa dormire il programma per 60 secondi
