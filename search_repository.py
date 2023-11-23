@@ -4,9 +4,10 @@ import request_error_handler
 import rate_limit
 import time
 
+
 def controller_repo(token):
-    path=input("Indica il path del file: ")
-    path_file=f_path_txt(path)
+    path = input("Indica il path del file: ")
+    path_file = f_path_txt(path)
 
     start_time= time.time()
     request_count = 0
@@ -14,9 +15,9 @@ def controller_repo(token):
     # Lista per memorizzare i repository trovati
     repositories_found = []
     
-    #Leggi da file .txt l'owner/repository
+    # Leggi da file .txt l'owner/repository
     with open(path_file, 'r') as file:
-        #Per ogni riga del file prendi l'owner e il repository 
+        # Per ogni riga del file prendi l'owner e il repository
         lines = file.readlines()
         for line in lines:
 
@@ -48,28 +49,27 @@ def controller_repo(token):
             
             
 
+
 def request_github(token, owner, repository):
-     # Costruisci l'URL dell'API GitHub
+    # Costruisci l'URL dell'API GitHub
     api_url = f'https://api.github.com/repos/{owner}/{repository}'
-     # Utilizza il token di Github per autenticarsi 
+    # Utilizza il token di Github per autenticarsi
     headers = {'Authorization': 'Bearer ' + token}
-     # GET request al GitHub API
+    # GET request al GitHub API
     response = requests.get(api_url, headers=headers)
 
     return response
+
 
 def f_path_txt(path):
     if not os.path.exists(path):
         print(f"Il percorso '{path}' non esiste ")
         return
-        
-    file=input("Inserisci il nome del file txt: ")
-    path_file=f"{path}/{file}.txt"
+
+    file = input("Inserisci il nome del file txt: ")
+    path_file = f"{path}/{file}.txt"
 
     if not os.path.exists(path_file):
         print(f"Il percorso '{path_file}' non esiste.")
         return
-    return path_file       
-
-
-   
+    return path_file
