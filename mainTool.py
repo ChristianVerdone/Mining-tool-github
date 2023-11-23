@@ -9,6 +9,7 @@ import search_repository
 import time
 import datetime
 import json
+import os
 
 
 def main():
@@ -22,35 +23,40 @@ def main():
     args = parser.parse_args()
     auth = False
 
-    with open('auth.txt', 'r') as file:
-        temp = file.readline()
-        # Imposta l'intestazione con il token di accesso
-        headers = {
-            'Authorization': f'token {temp}',
-            'Accept': 'application/vnd.github.v3+json'
-        }
+    if os.path.exists('auth.txt'):
+        with open('auth.txt', 'r') as file:
+            temp = file.readline()
+            # Imposta l'intestazione con il token di accesso
+            headers = {
+                'Authorization': f'token {temp}',
+                'Accept': 'application/vnd.github.v3+json'
+            }
 
-        # richiesta GET a GitHub API
-        url = 'https://api.github.com/user'
-        response = requests.get(url, headers=headers)
+            # richiesta GET a GitHub API
+            url = 'https://api.github.com/user'
+            response = requests.get(url, headers=headers)
 
-        # Gestisci la risposta
-        if response.status_code == 200:
-            args.AccessToken = temp
-            auth = True
-            user = response.json()
-            print("Benvenut* :" + user['login'] +
-                  '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
-                  '\n --azione importIssue'
-                  '\n --azione importPullrequests'
-                  '\n --azione importWorkflowlogs'
-                  '\n --azione newAuth'
-                  '\n --azione filterOutput'
-                  '\n --azione search_repo'
-                  '\n --azione esci '
-                  '\n --azione mineAlltxt')
-        else:
-            request_error_handler.request_error_handler(response.status_code)
+            # Gestisci la risposta
+            if response.status_code == 200:
+                args.AccessToken = temp
+                auth = True
+                user = response.json()
+                print("Benvenut* :" + user['login'] +
+                    '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
+                    '\n --azione importIssue'
+                    '\n --azione importPullrequests'
+                    '\n --azione importWorkflowlogs'
+                    '\n --azione newAuth'
+                    '\n --azione filterOutput'
+                    '\n --azione search_repo'
+                    '\n --azione esci '
+                    '\n --azione mineAlltxt')
+            else:
+                print('Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente')
+    else:
+        with open('auth.txt', 'x'):
+            pass
+
 
     while True:
         if not auth:
