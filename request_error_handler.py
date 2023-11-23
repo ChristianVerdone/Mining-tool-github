@@ -24,6 +24,10 @@ def request_error_handler(status_code):
         print(f"Errore nella richiesta: {status_code}")
         print("INTERNAL SERVER ERROR: Qualcosa è andato storto.")
         
+    elif(status_code == 502):
+        print(f"Errore nella richiesta: {status_code}")
+        print("BAD GATEWAY: Il servizio non è disponibile oppure è in fase di aggiornamento. Riprova più tardi.")        
+
     elif(status_code == 503):
         print(f"Errore nella richiesta: {status_code}")
         print("SERVICE UNAVAILABLE: Il servizio è attivo, ma sovraccarico di richieste. Riprova più tardi.")
