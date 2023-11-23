@@ -7,7 +7,6 @@ import request_error_handler
 import time
 from datetime import datetime
 
-
 def get_rate_limit(token):
     # Costruisci l'URL dell'API GitHub per ottenere le informazioni sul rate limit
     rate_limit_url = 'https://api.github.com/rate_limit'
@@ -56,8 +55,10 @@ def save_github_pull_requests(token):
     file_path = os.path.join(pull_requests_folder, f'pull_requests_{timestamp}.json')
     i = 1
     temp = None
+
     while True:
         response = request_github_pull_requests(token, owner, repository, i)
+
         i = i + 1
         # Continua con il resto del codice per ottenere le pull request
         if response.status_code == 200:
