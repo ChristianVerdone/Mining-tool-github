@@ -52,7 +52,7 @@ def main():
                     '\n --azione esci '
                     '\n --azione mineAlltxt')
             else:
-                print('Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente')
+                print("Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente")
     else:
         with open('auth.txt', 'x'):
             pass
