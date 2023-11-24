@@ -18,7 +18,8 @@ def request_github_pull_requests(token, owner, repository, i):
     # GET request al GitHub API
     response = requests.get(api_url, headers=headers)
     print(f'richiesta {i}')
-    rate_limit_handler.wait_for_rate_limit_reset(headers)
+    rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
+                                                 response.headers['X-RateLimit-Reset'])
 
     return response
 
@@ -27,7 +28,6 @@ def save_github_pull_requests(token):
     # Richiedi all'utente di inserire l'owner e il repository
     owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
     repository = input("Inserisci il nome del repository su GitHub: ")
-    headers = {'Authorization': 'Bearer ' + token}
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     pull_requests_folder = make_pull_requests_directory(repository)
     file_path = os.path.join(pull_requests_folder, f'pull_requests_{timestamp}.json')
@@ -87,9 +87,9 @@ def import_pull_request_comments(token, owner, repository, pull_request):
     # Ottieni i commenti delle pull request
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/pulls/{pull_request["number"]}/comments'
     headers = {'Authorization': 'Bearer ' + token}
-    rate_limit_handler.wait_for_rate_limit_reset(headers)
     comments_response = requests.get(comments_url, headers=headers)
-
+    rate_limit_handler.wait_for_rate_limit_reset(comments_response.headers['X-RateLimit-Remaining'],
+                                                 comments_response.headers['X-RateLimit-Reset'])
     if comments_response.status_code != 200:
         request_error_handler.request_error_handler(comments_response.status_code)
         comments = None

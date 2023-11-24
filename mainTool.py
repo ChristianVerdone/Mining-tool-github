@@ -6,9 +6,9 @@ import import_and_save_workflow_logs
 import import_pull_requests
 import request_error_handler
 import search_repository
-#import time
-#import datetime
-#import json
+# import time
+# import datetime
+# import json
 import os
 import rate_limit_handler
 
@@ -18,8 +18,8 @@ def main():
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-                                                                                  'esci', 'newAuth', 'filterOutput',
-                                             'mineAlltxt', 'search_repo'], help='Azione da eseguire.')
+                                                            'esci', 'newAuth', 'filterOutput',
+                                                            'search_repo'], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
@@ -32,32 +32,30 @@ def main():
                 'Authorization': f'token {temp}',
                 'Accept': 'application/vnd.github.v3+json'
             }
-
             # richiesta GET a GitHub API
             url = 'https://api.github.com/user'
             response = requests.get(url, headers=headers)
-
+            rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
+                                                         response.headers['X-RateLimit-Reset'])
             # Gestisci la risposta
             if response.status_code == 200:
                 args.AccessToken = temp
                 auth = True
                 user = response.json()
                 print("Benvenut* :" + user['login'] +
-                    '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
-                    '\n --azione importIssue'
-                    '\n --azione importPullrequests'
-                    '\n --azione importWorkflowlogs'
-                    '\n --azione newAuth'
-                    '\n --azione filterOutput'
-                    '\n --azione search_repo'
-                    '\n --azione esci '
-                    '\n --azione mineAlltxt')
+                      '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
+                      '\n --azione importIssue'
+                      '\n --azione importPullrequests'
+                      '\n --azione importWorkflowlogs'
+                      '\n --azione newAuth'
+                      '\n --azione filterOutput'
+                      '\n --azione search_repo'
+                      '\n --azione esci ')
             else:
                 print("Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente")
     else:
         with open('auth.txt', 'x'):
             pass
-
 
     while True:
         if not auth:
@@ -72,7 +70,8 @@ def main():
                 # richiesta GET a GitHub API
                 url = 'https://api.github.com/user'
                 response = requests.get(url, headers=headers)
-
+                rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
+                                                             response.headers['X-RateLimit-Reset'])
                 # Gestisci la risposta
                 if response.status_code == 200:
                     print("Richiesta riuscita!")
@@ -100,8 +99,6 @@ def main():
                     args.AccessToken = None
 
         if auth:
-            # Attendi il reset del limite di richieste API
-            rate_limit_handler.wait_for_rate_limit_reset(headers)
 
             if args.azione is None:
                 args.azione = input("Inserisci l'azione che desideri effettuare: ")
@@ -138,8 +135,6 @@ def main():
                       '\n --azione search_repo'
                       '\n --azione esci ')
                 args.azione = None
-
-
 
 
 if __name__ == '__main__':

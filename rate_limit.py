@@ -4,9 +4,10 @@
 
 import time
 
-#Passiamo il tempo di inizio e il numero di richieste fino a quel momento
+
+# Passiamo il tempo di inizio e il numero di richieste fino a quel momento
 def rate_minute(start_time, request_count):
-    #tempo corrente
+    # tempo corrente
     current_time = time.time()
     # Calcola il tempo trascorso dall'inizio del periodo
     elapsed_time = current_time - start_time  
