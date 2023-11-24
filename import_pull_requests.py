@@ -2,32 +2,10 @@ import os
 import requests
 import json
 
-import mainTool
+import rate_limit_handler
 import request_error_handler
-import time
+#import time
 from datetime import datetime
-
-def get_rate_limit(token):
-    # Costruisci l'URL dell'API GitHub per ottenere le informazioni sul rate limit
-    rate_limit_url = 'https://api.github.com/rate_limit'
-
-    # Utilizza il token di GitHub per autenticarsi
-    headers = {'Authorization': 'Bearer ' + token}
-
-    # Fai una richiesta GET all'API di GitHub per ottenere le informazioni sul rate limit
-    response = requests.get(rate_limit_url, headers=headers)
-
-    if response.status_code == 200:
-        rate_limit_info = response.json()
-        return rate_limit_info
-    else:
-        print(f"Errore nell'ottenere le informazioni sul rate limit. Codice di stato: {response.status_code}")
-        try:
-            error_message = response.json().get('message', 'Nessun messaggio di errore fornito.')
-            print(f"Dettagli dell'errore: {error_message}")
-        except json.JSONDecodeError:
-            print("Errore nella decodifica della risposta JSON.")
-        return None
 
 
 def request_github_pull_requests(token, owner, repository, i):
@@ -40,7 +18,7 @@ def request_github_pull_requests(token, owner, repository, i):
     # GET request al GitHub API
     response = requests.get(api_url, headers=headers)
     print(f'richiesta {i}')
-    mainTool.wait_for_rate_limit_reset(headers)
+    rate_limit_handler.wait_for_rate_limit_reset(headers)
 
     return response
 
@@ -109,7 +87,7 @@ def import_pull_request_comments(token, owner, repository, pull_request):
     # Ottieni i commenti delle pull request
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/pulls/{pull_request["number"]}/comments'
     headers = {'Authorization': 'Bearer ' + token}
-    mainTool.wait_for_rate_limit_reset(headers)
+    rate_limit_handler.wait_for_rate_limit_reset(headers)
     comments_response = requests.get(comments_url, headers=headers)
 
     if comments_response.status_code != 200:
