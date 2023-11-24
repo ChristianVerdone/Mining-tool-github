@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import rate_limit
 
 import mainTool
 import request_error_handler
@@ -18,6 +19,9 @@ def request_github_issues(token, owner, repository, i):
 
     # Make the GET request to the GitHub API
     response = requests.get(api_url, headers=headers)
+
+    mainTool.requests_count += 1
+    rate_limit.rate_minute()
     print(f'richiesta {i}')
     return response
 
@@ -95,7 +99,10 @@ def import_issue_comments(token, owner, repository, issue):
     headers = {'Authorization': 'Bearer ' + token}
     mainTool.wait_for_rate_limit_reset(headers)
     comments_response = requests.get(comments_url, headers=headers)
-
+    
+    mainTool.requests_count += 1
+    rate_limit.rate_minute()
+    
     if comments_response.status_code != 200:
         request_error_handler.request_error_handler(comments_response.status_code)
         comments = None

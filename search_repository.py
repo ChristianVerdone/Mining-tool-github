@@ -3,15 +3,13 @@ import requests
 import request_error_handler
 import rate_limit
 import time
+import mainTool
 
 
 def controller_repo(token):
     path = input("Indica il path del file: ")
     path_file = f_path_txt(path)
-
-    start_time= time.time()
-    request_count = 0
-    
+   
     # Lista per memorizzare i repository trovati
     repositories_found = []
     
@@ -20,14 +18,15 @@ def controller_repo(token):
         # Per ogni riga del file prendi l'owner e il repository
         lines = file.readlines()
         for line in lines:
-
-            request_count += 1
-            rate_limit.rate_minute(start_time, request_count)
+          
 
             owner, repository = line.strip().split('/')  # Assume che il formato sia 'owner/repository'
 
             response = request_github(token, owner, repository)
             #print(f"Errore: '{response.status_code}")
+
+            mainTool.requests_count += 1
+            rate_limit.rate_minute()
 
             if response.status_code == 200:
                 # Aggiungi il repository alla lista dei repository trovati

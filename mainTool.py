@@ -9,9 +9,14 @@ import search_repository
 import time
 import datetime
 import json
+import rate_limit
 
+#global start_time
+start_time = 0
+requests_count = 0
 
 def main():
+
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
@@ -33,6 +38,11 @@ def main():
         # richiesta GET a GitHub API
         url = 'https://api.github.com/user'
         response = requests.get(url, headers=headers)
+        
+        start_time = time.time()
+        requests_count += 1
+
+        rate_limit.rate_minute()
 
         # Gestisci la risposta
         if response.status_code == 200:
@@ -66,6 +76,9 @@ def main():
                 url = 'https://api.github.com/user'
                 response = requests.get(url, headers=headers)
 
+                requests_count += 1
+                rate_limit.rate_minute()
+
                 # Gestisci la risposta
                 if response.status_code == 200:
                     print("Richiesta riuscita!")
@@ -93,6 +106,7 @@ def main():
                     args.AccessToken = None
 
         if auth:
+
             # Attendi il reset del limite di richieste API
             wait_for_rate_limit_reset(headers)
 
