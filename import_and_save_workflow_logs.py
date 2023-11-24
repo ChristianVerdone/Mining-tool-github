@@ -6,6 +6,7 @@ from datetime import datetime
 
 import mainTool
 import request_error_handler
+import rate_limit
 
 
 def save_github_workflow_logs(token):
@@ -45,6 +46,9 @@ def get_github_workflow_logs(token, owner, repository):
     api_url = f'https://api.github.com/repos/{owner}/{repository}/actions/runs'
     headers = {'Authorization': 'Bearer ' + token}
     response = requests.get(api_url, headers=headers)
+
+    mainTool.requests_count += 1
+    rate_limit.rate_minute()
     mainTool.wait_for_rate_limit_reset(headers)
 
     if response.status_code == 200:
