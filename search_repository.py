@@ -1,5 +1,7 @@
 import os
 import requests
+
+import rate_limit_handler
 import request_error_handler
 import rate_limit
 import time
@@ -12,7 +14,7 @@ def controller_repo(token):
    
     # Lista per memorizzare i repository trovati
     repositories_found = []
-    
+
     # Leggi da file .txt l'owner/repository
     with open(path_file, 'r') as file:
         # Per ogni riga del file prendi l'owner e il repository
@@ -23,7 +25,7 @@ def controller_repo(token):
             owner, repository = line.strip().split('/')  # Assume che il formato sia 'owner/repository'
 
             response = request_github(token, owner, repository)
-            #print(f"Errore: '{response.status_code}")
+            # print(f"Errore: '{response.status_code}")
 
             mainTool.requests_count += 1
             rate_limit.rate_minute()
@@ -32,21 +34,18 @@ def controller_repo(token):
                 # Aggiungi il repository alla lista dei repository trovati
                 repositories_found.append(f'{owner}/{repository}')
                 # print(f'{owner}/{repository}')
-            
+
             elif response.status_code == 404:
                 # Il repository non è stato trovato
                 print(f"'{owner}/{repository}' (NOT Found)")
             else:
                 # Gestione degli altri possibili errori
                 request_error_handler.request_error_handler(response.status_code)
-            
-    
+
     # Scrivo i repository trovati nel file 'repo.txt'
     with open('repo.txt', 'w') as repo_file:
         for repo in repositories_found:
-            repo_file.write(f"{repo}\n")        
-            
-            
+            repo_file.write(f"{repo}\n")
 
 
 def request_github(token, owner, repository):
@@ -56,7 +55,8 @@ def request_github(token, owner, repository):
     headers = {'Authorization': 'Bearer ' + token}
     # GET request al GitHub API
     response = requests.get(api_url, headers=headers)
-
+    rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
+                                                 response.headers['X-RateLimit-Reset'])
     return response
 
 

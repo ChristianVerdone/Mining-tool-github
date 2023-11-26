@@ -3,32 +3,10 @@ import requests
 import json
 import rate_limit
 
-import mainTool
+import rate_limit_handler
 import request_error_handler
-import time
+#import time
 from datetime import datetime
-
-def get_rate_limit(token):
-    # Costruisci l'URL dell'API GitHub per ottenere le informazioni sul rate limit
-    rate_limit_url = 'https://api.github.com/rate_limit'
-
-    # Utilizza il token di GitHub per autenticarsi
-    headers = {'Authorization': 'Bearer ' + token}
-
-    # Fai una richiesta GET all'API di GitHub per ottenere le informazioni sul rate limit
-    response = requests.get(rate_limit_url, headers=headers)
-
-    if response.status_code == 200:
-        rate_limit_info = response.json()
-        return rate_limit_info
-    else:
-        print(f"Errore nell'ottenere le informazioni sul rate limit. Codice di stato: {response.status_code}")
-        try:
-            error_message = response.json().get('message', 'Nessun messaggio di errore fornito.')
-            print(f"Dettagli dell'errore: {error_message}")
-        except json.JSONDecodeError:
-            print("Errore nella decodifica della risposta JSON.")
-        return None
 
 
 def request_github_pull_requests(token, owner, repository, i):
@@ -44,7 +22,8 @@ def request_github_pull_requests(token, owner, repository, i):
     mainTool.requests_count += 1
     rate_limit.rate_minute()
     print(f'richiesta {i}')
-    mainTool.wait_for_rate_limit_reset(headers)
+    rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
+                                                 response.headers['X-RateLimit-Reset'])
 
     return response
 
@@ -53,7 +32,6 @@ def save_github_pull_requests(token):
     # Richiedi all'utente di inserire l'owner e il repository
     owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
     repository = input("Inserisci il nome del repository su GitHub: ")
-    headers = {'Authorization': 'Bearer ' + token}
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     pull_requests_folder = make_pull_requests_directory(repository)
     file_path = os.path.join(pull_requests_folder, f'pull_requests_{timestamp}.json')
@@ -113,12 +91,13 @@ def import_pull_request_comments(token, owner, repository, pull_request):
     # Ottieni i commenti delle pull request
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/pulls/{pull_request["number"]}/comments'
     headers = {'Authorization': 'Bearer ' + token}
-    mainTool.wait_for_rate_limit_reset(headers)
     comments_response = requests.get(comments_url, headers=headers)
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()
     
+    rate_limit_handler.wait_for_rate_limit_reset(comments_response.headers['X-RateLimit-Remaining'],
+                                                 comments_response.headers['X-RateLimit-Reset'])
     if comments_response.status_code != 200:
         request_error_handler.request_error_handler(comments_response.status_code)
         comments = None

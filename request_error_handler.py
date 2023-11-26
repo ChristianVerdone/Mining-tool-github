@@ -1,32 +1,40 @@
 def request_error_handler(status_code):
- 
-    if(status_code == 404):
-        print(f"Request error: {status_code}")
-        print("NOT FOUND: The URI requested is invalid or the resource requested does not exists.")
-        
-    elif(status_code == 304):
-        print(f"Request error: {status_code}")
-        print("NOT MODIFIED: There is no new data to return.")
-        
+    
+    if(status_code == 304):
+        print(f"Errore nella richiesta: {status_code}")
+        print("NOT MODIFIED: Non ci sono nuovi dati da restituire.")
+    
+    elif(status_code == 401):
+        print(f"Errore nella richiesta: {status_code}")
+        print("UNAUTHORIZED: Le credenziali di autenticazione mancano, o se fornite non sono valide o non sono sufficienti per accedere alla risorsa.")
+    
     elif(status_code == 403):
-        print(f"Request error: {status_code}")
-        print("403 FORBIDDEN: The request has been refused. See the accompanying message for the specific reason (most likely for exceeding rate limit).")
+        print(f"Errore nella richiesta: {status_code}")
+        print("FORBIDDEN: La richiesta è stata rifiutata. Consultare il messaggio allegato per il motivo specifico (molto probabilmente per aver superato il limite di richieste).")
+    
+    elif(status_code == 404):
+        print(f"Errore nella richiesta: {status_code}")
+        print("NOT FOUND: L'URI richiesto non è valido o la risorsa richiesta non esiste.")
         
     elif(status_code == 406):
-        print(f"Request error: {status_code}")
-        print("NOT ACCEPTABLE: The request specified an invalid format.")
+        print(f"Errore nella richiesta: {status_code}")
+        print("NOT ACCEPTABLE: La richiesta ha specificato un formato non valido.")
     
     elif(status_code == 500):
-        print(f"Request error: {status_code}")
-        print("INTERNAL SERVER ERROR: Something is horribly wrong.")
+        print(f"Errore nella richiesta: {status_code}")
+        print("INTERNAL SERVER ERROR: Qualcosa è andato storto.")
         
+    elif(status_code == 502):
+        print(f"Errore nella richiesta: {status_code}")
+        print("BAD GATEWAY: Il servizio non è disponibile oppure è in fase di aggiornamento. Riprova più tardi.")        
+
     elif(status_code == 503):
-        print(f"Request error: {status_code}")
-        print("SERVICE UNAVAILABLE: The service is up, but overloaded with requests. Try again later.")
+        print(f"Errore nella richiesta: {status_code}")
+        print("SERVICE UNAVAILABLE: Il servizio è attivo, ma sovraccarico di richieste. Riprova più tardi.")
     
     elif(status_code == 504): 
-        print(f"Request error: {status_code}")
-        print("GATEWAY TIMEOUT: Servers are up, but the request couldn’t be serviced due to some failure within our stack. Try again later.")
+        print(f"Errore nella richiesta: {status_code}")
+        print("GATEWAY TIMEOUT: I server sono attivi, ma la richiesta non può essere servita a causa di un fallimento all'interno del nostro stack. Riprova più tardi.")
     
     else:
-       print("Generic request error")
+       print("Errore generico nella richiesta")
