@@ -1,5 +1,6 @@
 import concurrent.futures
 
+
 # ...
 
 def parallel_request_github_issues(token, owner, repository):
@@ -34,6 +35,7 @@ def parallel_request_github_issues(token, owner, repository):
 
     return issues_list
 
+
 def parallel_save_github_issues(token):
     owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
     repository = input("Inserisci il nome del repository su GitHub: ")
@@ -50,4 +52,3 @@ def parallel_save_github_issues(token):
         print(f"Le informazioni delle issue sono state salvate con successo nel file '{file_path}'")
 
 # ...
-

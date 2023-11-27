@@ -13,18 +13,19 @@ import rate_limit
 import os
 import rate_limit_handler
 
-#global start_time
+# global start_time
 start_time = 0
 requests_count = 0
 
+
 def main():
-    global requests_count 
+    global requests_count
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-                                                            'esci', 'newAuth', 'filterOutput',
-                                                            'search_repo'], help='Azione da eseguire.')
+                                                                                  'esci', 'newAuth', 'filterOutput',
+                                             'search_repo'], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
@@ -57,7 +58,8 @@ def main():
                       '\n --azione search_repo'
                       '\n --azione esci ')
             else:
-                print("Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente")
+                print(
+                    "Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente")
     else:
         with open('auth.txt', 'x'):
             pass
