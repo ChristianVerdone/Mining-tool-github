@@ -18,7 +18,7 @@ start_time = 0
 requests_count = 0
 
 def main():
-
+    global requests_count 
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
