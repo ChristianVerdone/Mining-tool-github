@@ -47,6 +47,8 @@ def save_github_pull_requests_without_comments(token):
             pull_requests = response.json()
             if not pull_requests:
                 break
+            for pull_request in pull_requests:
+                 print_pull_request(pull_request)
 
             if temp is None:
                 temp = pull_requests
