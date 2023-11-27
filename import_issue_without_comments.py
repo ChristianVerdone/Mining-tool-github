@@ -39,7 +39,7 @@ def save_github_issues_without_comments(token):
     issues_folder = make_issues_directory(repository)
 
     # Costruisci il percorso del file JSON con il timestamp nel titolo
-    file_path = os.path.join(issues_folder, f'issues_with_comments_{timestamp}.json')
+    file_path = os.path.join(issues_folder, f'issues_without_comments_{timestamp}.json')
     i = 1
     temp = None
     while True:
