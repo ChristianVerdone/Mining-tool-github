@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import rate_limit
 
 import rate_limit_handler
 import request_error_handler
@@ -17,6 +18,9 @@ def request_github_pull_requests(token, owner, repository, i):
 
     # GET request al GitHub API
     response = requests.get(api_url, headers=headers)
+
+    mainTool.requests_count += 1
+    rate_limit.rate_minute()
     print(f'richiesta {i}')
     rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
                                                  response.headers['X-RateLimit-Reset'])
@@ -88,6 +92,10 @@ def import_pull_request_comments(token, owner, repository, pull_request):
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/pulls/{pull_request["number"]}/comments'
     headers = {'Authorization': 'Bearer ' + token}
     comments_response = requests.get(comments_url, headers=headers)
+
+    mainTool.requests_count += 1
+    rate_limit.rate_minute()
+    
     rate_limit_handler.wait_for_rate_limit_reset(comments_response.headers['X-RateLimit-Remaining'],
                                                  comments_response.headers['X-RateLimit-Reset'])
     if comments_response.status_code != 200:

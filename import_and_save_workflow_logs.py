@@ -6,6 +6,7 @@ from datetime import datetime
 
 import request_error_handler
 import rate_limit_handler
+import rate_limit
 
 
 def save_github_workflow_logs(token):
@@ -62,6 +63,10 @@ def get_github_workflow_logs(token, owner, repository, i):
     rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
                                                  response.headers['X-RateLimit-Reset'])
     print(f'richiesta {i}')
+
+    mainTool.requests_count += 1
+    rate_limit.rate_minute()
+    mainTool.wait_for_rate_limit_reset(headers)
 
     return response
 

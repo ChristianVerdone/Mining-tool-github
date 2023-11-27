@@ -6,14 +6,19 @@ import import_and_save_workflow_logs
 import import_pull_requests
 import request_error_handler
 import search_repository
-# import time
-# import datetime
-# import json
+import time
+import datetime
+import json
+import rate_limit
 import os
 import rate_limit_handler
 
+#global start_time
+start_time = 0
+requests_count = 0
 
 def main():
+
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
@@ -70,6 +75,10 @@ def main():
                 # richiesta GET a GitHub API
                 url = 'https://api.github.com/user'
                 response = requests.get(url, headers=headers)
+
+                requests_count += 1
+                rate_limit.rate_minute()
+
                 rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
                                                              response.headers['X-RateLimit-Reset'])
                 # Gestisci la risposta
