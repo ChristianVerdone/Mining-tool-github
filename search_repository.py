@@ -17,7 +17,7 @@ def controller_repo(token):
         if not os.path.exists(path):
             print(f"Il percorso '{path}' non esiste ")
             break
-        
+
         file = input("Inserisci il nome del file txt: ")
         path_file = f"{path}/{file}.txt"
 
@@ -25,7 +25,6 @@ def controller_repo(token):
             print(f"Il percorso '{path_file}' non esiste.")
             break
 
-    
         # Lista per memorizzare i repository trovati
         repositories_found = []
 
@@ -34,7 +33,6 @@ def controller_repo(token):
             # Per ogni riga del file prendi l'owner e il repository
             lines = file.readlines()
             for line in lines:
-            
 
                 owner, repository = line.strip().split('/')  # Assume che il formato sia 'owner/repository'
 

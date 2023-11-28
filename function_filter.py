@@ -2,55 +2,57 @@ import os
 import json
 from datetime import datetime
 
+
 def filter_github():
-    scelta=input('Filtrare per repository o path: ')
-    scelta_i_pr=input("Filtrare issues o pull_request: ")
-        
-    if scelta=='path':
-        if scelta_i_pr=='issues':
+    scelta = input('Filtrare per repository o path: ')
+    scelta_i_pr = input("Filtrare issues o pull_request: ")
+
+    if scelta == 'path':
+        if scelta_i_pr == 'issues':
             while True:
-                path=input("\nIndica il percorso (Per uscire digita esc) ")
+                path = input("\nIndica il percorso (Per uscire digita esc) ")
                 if path == 'esc':
                     print("Uscita dalla funzione.")
                     break  # Esci dal ciclo while
 
-                path_file=f_path(path)
+                path_file = f_path(path)
                 filter_issues_by_path(path_file)
-        elif scelta_i_pr=='pull_request':
+        elif scelta_i_pr == 'pull_request':
             while True:
-                path=input("\nInserisci il percorso: (Per uscire digita esc)")
+                path = input("\nInserisci il percorso: (Per uscire digita esc)")
                 if path == 'esc':
                     print("Uscita dalla funzione.")
                     break  # Esci dal ciclo while
-                
-                path_file=f_path(path)
+
+                path_file = f_path(path)
                 filter_pull_request_by_path(path_file)
         return
-    elif scelta=='repository':
-        if scelta_i_pr=='issues':
+    elif scelta == 'repository':
+        if scelta_i_pr == 'issues':
             while True:
                 repository = input("\nIndica il repository (Per uscire digita esc) ")
                 if repository == 'esc':
                     print("Uscita dalla funzione.")
                     break  # Esci dal ciclo while
-                
+
                 path = f"{repository}_data/issues"
-                
-                path_file=f_path(path)
+
+                path_file = f_path(path)
                 filter_github_issues(repository, path_file)
-        elif scelta_i_pr=='pull_request':
-             while True:
+        elif scelta_i_pr == 'pull_request':
+            while True:
                 repository = input("\nIndica il repository (Per uscire digita esc) \n")
                 if repository == 'esc':
                     print("Uscita dalla funzione.")
                     break  # Esci dal ciclo while
-                
+
                 path = f"{repository}_data/pull_requests"
-                
-                path_file=f_path(path)
+
+                path_file = f_path(path)
                 filter_github_pull_request(repository, path_file)
         return
     return
+
 
 def filter_issues_by_path(path_file):
     status_filter = state()
@@ -62,14 +64,15 @@ def filter_issues_by_path(path_file):
 
         if status_filter:
             filtered_issues = [issue for issue in filtered_issues if issue.get('state') == status_filter]
-    
+
         if author_filter:
             filtered_issues = [issue for issue in filtered_issues if
-                                   issue.get('user') and issue['user'].get('login') == author_filter]
-            
+                               issue.get('user') and issue['user'].get('login') == author_filter]
+
         filtered_issues_path = "issues_by_path"
-        filtered_issues_file_path= create_folder(filtered_issues_path, filtered_issues)
+        filtered_issues_file_path = create_folder(filtered_issues_path, filtered_issues)
         print(f"Issue filtrate salvate con successo in: {filtered_issues_file_path}")
+
 
 def filter_pull_request_by_path(path_file):
     status_filter = state()
@@ -80,20 +83,21 @@ def filter_pull_request_by_path(path_file):
         filtered_pull_request = pull_request
 
         if status_filter:
-            filtered_pull_request = [pull_request for pull_request in filtered_pull_request if pull_request.get('state') == status_filter]
+            filtered_pull_request = [pull_request for pull_request in filtered_pull_request if
+                                     pull_request.get('state') == status_filter]
 
         if author_filter:
             filtered_pull_request = [pull_request for pull_request in filtered_pull_request if
-                                   pull_request.get('user') and pull_request['user'].get('login') == author_filter]
+                                     pull_request.get('user') and pull_request['user'].get('login') == author_filter]
 
         filtered_pull_request_path = "p_req_by_path"
-        filtered_pr_file_path= create_folder(filtered_pull_request_path, filtered_pull_request)
+        filtered_pr_file_path = create_folder(filtered_pull_request_path, filtered_pull_request)
         print(f"Pull request filtrate salvate con successo in: {filtered_pr_file_path}")
 
     pass
 
+
 def filter_github_issues(repository, path_file):
-        
     status_filter = state()
     author_filter = user_login()
 
@@ -106,13 +110,14 @@ def filter_github_issues(repository, path_file):
 
         if author_filter:
             filtered_issues = [issue for issue in filtered_issues if
-                                   issue.get('user') and issue['user'].get('login') == author_filter]
+                               issue.get('user') and issue['user'].get('login') == author_filter]
 
         filtered_issues_path = f"{repository}_filter_issues"
-        filtered_issues_file_path= create_folder(filtered_issues_path, filtered_issues)
-            
+        filtered_issues_file_path = create_folder(filtered_issues_path, filtered_issues)
+
         print(f"Issue filtrate salvate con successo in: {filtered_issues_file_path}")
-            
+
+
 def filter_github_pull_request(repository, path_file):
     status_filter = state()
     author_filter = user_login()
@@ -122,21 +127,23 @@ def filter_github_pull_request(repository, path_file):
         filtered_pull_request = pull_request
 
         if status_filter:
-            filtered_pull_request = [pull_request for pull_request in filtered_pull_request if pull_request.get('state') == status_filter]
+            filtered_pull_request = [pull_request for pull_request in filtered_pull_request if
+                                     pull_request.get('state') == status_filter]
 
         if author_filter:
             filtered_pull_request = [pull_request for pull_request in filtered_pull_request if
-                                  pull_request.get('user') and pull_request['user'].get('login') == author_filter]
+                                     pull_request.get('user') and pull_request['user'].get('login') == author_filter]
 
         filtered_pull_request_path = f"{repository}_filter_pull_request"
-        filtered_pr_file_path= create_folder(filtered_pull_request_path, filtered_pull_request)
+        filtered_pr_file_path = create_folder(filtered_pull_request_path, filtered_pull_request)
         print(f"Pull request filtrate salvate con successo in: {filtered_pr_file_path}")
+
 
 def create_folder(folder_path, filter):
     os.makedirs(folder_path, exist_ok=True)
     # Aggiungi un timestamp
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    
+
     # Costruisci il percorso del file JSON
     filtered_file_path = os.path.join(folder_path, f'filter_issues_{timestamp}.json')
     with open(filtered_file_path, 'w') as filtered_file:
@@ -144,18 +151,20 @@ def create_folder(folder_path, filter):
 
     return filtered_file_path
 
+
 def f_path(path):
     if not os.path.exists(path):
         print(f"Il percorso '{path}' non esiste ")
         return
-        
-    file=input("Inserisci il nome del file json: ")
-    path_file=f"{path}/{file}.json"
+
+    file = input("Inserisci il nome del file json: ")
+    path_file = f"{path}/{file}.json"
 
     if not os.path.exists(path_file):
         print(f"Il percorso '{path_file}' non esiste.")
         return
     return path_file
+
 
 def state():
     status_filter = input("Indica lo stato da filtrare (es. open, closed, etc.): ")
@@ -163,6 +172,7 @@ def state():
         print("Lo stato non è presente")
         return
     return status_filter
+
 
 def user_login():
     author_filter = input("Indica lo user (login) da filtrare: ")
@@ -172,4 +182,4 @@ def user_login():
     return author_filter
 
 # Esempio di utilizzo dello script
-#filter_github()
+# filter_github()
