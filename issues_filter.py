@@ -58,4 +58,4 @@ def filter_github_issues():
             print(f"Issue filtrate salvate con successo in: {filtered_issues_file_path}")
 
 # Esempio di utilizzo dello script
-#filter_github_issues()
+# filter_github_issues()

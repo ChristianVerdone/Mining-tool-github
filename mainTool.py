@@ -15,12 +15,13 @@ import rate_limit_handler
 import import_pull_request_without_comments
 import import_issue_without_comments
 
-#global start_time
+# global start_time
 start_time = 0
 requests_count = 0
 
+
 def main():
-    global requests_count 
+    global requests_count
     parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
@@ -61,7 +62,8 @@ def main():
                       '\n --azione importIssuewithoutcomments'
                       '\n --azione esci ')
             else:
-                print("Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente")
+                print(
+                    "Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente")
     else:
         with open('auth.txt', 'x'):
             pass
