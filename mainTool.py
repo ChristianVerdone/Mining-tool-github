@@ -29,7 +29,8 @@ def main():
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
                                                             'esci', 'newAuth', 'filterOutput',
-                                                            'search_repo', 'importPullrequestswithoutcomments', 'importIssuewithoutcomments' ], help='Azione da eseguire.')
+                                                            'search_repo', 'importPullrequestswithoutcomments', 'importIssuewithoutcomments', 
+                                                            'issuesWithParameters', 'pullReqWithParameters' ], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
