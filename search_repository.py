@@ -1,53 +1,65 @@
 import os
 import requests
+
+import rate_limit_handler
 import request_error_handler
 import rate_limit
 import time
+import mainTool
 
 
 def controller_repo(token):
-    path = input("Indica il path del file: ")
-    path_file = f_path_txt(path)
+    while True:
+        path = input("Indica il path del file: (Oppure esci) ")
+        if path == 'esci':
+            break
 
-    start_time= time.time()
-    request_count = 0
+        if not os.path.exists(path):
+            print(f"Il percorso '{path}' non esiste ")
+            break
+        
+        file = input("Inserisci il nome del file txt: ")
+        path_file = f"{path}/{file}.txt"
+
+        if not os.path.exists(path_file):
+            print(f"Il percorso '{path_file}' non esiste.")
+            break
+
     
-    # Lista per memorizzare i repository trovati
-    repositories_found = []
-    
-    # Leggi da file .txt l'owner/repository
-    with open(path_file, 'r') as file:
-        # Per ogni riga del file prendi l'owner e il repository
-        lines = file.readlines()
-        for line in lines:
+        # Lista per memorizzare i repository trovati
+        repositories_found = []
 
-            request_count += 1
-            rate_limit.rate_minute(start_time, request_count)
+        # Leggi da file .txt l'owner/repository
+        with open(path_file, 'r') as file:
+            # Per ogni riga del file prendi l'owner e il repository
+            lines = file.readlines()
+            for line in lines:
+            
 
-            owner, repository = line.strip().split('/')  # Assume che il formato sia 'owner/repository'
+                owner, repository = line.strip().split('/')  # Assume che il formato sia 'owner/repository'
 
-            response = request_github(token, owner, repository)
-            #print(f"Errore: '{response.status_code}")
+                response = request_github(token, owner, repository)
+                # print(f"Errore: '{response.status_code}")
 
-            if response.status_code == 200:
-                # Aggiungi il repository alla lista dei repository trovati
-                repositories_found.append(f'{owner}/{repository}')
-                # print(f'{owner}/{repository}')
-            
-            elif response.status_code == 404:
-                # Il repository non è stato trovato
-                print(f"'{owner}/{repository}' (NOT Found)")
-            else:
-                # Gestione degli altri possibili errori
-                request_error_handler.request_error_handler(response.status_code)
-            
-    
-    # Scrivo i repository trovati nel file 'repo.txt'
-    with open('repo.txt', 'w') as repo_file:
-        for repo in repositories_found:
-            repo_file.write(f"{repo}\n")        
-            
-            
+                mainTool.requests_count += 1
+                rate_limit.rate_minute()
+
+                if response.status_code == 200:
+                    # Aggiungi il repository alla lista dei repository trovati
+                    repositories_found.append(f'{owner}/{repository}')
+                    # print(f'{owner}/{repository}')
+
+                elif response.status_code == 404:
+                    # Il repository non è stato trovato
+                    print(f"'{owner}/{repository}' (NOT Found)")
+                else:
+                    # Gestione degli altri possibili errori
+                    request_error_handler.request_error_handler(response.status_code)
+
+        # Scrivo i repository trovati nel file 'repo.txt'
+        with open('repo.txt', 'w') as repo_file:
+            for repo in repositories_found:
+                repo_file.write(f"{repo}\n")
 
 
 def request_github(token, owner, repository):
@@ -57,19 +69,6 @@ def request_github(token, owner, repository):
     headers = {'Authorization': 'Bearer ' + token}
     # GET request al GitHub API
     response = requests.get(api_url, headers=headers)
-
+    rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
+                                                 response.headers['X-RateLimit-Reset'])
     return response
-
-
-def f_path_txt(path):
-    if not os.path.exists(path):
-        print(f"Il percorso '{path}' non esiste ")
-        return
-
-    file = input("Inserisci il nome del file txt: ")
-    path_file = f"{path}/{file}.txt"
-
-    if not os.path.exists(path_file):
-        print(f"Il percorso '{path_file}' non esiste.")
-        return
-    return path_file

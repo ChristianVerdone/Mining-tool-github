@@ -3,14 +3,13 @@ import requests
 import json
 import rate_limit
 import mainTool
-
 import rate_limit_handler
 import request_error_handler
 #import time
 from datetime import datetime
 
 
-def request_github_pull_requests(token, owner, repository, i):
+def request_github_pull_requests_without_comments(token, owner, repository, i):
     # Costruisci l'URL dell'API GitHub per ottenere le pull request
     api_url = f'https://api.github.com/repos/{owner}/{repository}/pulls?per_page=100&page={i}'
 
@@ -29,7 +28,7 @@ def request_github_pull_requests(token, owner, repository, i):
     return response
 
 
-def save_github_pull_requests(token):
+def save_github_pull_requests_without_comments(token):
     # Richiedi all'utente di inserire l'owner e il repository
     owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
     repository = input("Inserisci il nome del repository su GitHub: ")
@@ -40,7 +39,7 @@ def save_github_pull_requests(token):
     temp = None
 
     while True:
-        response = request_github_pull_requests(token, owner, repository, i)
+        response = request_github_pull_requests_without_comments(token, owner, repository, i)
 
         i = i + 1
         # Continua con il resto del codice per ottenere le pull request
@@ -48,17 +47,8 @@ def save_github_pull_requests(token):
             pull_requests = response.json()
             if not pull_requests:
                 break
-
             for pull_request in pull_requests:
-                # print_pull_request(pull_request)
-
-                comments = import_pull_request_comments(token, owner, repository, pull_request)
-                if comments is None:
-                    pull_request['comments_content'] = comments
-                    return
-
-                # print_pull_request_comments(comments)
-                pull_request['comments_content'] = comments
+                 print_pull_request(pull_request)
 
             if temp is None:
                 temp = pull_requests
@@ -81,31 +71,11 @@ def make_pull_requests_directory(repository):
         os.makedirs(repository_folder)
 
     # Creare la sottocartella con il nome "pull request"
-    pull_requests_folder = os.path.join(repository_folder, 'pull_requests')
+    pull_requests_folder = os.path.join(repository_folder, 'pull_requests_without_comments')
     if not os.path.exists(pull_requests_folder):
         os.makedirs(pull_requests_folder)
 
     return pull_requests_folder
-
-
-def import_pull_request_comments(token, owner, repository, pull_request):
-    # Ottieni i commenti delle pull request
-    comments_url = f'https://api.github.com/repos/{owner}/{repository}/pulls/{pull_request["number"]}/comments'
-    headers = {'Authorization': 'Bearer ' + token}
-    comments_response = requests.get(comments_url, headers=headers)
-
-    mainTool.requests_count += 1
-    rate_limit.rate_minute()
-    
-    rate_limit_handler.wait_for_rate_limit_reset(comments_response.headers['X-RateLimit-Remaining'],
-                                                 comments_response.headers['X-RateLimit-Reset'])
-    if comments_response.status_code != 200:
-        request_error_handler.request_error_handler(comments_response.status_code)
-        comments = None
-        return comments
-
-    comments = comments_response.json()
-    return comments
 
 
 def print_pull_request(pull_request):
@@ -114,11 +84,3 @@ def print_pull_request(pull_request):
     print(f"  Titolo: {pull_request['title']}")
     print(f"  Stato: {pull_request['state']}")
     print(f"  URL: {pull_request['html_url']}")
-
-
-def print_pull_request_comments(comments):
-    # Stampa i commenti
-    print("  Commenti:")
-    for comment in comments:
-        print(f"    {comment['user']['login']}: {comment['body']}")
-    print('\n' + '-' * 50 + '\n')  # Separatore per chiarezza

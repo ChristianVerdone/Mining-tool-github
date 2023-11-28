@@ -3,9 +3,11 @@ import os
 import requests
 import json
 from datetime import datetime
+import mainTool
 
 import request_error_handler
 import rate_limit_handler
+import rate_limit
 
 
 def save_github_workflow_logs(token):
@@ -28,7 +30,7 @@ def save_github_workflow_logs(token):
         response = get_github_workflow_logs(token, owner, repository, i)
         i = i + 1
         if response.status_code == 200:
-        # La risposta è avvenuta con successo
+            # La risposta è avvenuta con successo
             workflow_runs = response.json()
             
             if not workflow_runs:
@@ -58,11 +60,14 @@ def get_github_workflow_logs(token, owner, repository, i):
     api_url = f'https://api.github.com/repos/{owner}/{repository}/actions/runs?per_page=100&page={i}'
     headers = {'Authorization': 'Bearer ' + token}
     
-    rate_limit_handler.wait_for_rate_limit_reset(headers)
-    
     response = requests.get(api_url, headers=headers)
-    
+    rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
+                                                 response.headers['X-RateLimit-Reset'])
     print(f'richiesta {i}')
+
+    mainTool.requests_count += 1
+    rate_limit.rate_minute()
+    mainTool.wait_for_rate_limit_reset(headers)
 
     return response
 
@@ -90,6 +95,3 @@ def make_workflow_logs_directory(repository):
 
     return workflow_logs_folder
 
-# Esempio di utilizzo
-  # Sostituisci con il tuo token GitHub
-#save_github_workflow_logs(token)

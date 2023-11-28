@@ -28,7 +28,7 @@ def request_github_issues(token, owner, repository, i):
     return response
 
 
-def save_github_issues(token):
+def save_github_issues_without_comments(token):
     # Richiedi all'utente di inserire l'owner e il repository
     owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
     repository = input("Inserisci il nome del repository su GitHub: ")
@@ -39,7 +39,7 @@ def save_github_issues(token):
     issues_folder = make_issues_directory(repository)
 
     # Costruisci il percorso del file JSON con il timestamp nel titolo
-    file_path = os.path.join(issues_folder, f'issues_with_comments_{timestamp}.json')
+    file_path = os.path.join(issues_folder, f'issues_without_comments_{timestamp}.json')
     i = 1
     temp = None
     while True:
@@ -53,19 +53,8 @@ def save_github_issues(token):
                 break
 
             for issue in issues:
-                # print_issue(issue)
-                # Se la issue ha almeno 1 commento allora mi preoccupo di effettuare una richiesta all'API altrimenti me la risparmio
-                if issue['comments'] > 0:
-                    comments = import_issue_comments(token, owner, repository, issue)
-                    # check comments requests
-                    if comments is None:
-                        return
-                    # print_issue_comments(comments)
-                else:
-                    comments = 0
-                # il nuovo campo 'comments_content' viene sempre creato per mantenere coerenti gli elementi del file json
-                issue['comments_content'] = comments
-            # alla prima iterazione temp sarà None e lo rendo un oggetto json assegnando il valore di issues
+               print_issue(issue)
+
             if temp is None:
                 temp = issues
             # altrimenti inserisco in coda a temp gli elementi delle issues successive
@@ -95,39 +84,9 @@ def make_issues_directory(repository):
     return issues_folder
 
 
-def import_issue_comments(token, owner, repository, issue):
-    # Ottieni i commenti della issue
-    comments_url = f'https://api.github.com/repos/{owner}/{repository}/issues/{issue["number"]}/comments'
-    headers = {'Authorization': 'Bearer ' + token}
-    comments_response = requests.get(comments_url, headers=headers)
-    
-    mainTool.requests_count += 1
-    rate_limit.rate_minute()
-    
-    rate_limit_handler.wait_for_rate_limit_reset(comments_response.headers['X-RateLimit-Remaining'],
-                                                 comments_response.headers['X-RateLimit-Reset'])
-
-    if comments_response.status_code != 200:
-        request_error_handler.request_error_handler(comments_response.status_code)
-        comments = None
-        return comments
-
-    comments = comments_response.json()
-    return comments
-
-
 def print_issue(issue):
     # Stampa le informazioni sulle issue e i relativi commenti sulla console
     print(f"Issue #{issue['number']}:")
     print(f"  Titolo: {issue['title']}")
     print(f"  Stato: {issue['state']}")
     print(f"  URL: {issue['html_url']}")
-
-
-def print_issue_comments(comments):
-    # Stampa i commenti
-    print("  Commenti:")
-    for comment in comments:
-        print(f"    {comment['user']['login']}: {comment['body']}")
-
-    print('\n' + '-' * 30 + '\n')  # Separatore per chiarezza
