@@ -12,6 +12,8 @@ import json
 import rate_limit
 import os
 import rate_limit_handler
+import import_pull_request_without_comments
+import import_issue_without_comments
 
 # global start_time
 start_time = 0
@@ -24,8 +26,8 @@ def main():
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-                                                                                  'esci', 'newAuth', 'filterOutput',
-                                             'search_repo'], help='Azione da eseguire.')
+                                                            'esci', 'newAuth', 'filterOutput',
+                                                            'search_repo', 'importPullrequestswithoutcomments', 'importIssuewithoutcomments' ], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
@@ -56,6 +58,8 @@ def main():
                       '\n --azione newAuth'
                       '\n --azione filterOutput'
                       '\n --azione search_repo'
+                      '\n --azione importPullrequestswithoutcomments'
+                      '\n --azione importIssuewithoutcomments'
                       '\n --azione esci ')
             else:
                 print(
@@ -95,6 +99,8 @@ def main():
                           '\n --azione newAuth'
                           '\n --azione filterOutput'
                           '\n --azione search_repo'
+                          '\n --azione importPullrequestswithoutcomments'
+                          '\n --azione importIssuewithoutcomments'
                           '\n --azione esci ')
                     auth = True
                     with open('auth.txt', 'r+') as file:
@@ -126,6 +132,12 @@ def main():
             elif args.azione == 'search_repo':
                 search_repository.controller_repo(args.AccessToken)
                 args.azione = None
+            elif args.azione == 'importPullrequestswithoutcomments':
+                import_pull_request_without_comments.save_github_pull_requests_without_comments(args.AccessToken)
+                args.azione = None
+            elif args.azione == 'importIssuewithoutcomments':
+                import_issue_without_comments.save_github_issues_without_comments(args.AccessToken)
+                args.azione = None
             elif args.azione == 'esci':
                 print('Arrivederci!')
                 break  # Esci dal loop
@@ -144,6 +156,8 @@ def main():
                       '\n --azione newAuth'
                       '\n --azione filterOutput'
                       '\n --azione search_repo'
+                      '\n --azione importPullrequestswithoutcomments'
+                      '\n --azione importIssuewithoutcomments'
                       '\n --azione esci ')
                 args.azione = None
 
