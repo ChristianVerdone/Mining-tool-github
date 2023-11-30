@@ -5,7 +5,6 @@ import rate_limit
 import mainTool
 import rate_limit_handler
 import request_error_handler
-#import time
 from datetime import datetime
 
 
@@ -48,7 +47,7 @@ def save_github_pull_requests_without_comments(token):
             if not pull_requests:
                 break
             for pull_request in pull_requests:
-                 print_pull_request(pull_request)
+                print_pull_request(pull_request)
 
             if temp is None:
                 temp = pull_requests

@@ -3,7 +3,6 @@ import requests
 import json
 import rate_limit
 import mainTool
-
 import rate_limit_handler
 import request_error_handler
 from datetime import datetime
@@ -53,7 +52,7 @@ def save_github_issues_without_comments(token):
                 break
 
             for issue in issues:
-               print_issue(issue)
+                print_issue(issue)
 
             if temp is None:
                 temp = issues
