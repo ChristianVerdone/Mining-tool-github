@@ -181,5 +181,3 @@ def user_login():
         return
     return author_filter
 
-# Esempio di utilizzo dello script
-# filter_github()
