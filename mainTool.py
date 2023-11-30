@@ -14,6 +14,8 @@ import os
 import rate_limit_handler
 import import_pull_request_without_comments
 import import_issue_without_comments
+from issues_with_parameters import github_issues_with_par
+from pull_req_with_parameters import github_pullreq_with_par
 
 # global start_time
 start_time = 0
@@ -27,7 +29,8 @@ def main():
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
                                                             'esci', 'newAuth', 'filterOutput',
-                                                            'search_repo', 'importPullrequestswithoutcomments', 'importIssuewithoutcomments' ], help='Azione da eseguire.')
+                                                            'search_repo', 'importPullrequestswithoutcomments', 'importIssuewithoutcomments', 
+                                                            'issuesWithParameters', 'pullReqWithParameters' ], help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
@@ -60,6 +63,8 @@ def main():
                       '\n --azione search_repo'
                       '\n --azione importPullrequestswithoutcomments'
                       '\n --azione importIssuewithoutcomments'
+                      '\n --azione issuesWithParameters'
+                      '\n --azione pullReqWithParameters'
                       '\n --azione esci ')
             else:
                 print(
@@ -101,6 +106,8 @@ def main():
                           '\n --azione search_repo'
                           '\n --azione importPullrequestswithoutcomments'
                           '\n --azione importIssuewithoutcomments'
+                          '\n --azione issuesWithParameters'
+                          '\n --azione pullReqWithParameters'
                           '\n --azione esci ')
                     auth = True
                     with open('auth.txt', 'r+') as file:
@@ -148,6 +155,12 @@ def main():
             elif args.azione == 'filterOutput':
                 filter_github()
                 args.azione = None
+            elif args.azione == 'issuesWithParameters':
+                github_issues_with_par(args.AccessToken)
+                args.azione = None
+            elif args.azione == 'pullReqWithParameters':
+                github_pullreq_with_par(args.AccessToken)
+                args.azione = None
             else:
                 print(f'Azione non riconosciuta. Le opzioni valide sono:'
                       '\n --azione importIssue'
@@ -158,6 +171,8 @@ def main():
                       '\n --azione search_repo'
                       '\n --azione importPullrequestswithoutcomments'
                       '\n --azione importIssuewithoutcomments'
+                      '\n --azione issuesWithParameters'
+                      '\n --azione pullReqWithParameters'
                       '\n --azione esci ')
                 args.azione = None
 
