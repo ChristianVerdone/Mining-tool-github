@@ -89,7 +89,7 @@ def make_pull_requests_directory(repository):
 
     return pull_requests_folder
 
-# Funzione per estrarre i parametri desiderati dalle issues
+# Funzione per estrarre i parametri desiderati dalle pull requests
 def extract_params_from_pullreq(pull_requests):
     # Lista per contenere solo i parametri desiderati dalle pull requests
     params_list = []
