@@ -5,17 +5,7 @@ import datetime
 
 
 def wait_for_rate_limit_reset(remaining, resetTime):
-    # Imposta l'URL per ottenere i dettagli del limite di richieste API dal servizio di GitHub.
-    # endpoint = "https://api.github.com/rate_limit"
-    # Esegue una richiesta GET all'endpoint del limite di richieste API di GitHub utilizzando la libreria requests. 
-    # Il parametro headers contiene l'autorizzazione necessaria per accedere all'API di GitHub.
-    # rate = requests.get(endpoint, headers=header)
-    # Converte la risposta della richiesta in formato JSON per poter facilmente accedere ai dati contenuti.
-    # rateData = json.loads(rate.text)
-    # Ottiene il timestamp Unix che indica quando il limite di richieste API sarà ripristinato. 
     # Il numero di richieste rimanenti per lo slot time attuale
-    # remaining = rateData['resources']['core']['remaining']
-    # remaining = int(rate.headers['X-RateLimit-Remaining'])
     temp = int(remaining)
     # print(f"remaining requests : {remaining}")
     if temp == 0:

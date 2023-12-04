@@ -26,6 +26,7 @@ def request_github_pull_requests(token, owner, repository, i):
 
     return response
 
+
 def github_pullreq_with_par(token):
     
     while True:
@@ -33,7 +34,7 @@ def github_pullreq_with_par(token):
         owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
         repository = input("Inserisci il nome del repository su GitHub: ")
 
-        if (repository == 'esci' or owner == 'esci'):
+        if repository == 'esci' or owner == 'esci':
             print("Uscita dalla funzione.")
             break  # Esci dal ciclo while
         
@@ -57,6 +58,9 @@ def github_pullreq_with_par(token):
                     break
 
                 extracted_params = extract_params_from_pullreq(pull_requests)
+            else:
+                request_error_handler.request_error_handler(response.status_code)
+                return
 
             # alla prima iterazione temp sarà None e lo rendo un oggetto json assegnando il valore di issues
             if temp is None:
@@ -64,16 +68,10 @@ def github_pullreq_with_par(token):
             # altrimenti inserisco in coda a temp gli elementi delle issues successive
             else:
                 temp.extend(extracted_params) 
-        else:
-            request_error_handler.request_error_handler(response.status_code)
-            return
-
 
         with open(file_path, 'w', encoding='utf-8') as json_file:
             json.dump(temp, json_file, ensure_ascii=False, indent=4)
         print(f"Le informazioni sulle pull request sono state salvate con successo nel file '{file_path}'")
-
-        
 
 
 def make_pull_requests_directory(repository):
@@ -106,8 +104,3 @@ def extract_params_from_pullreq(pull_requests):
         }
         params_list.append(extracted_params)
     return params_list
-
-
-
-
-

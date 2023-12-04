@@ -28,9 +28,11 @@ def main():
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
     parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-                                                            'esci', 'newAuth', 'filterOutput',
-                                                            'search_repo', 'importPullrequestswithoutcomments', 'importIssuewithoutcomments', 
-                                                            'issuesWithParameters', 'pullReqWithParameters' ], help='Azione da eseguire.')
+                                                                                  'esci', 'newAuth', 'filterOutput',
+                                             'search_repo', 'importPullrequestswithoutcomments',
+                                             'importIssuewithoutcomments',
+                                             'issuesWithParameters', 'pullReqWithParameters'],
+                        help='Azione da eseguire.')
 
     args = parser.parse_args()
     auth = False
@@ -126,7 +128,6 @@ def main():
 
             if args.azione is None:
                 args.azione = input("Inserisci l'azione che desideri effettuare: ")
-
             if args.azione == 'importIssue':
                 issue_handler.save_github_issues(args.AccessToken)
                 args.azione = None

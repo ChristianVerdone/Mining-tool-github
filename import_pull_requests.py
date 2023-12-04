@@ -22,7 +22,6 @@ def request_github_pull_requests(token, owner, repository, i):
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()
-    print(f'richiesta {i}')
     rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
                                                  response.headers['X-RateLimit-Reset'])
 
