@@ -34,7 +34,7 @@ def test_wait_for_rate_limit_reset_non_zero_remaining():
     assert remaining == 50
     mock_sleep.assert_not_called()  # Verifica che la funzione time.sleep non è stata chiamata   
 
-
+# Ipotizzando che nowTs un'ora aventi
 # Esempio -> reset_time: 8:50  < nowTs: 9:00 
 # Richieste rimanenti = 100
 # NO sleep
