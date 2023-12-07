@@ -48,6 +48,9 @@ def main():
             # richiesta GET a GitHub API
             url = 'https://api.github.com/user'
             response = requests.get(url, headers=headers)
+
+            requests_count += 1
+            rate_limit.rate_minute()
             rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
                                                          response.headers['X-RateLimit-Reset'])
             # Gestisci la risposta
