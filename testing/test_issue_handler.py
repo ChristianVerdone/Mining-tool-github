@@ -1,57 +1,61 @@
+import json
+from unittest.mock import patch
+
 import pytest
-from unittest.mock import MagicMock, patch
-from issue_handler import request_github_issues
-import mainTool, rate_limit, rate_limit_handler
+import requests
+
+import issue_handler
 
 
-@pytest.fixture
-def mock_requests_get():
-    with patch('requests.get') as mock_get:
-        yield mock_get
+def test_input_vuoto():
+    # Inserisci un input vuoto per l'owner e il repository.
+    owner = ""
+    repository = ""
+    token = ""
+
+    with patch('request_error_handler.request_error_handler') as pyEmpty:
+        issue_handler.save_github_issues(token, owner, repository)
+
+    pyEmpty.assert_called()
 
 
-@pytest.fixture
-def mock_main_tool():
-    with patch('mainTool') as mock_tool:
-        yield mock_tool
+def test_input_non_valido():
+    # Inserisci un input non valido per l'owner o il repository.
+    owner = "non_esistente"
+    repository = "non_esistente"
+    token = "non_esistente"
+
+    with patch('request_error_handler.request_error_handler') as pyNotvalid:
+        issue_handler.save_github_issues(token, owner, repository)
+
+    pyNotvalid.assert_called()
 
 
-@pytest.fixture
-def mock_rate_limit():
-    with patch('rate_limit') as mock_limit:
-        yield mock_limit
+def test_flusso_di_controllo():
+    # Prova a eseguire il codice senza un token GitHub valido.
+    with patch('request_error_handler.request_error_handler') as NotToken:
+        issue_handler.save_github_issues(None, "tensorflow", "tensorflow")
+
+    NotToken.assert_called()
 
 
-@pytest.fixture
-def mock_rate_limit_handler():
-    with patch('rate_limit_handler') as mock_handler:
-        yield mock_handler
+def test_output():
+    # Verifica che il file JSON sia stato creato.
+    with open('tensorflow_data/issues/issues_with_comments_2023-11-21_20-20-31.json', "r", encoding='utf-8') as json_file:
+        issues = json.load(json_file)
 
+    assert len(issues) > 0
 
-def test_request_github_issues(mock_requests_get, mock_main_tool, mock_rate_limit, mock_rate_limit_handler):
-    # Configura il mock per restituire un oggetto Response di successo
-    mock_response = MagicMock()
-    mock_response.status_code = 200
-    mock_requests_get.return_value = mock_response
-
-    # Configura il mock per restituire il valore desiderato da X-RateLimit-Remaining e X-RateLimit-Reset
-    mock_response.headers = {'X-RateLimit-Remaining': '100', 'X-RateLimit-Reset': '1640398787'}
-
-    # Chiamare la funzione da testare
-    result = request_github_issues('fake_token', 'owner', 'repo', 1)
-
-    # Verifica che la chiamata a requests.get sia stata fatta con l'URL corretto
-    mock_requests_get.assert_called_once_with(
-        'https://api.github.com/repos/owner/repo/issues?per_page=100&page=1',
-        headers={'Authorization': 'Bearer fake_token'}
-    )
-
-    # Verifica che la funzione restituisca la response corretta
-    assert result == mock_response
-
-    # Verifica che le funzioni correlate siano chiamate correttamente
-    mock_main_tool.requests_count += 1
-    mock_rate_limit.rate_minute.assert_called_once()
-    mock_rate_limit_handler.wait_for_rate_limit_reset.assert_called_once_with(
-        '100', '1640398787'
-    )
+    # Verifica che il file JSON contenga le informazioni corrette sui commenti.
+    for issue in issues:
+        assert isinstance(issue, dict)
+        assert "number" in issue
+        assert "title" in issue
+        assert "state" in issue
+        assert "html_url" in issue
+        if issue["comments"] > 0:
+            for comment in issue["comments_content"]:
+                assert isinstance(comment, dict)
+                assert "user" in comment
+                assert "login" in comment["user"]
+                assert "body" in comment
