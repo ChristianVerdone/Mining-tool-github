@@ -77,9 +77,5 @@ def test_not_issue():
 
         # Verifica che il file JSON sia stato creato.
         assert os.path.exists(tmp_file.name)
-
-        # Verifica che il file JSON sia vuoto.
-        with open(tmp_file.name, "r", encoding='utf-8') as json_file:
-            issues = json.load(json_file)
-
-        assert len(issues) == 0
+        dim = os.path.getsize(tmp_file.name)
+        assert dim == 0
