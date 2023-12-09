@@ -1,9 +1,9 @@
 import json
+import os
+import tempfile
 from unittest.mock import patch
-
 import pytest
-import requests
-
+import coverage
 import issue_handler
 
 
@@ -12,7 +12,6 @@ def test_make_issue_directory_path_not_exists():
         issue_handler.save_github_issues("token", "test", "test")
     
     pyMakeDir.assert_called()
-    
 
 def test_input_vuoto():
     # Inserisci un input vuoto per l'owner e il repository.
