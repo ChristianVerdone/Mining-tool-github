@@ -59,3 +59,13 @@ def test_output():
                 assert "user" in comment
                 assert "login" in comment["user"]
                 assert "body" in comment
+
+
+def test_call_rate_limit():
+
+    with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
+        issue_handler.save_github_issues('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', "jmpoep",
+                                         "vmprotect-3.5.1")
+
+    pyRateLimit.assert_called()
+
