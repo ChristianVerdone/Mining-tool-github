@@ -79,6 +79,8 @@ def save_github_issues(token, owner, repository):
             request_error_handler.request_error_handler(response.status_code)
             return
 
+    if temp is None:
+        temp = []
     # Salva le informazioni delle issue e dei commenti in un file JSON
     with open(file_path, 'w', encoding='utf-8') as json_file:
         json.dump(temp, json_file, ensure_ascii=False, indent=4)
