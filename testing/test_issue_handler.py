@@ -85,3 +85,14 @@ def test_not_issue():
         assert os.path.exists(tmp_file.name)
         dim = os.path.getsize(tmp_file.name)
         assert dim == 0
+        
+#testiamo la situazione in cui riceviamo una risposa con status code != 200 per i commenti di una issue
+def test_import_issue_comments_status_error():    
+    issue = {"number": None}
+    
+    with patch('request_error_handler.request_error_handler') as ResponseError:
+        response = issue_handler.import_issue_comments("token", "owner", "repo", issue)
+        
+    ResponseError.assert_called()
+    assert response == None
+    
