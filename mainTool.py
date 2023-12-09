@@ -132,7 +132,7 @@ def main():
             if args.azione is None:
                 args.azione = input("Inserisci l'azione che desideri effettuare: ")
             if args.azione == 'importIssue':
-                issue_handler.save_github_issues(args.AccessToken)
+                issue_handler.save_github_issues(args.AccessToken, None, None)
                 args.azione = None
             elif args.azione == 'importPullrequests':
                 import_pull_requests.save_github_pull_requests(args.AccessToken)
