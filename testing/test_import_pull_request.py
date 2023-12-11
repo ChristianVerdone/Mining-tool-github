@@ -1,9 +1,11 @@
 import json
+import os
+import tempfile
 from unittest.mock import patch
 
 import pytest
 import requests
-
+import coverage
 import import_pull_requests
 
 def test_input_vuoto():
@@ -63,3 +65,24 @@ def test_call_rate_limit():
                                          "vmprotect-3.5.1")
 
     pyRateLimit.assert_called()
+
+def test_not_pull_request():
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
+        import_pull_requests.save_github_pull_requests('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', 'keras-team',
+                                         'keras-core')
+
+        # Verifica che il file JSON sia stato creato.
+        assert os.path.exists(tmp_file.name)
+        dim = os.path.getsize(tmp_file.name)
+        assert dim == 0
+
+
+# testiamo la situazione in cui riceviamo una risposa con status code != 200 per i commenti di una issue
+def test_import_pull_requests_comments_status_error():
+    pullrequest = {"number": None}
+
+    with patch('request_error_handler.request_error_handler') as ResponseError:
+        response = import_pull_requests.save_github_pull_requests("token", "owner", "repo", pullrequest)
+
+    ResponseError.assert_called()
+    assert response == None
