@@ -38,5 +38,9 @@ def request_error_handler(status_code):
         print(
             "GATEWAY TIMEOUT: I server sono attivi, ma la richiesta non può essere servita a causa di un fallimento all'interno del nostro stack. Riprova più tardi.")
 
+    elif status_code == 505:
+        print(f"Errore nella richiesta: {status_code}")
+        print("token assente, impossibile eseguire correttamente le operazioni di mining, inserire un token valido.")
+
     else:
         print("Errore generico nella richiesta")

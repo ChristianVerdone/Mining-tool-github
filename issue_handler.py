@@ -13,8 +13,9 @@ def request_github_issues(token, owner, repository, i):
     # Costruisci l'URL dell'API GitHub per ottenere le issue
     api_url = f'https://api.github.com/repos/{owner}/{repository}/issues?per_page=100&page={i}'
 
+    tok = f'{token}'
     # Provide your GitHub API token if you have one
-    headers = {'Authorization': 'Bearer ' + token}  # Replace with your GitHub token
+    headers = {'Authorization': 'Bearer ' + tok}  # Replace with your GitHub token
 
     # Make the GET request to the GitHub API
     response = requests.get(api_url, headers=headers)
@@ -27,10 +28,14 @@ def request_github_issues(token, owner, repository, i):
     return response
 
 
-def save_github_issues(token):
+def save_github_issues(token, owner, repository):
     # Richiedi all'utente di inserire l'owner e il repository
-    owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
-    repository = input("Inserisci il nome del repository su GitHub: ")
+    if owner is None:
+        owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
+    if repository is None:
+        repository = input("Inserisci il nome del repository su GitHub: ")
+    if token is None:
+        request_error_handler.request_error_handler(505)
 
     # Aggiungi un timestamp alle informazioni delle issue
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -52,14 +57,12 @@ def save_github_issues(token):
                 break
 
             for issue in issues:
-                # print_issue(issue)
                 # Se la issue ha almeno 1 commento allora mi preoccupo di effettuare una richiesta all'API altrimenti me la risparmio
                 if issue['comments'] > 0:
                     comments = import_issue_comments(token, owner, repository, issue)
                     # check comments requests
                     if comments is None:
                         return
-                    # print_issue_comments(comments)
                 else:
                     comments = 0
                 # il nuovo campo 'comments_content' viene sempre creato per mantenere coerenti gli elementi del file json
