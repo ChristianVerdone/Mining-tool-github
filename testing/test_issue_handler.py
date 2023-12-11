@@ -10,8 +10,9 @@ import issue_handler
 def test_make_issue_directory_path_not_exists():
     with patch('os.makedirs') as pyMakeDir:
         issue_handler.save_github_issues("token", "test", "test")
-    
+
     pyMakeDir.assert_called()
+
 
 def test_input_vuoto():
     # Inserisci un input vuoto per l'owner e il repository.
@@ -85,14 +86,14 @@ def test_not_issue():
         assert os.path.exists(tmp_file.name)
         dim = os.path.getsize(tmp_file.name)
         assert dim == 0
-        
-#testiamo la situazione in cui riceviamo una risposa con status code != 200 per i commenti di una issue
-def test_import_issue_comments_status_error():    
+
+
+# testiamo la situazione in cui riceviamo una risposa con status code != 200 per i commenti di una issue
+def test_import_issue_comments_status_error():
     issue = {"number": None}
-    
+
     with patch('request_error_handler.request_error_handler') as ResponseError:
         response = issue_handler.import_issue_comments("token", "owner", "repo", issue)
-        
+
     ResponseError.assert_called()
     assert response == None
-    
