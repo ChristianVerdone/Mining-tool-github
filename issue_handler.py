@@ -35,7 +35,7 @@ def save_github_issues(token, owner, repository):
     if repository is None:
         repository = input("Inserisci il nome del repository su GitHub: ")
     if token is None:
-        request_error_handler.request_error_handler()
+        request_error_handler.request_error_handler(505)
 
     # Aggiungi un timestamp alle informazioni delle issue
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -57,14 +57,12 @@ def save_github_issues(token, owner, repository):
                 break
 
             for issue in issues:
-                # print_issue(issue)
                 # Se la issue ha almeno 1 commento allora mi preoccupo di effettuare una richiesta all'API altrimenti me la risparmio
                 if issue['comments'] > 0:
                     comments = import_issue_comments(token, owner, repository, issue)
                     # check comments requests
                     if comments is None:
                         return
-                    # print_issue_comments(comments)
                 else:
                     comments = 0
                 # il nuovo campo 'comments_content' viene sempre creato per mantenere coerenti gli elementi del file json

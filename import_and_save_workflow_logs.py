@@ -67,8 +67,8 @@ def get_github_workflow_logs(token, owner, repository, i):
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()
-    rate_limit_handler.wait_for_rate_limit_reset(headers)
-
+    rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
+                                                 response.headers['X-RateLimit-Reset'])
     return response
 
 
