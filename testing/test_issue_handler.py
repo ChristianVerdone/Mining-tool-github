@@ -2,11 +2,11 @@ import json
 import os
 import tempfile
 from unittest.mock import patch
-import pytest
-import coverage
+
 import issue_handler
 
 
+# da modificare per unit testing
 def test_make_issue_directory_path_not_exists():
     with patch('os.makedirs') as pyMakeDir:
         issue_handler.save_github_issues("token", "test", "test")
@@ -88,6 +88,23 @@ def test_not_issue():
         assert dim == 0
 
 
+def test_request_github_issues():
+    i = 0
+    response = issue_handler.request_github_issues('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', 'keras-team',
+                                                   'keras-core', i)
+
+    assert response.status_code != 200
+
+
+# da aggiustare n
+def test_input_valido():
+    with patch('issue_handler.import_issue_comments') as pyHasComments:
+        issue_handler.save_github_issues('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', "jmpoep",
+                                         "vmprotect-3.5.1")
+
+    pyHasComments.assert_called()
+
+
 # testiamo la situazione in cui riceviamo una risposa con status code != 200 per i commenti di una issue
 def test_import_issue_comments_status_error():
     issue = {"number": None}
@@ -96,4 +113,4 @@ def test_import_issue_comments_status_error():
         response = issue_handler.import_issue_comments("token", "owner", "repo", issue)
 
     ResponseError.assert_called()
-    assert response == None
+    assert response is None
