@@ -51,9 +51,6 @@ def save_github_issues_without_comments(token):
             if not issues:
                 break
 
-            for issue in issues:
-                print_issue(issue)
-
             if temp is None:
                 temp = issues
             # altrimenti inserisco in coda a temp gli elementi delle issues successive
@@ -81,11 +78,3 @@ def make_issues_directory(repository):
         os.makedirs(issues_folder)
 
     return issues_folder
-
-
-def print_issue(issue):
-    # Stampa le informazioni sulle issue e i relativi commenti sulla console
-    print(f"Issue #{issue['number']}:")
-    print(f"  Titolo: {issue['title']}")
-    print(f"  Stato: {issue['state']}")
-    print(f"  URL: {issue['html_url']}")

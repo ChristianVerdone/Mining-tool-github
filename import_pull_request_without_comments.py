@@ -46,8 +46,6 @@ def save_github_pull_requests_without_comments(token):
             pull_requests = response.json()
             if not pull_requests:
                 break
-            for pull_request in pull_requests:
-                print_pull_request(pull_request)
 
             if temp is None:
                 temp = pull_requests
@@ -75,11 +73,3 @@ def make_pull_requests_directory(repository):
         os.makedirs(pull_requests_folder)
 
     return pull_requests_folder
-
-
-def print_pull_request(pull_request):
-    # Stampa le informazioni sulle issue e i relativi commenti sulla console
-    print(f"Pull Request #{pull_request['number']}:")
-    print(f"  Titolo: {pull_request['title']}")
-    print(f"  Stato: {pull_request['state']}")
-    print(f"  URL: {pull_request['html_url']}")

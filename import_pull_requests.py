@@ -105,19 +105,3 @@ def import_pull_request_comments(token, owner, repository, pull_request):
 
     comments = comments_response.json()
     return comments
-
-
-def print_pull_request(pull_request):
-    # Stampa le informazioni sulle issue e i relativi commenti sulla console
-    print(f"Pull Request #{pull_request['number']}:")
-    print(f"  Titolo: {pull_request['title']}")
-    print(f"  Stato: {pull_request['state']}")
-    print(f"  URL: {pull_request['html_url']}")
-
-
-def print_pull_request_comments(comments):
-    # Stampa i commenti
-    print("  Commenti:")
-    for comment in comments:
-        print(f"    {comment['user']['login']}: {comment['body']}")
-    print('\n' + '-' * 50 + '\n')  # Separatore per chiarezza

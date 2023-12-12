@@ -116,20 +116,3 @@ def import_issue_comments(token, owner, repository, issue):
 
     comments = comments_response.json()
     return comments
-
-
-def print_issue(issue):
-    # Stampa le informazioni sulle issue e i relativi commenti sulla console
-    print(f"Issue #{issue['number']}:")
-    print(f"  Titolo: {issue['title']}")
-    print(f"  Stato: {issue['state']}")
-    print(f"  URL: {issue['html_url']}")
-
-
-def print_issue_comments(comments):
-    # Stampa i commenti
-    print("  Commenti:")
-    for comment in comments:
-        print(f"    {comment['user']['login']}: {comment['body']}")
-
-    print('\n' + '-' * 30 + '\n')  # Separatore per chiarezza
