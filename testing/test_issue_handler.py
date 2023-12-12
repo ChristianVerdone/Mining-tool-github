@@ -109,8 +109,8 @@ def test_input_valido():
 def test_input_valido_no_comments():
     with patch('issue_handler.import_issue_comments') as pyHasComments:
         pyHasComments.return_value = {'comment': 'This is a comment'}
-        issue_handler.save_github_issues('', "linexjlin",
-                                         "GPTs")
+        issue_handler.save_github_issues('', "ChristianVerdone",
+                                         "testing")
 
     pyHasComments.assert_not_called()
 
