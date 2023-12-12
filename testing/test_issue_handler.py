@@ -90,19 +90,29 @@ def test_not_issue():
 
 def test_request_github_issues():
     i = 0
-    response = issue_handler.request_github_issues('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', 'keras-team',
+    response = issue_handler.request_github_issues('', 'keras-team',
                                                    'keras-core', i)
 
-    assert response.status_code != 200
+    assert response.status_code == 200
 
 
 # da aggiustare n
 def test_input_valido():
     with patch('issue_handler.import_issue_comments') as pyHasComments:
-        issue_handler.save_github_issues('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', "jmpoep",
+        pyHasComments.return_value = {'comment': 'This is a comment'}
+        issue_handler.save_github_issues('', "jmpoep",
                                          "vmprotect-3.5.1")
 
     pyHasComments.assert_called()
+
+
+def test_input_valido_no_comments():
+    with patch('issue_handler.import_issue_comments') as pyHasComments:
+        pyHasComments.return_value = {'comment': 'This is a comment'}
+        issue_handler.save_github_issues('', "linexjlin",
+                                         "GPTs")
+
+    pyHasComments.assert_not_called()
 
 
 # testiamo la situazione in cui riceviamo una risposa con status code != 200 per i commenti di una issue
@@ -114,3 +124,13 @@ def test_import_issue_comments_status_error():
 
     ResponseError.assert_called()
     assert response is None
+
+
+def test_import_issue_comments_status_ok():
+    issue = {"number": 2}
+
+    with patch('request_error_handler.request_error_handler') as ResponseError:
+        response = issue_handler.import_issue_comments("",
+                                                       "jmpoep", "vmprotect-3.5.1", issue)
+
+    ResponseError.assert_not_called()
