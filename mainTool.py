@@ -144,7 +144,7 @@ def main():
                 import_pull_request_without_comments.save_github_pull_requests_without_comments(args.AccessToken)
                 args.azione = None
             elif args.azione == 'importIssuewithoutcomments':
-                import_issue_without_comments.save_github_issues_without_comments(args.AccessToken)
+                import_issue_without_comments.save_github_issues_without_comments(args.AccessToken, None, None)
                 args.azione = None
             elif args.azione == 'esci':
                 print('Arrivederci!')
