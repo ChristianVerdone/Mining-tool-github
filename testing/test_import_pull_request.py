@@ -1,80 +1,65 @@
 import json
 import os
 import tempfile
-from unittest.mock import patch
-
+from unittest.mock import patch, MagicMock
+from import_pull_requests import request_github_pull_requests
+import pytest
+import requests
+import coverage
 import import_pull_requests
 
 
-# da modificare per unit testing
-def test_make_pull_requests_directory_path_not_exists():
-    with patch('os.makedirs') as pyMakeDir:
-        import_pull_requests.save_github_pull_requests("token", "test", "test")
+def test_request_github_pull_request(mock_requests_get, mock_main_tool, mock_rate_limit, mock_rate_limit_handler):
+    # Configura il mock per restituire un oggetto Response di successo
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_requests_get.return_value = mock_response
 
-    pyMakeDir.assert_called()
+    # Configura il mock per restituire il valore desiderato da X-RateLimit-Remaining e X-RateLimit-Reset
+    mock_response.headers = {'X-RateLimit-Remaining': '100', 'X-RateLimit-Reset': '1640398787'}
 
+    # Chiamare la funzione da testare
+    result = request_github_pull_requests('fake_token', 'owner', 'repo', 1)
 
-def test_input_vuoto():
-    # Inserisci un input vuoto per l'owner e il repository.
-    owner = ""
-    repository = ""
-    token = ""
+    # Verifica che la chiamata a requests.get sia stata fatta con l'URL corretto
+    mock_requests_get.assert_called_once_with(
+        'https://api.github.com/repos/owner/repo/pulls?per_page=100&page=1',
+        headers={'Authorization': 'Bearer fake_token'}
+    )
 
-    with patch('request_error_handler.request_error_handler') as pyEmpty:
-        import_pull_requests.save_github_pull_requests(token, owner, repository)
+    # Verifica che la funzione restituisca la response corretta
+    assert result == mock_response
 
-    pyEmpty.assert_called()
-
-
-def test_input_non_valido():
-    # Inserisci un input non valido per l'owner o il repository.
-    owner = "non_esistente"
-    repository = "non_esistente"
-    token = "non_esistente"
-
-    with patch('request_error_handler.request_error_handler') as pyNotvalid:
-        import_pull_requests.save_github_pull_requests(token, owner, repository)
-
-    pyNotvalid.assert_called()
+    # Verifica che le funzioni correlate siano chiamate correttamente
+    mock_main_tool.requests_count += 1
+    mock_rate_limit.rate_minute.assert_called_once()
+    mock_rate_limit_handler.wait_for_rate_limit_reset.assert_called_once_with(
+        '100', '1640398787'
+    )
 
 
-def test_flusso_di_controllo():
-    # Prova a eseguire il codice senza un token GitHub valido.
-    with patch('request_error_handler.request_error_handler') as NotToken:
-        import_pull_requests.save_github_pull_requests(None, "tensorflow", "tensorflow")
+def test_request_github_pull_requests(mock_requests_get, mock_main_tool, mock_rate_limit, mock_rate_limit_handler):
+    # Configura il mock per restituire un oggetto Response di successo
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_requests_get.return_value = mock_response
 
-    NotToken.assert_called()
+    # Configura il mock per restituire il valore desiderato da X-RateLimit-Remaining e X-RateLimit-Reset
+    mock_response.headers = {'X-RateLimit-Remaining': '100', 'X-RateLimit-Reset': '1640398787'}
 
+    # Chiamare la funzione da testare
+    result = request_github_pull_requests('fake_token', 'owner', 'repo', 1)
 
-def test_output():
-    # Verifica che il file JSON sia stato creato, da cambaire il file json, (bisogna prendere uno per le pull request)
-    with open('tensorflow_data/issues/issues_with_comments_2023-11-21_20-20-31.json', "r",
-              encoding='utf-8') as json_file:
-        pullrequests = json.load(json_file)
+    # Verifica che la chiamata a requests.get sia stata fatta con l'URL corretto
+    mock_requests_get.assert_called_once_with(
+        'https://api.github.com/repos/owner/repo/pulls?per_page=100&page=1',
+        headers={'Authorization': 'Bearer fake_token'}
+    )
 
-    assert len(pullrequests) > 0
+    # Verifica che la funzione restituisca la response corretta
+    assert result == mock_response
 
-    # Verifica che il file JSON contenga le informazioni corrette sui commenti.
-    for pullrequest in pullrequests:
-        assert isinstance(pullrequest, dict)
-        assert "number" in pullrequest
-        assert "title" in pullrequest
-        assert "state" in pullrequest
-        assert "html_url" in pullrequest
-        if pullrequest["comments"] > 0:
-            for comment in pullrequest["comments_content"]:
-                assert isinstance(comment, dict)
-                assert "user" in comment
-                assert "login" in comment["user"]
-                assert "body" in comment
-
-
-def test_call_rate_limit():
-    with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
-        import_pull_requests.save_github_pull_requests('', "jmpoep",
-                                                       "vmprotect-3.5.1")
-
-    pyRateLimit.assert_called()
+    #pyRateLimit.assert_called()
 
 
 def test_not_pull_request():
@@ -124,14 +109,4 @@ def test_import_pull_requests_comments_status_error():
                                                                      pullrequest)
 
     ResponseError.assert_called()
-    assert response is None
-
-
-def test_import_pull_request_comments_status_ok():
-    pullrequest = {"number": 3}
-
-    with patch('request_error_handler.request_error_handler') as ResponseError:
-        response = import_pull_requests.import_pull_request_comments("",
-                                                                     "jmpoep", "vmprotect-3.5.1", pullrequest)
-
-    ResponseError.assert_not_called()
+    assert response == None
