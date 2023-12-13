@@ -28,7 +28,6 @@ def request_github_pull_requests(token, owner, repository, i):
 
 
 def github_pullreq_with_par(token):
-    
     while True:
         # Richiedi all'utente di inserire l'owner e il repository
         owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
@@ -37,7 +36,7 @@ def github_pullreq_with_par(token):
         if repository == 'esci' or owner == 'esci':
             print("Uscita dalla funzione.")
             break  # Esci dal ciclo while
-        
+
         # Aggiungi un timestamp
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
@@ -47,7 +46,7 @@ def github_pullreq_with_par(token):
         file_path = os.path.join(pull_requests_folder, f'pull_req_{timestamp}.json')
         i = 1
         temp = None
-                
+
         while True:
             response = request_github_pull_requests(token, owner, repository, i)
             i = i + 1
@@ -64,10 +63,10 @@ def github_pullreq_with_par(token):
 
             # alla prima iterazione temp sarà None e lo rendo un oggetto json assegnando il valore di issues
             if temp is None:
-                temp = extracted_params   
-            # altrimenti inserisco in coda a temp gli elementi delle issues successive
+                temp = extracted_params
+                # altrimenti inserisco in coda a temp gli elementi delle issues successive
             else:
-                temp.extend(extracted_params) 
+                temp.extend(extracted_params)
 
         with open(file_path, 'w', encoding='utf-8') as json_file:
             json.dump(temp, json_file, ensure_ascii=False, indent=4)
@@ -86,6 +85,7 @@ def make_pull_requests_directory(repository):
         os.makedirs(pull_requests_folder)
 
     return pull_requests_folder
+
 
 # Funzione per estrarre i parametri desiderati dalle pull requests
 def extract_params_from_pullreq(pull_requests):
