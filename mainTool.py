@@ -1,19 +1,18 @@
 import argparse
+import os
+
 import requests
-import issue_handler
-from function_filter import filter_github
+
 import import_and_save_workflow_logs
+import import_issue_without_comments
+import import_pull_request_without_comments
 import import_pull_requests
+import issue_handler
+import rate_limit
+import rate_limit_handler
 import request_error_handler
 import search_repository
-import time
-import datetime
-import json
-import rate_limit
-import os
-import rate_limit_handler
-import import_pull_request_without_comments
-import import_issue_without_comments
+from function_filter import filter_github
 from issues_with_parameters import github_issues_with_par
 from pull_req_with_parameters import github_pullreq_with_par
 
@@ -24,14 +23,12 @@ requests_count = 0
 
 def main():
     global requests_count
-    parser = argparse.ArgumentParser(description='Un esempio di tool a riga di comando.')
+    parser = argparse.ArgumentParser(description='tool di Mining a riga di comando.')
 
     parser.add_argument('AccessToken', nargs='?', default=None, help='Il token di accesso per API token')
-    parser.add_argument('--azione', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs'
-                                                                                  'esci', 'newAuth', 'filterOutput',
-                                             'search_repo', 'importPullrequestswithoutcomments',
-                                             'importIssuewithoutcomments',
-                                             'issuesWithParameters', 'pullReqWithParameters'],
+    parser.add_argument('--a', choices=['importIssue', 'importPullrequests', 'importWorkflowlogs', 'esci',
+                                        'newAuth', 'filterOutput', 'search_repo', 'importPullrequestswithoutcomments',
+                                        'importIssuewithoutcomments', 'issuesWithParameters', 'pullReqWithParameters'],
                         help='Azione da eseguire.')
 
     args = parser.parse_args()
@@ -60,17 +57,17 @@ def main():
                 user = response.json()
                 print("Benvenut* :" + user['login'] +
                       '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
-                      '\n --azione importIssue'
-                      '\n --azione importPullrequests'
-                      '\n --azione importWorkflowlogs'
-                      '\n --azione newAuth'
-                      '\n --azione filterOutput'
-                      '\n --azione search_repo'
-                      '\n --azione importPullrequestswithoutcomments'
-                      '\n --azione importIssuewithoutcomments'
-                      '\n --azione issuesWithParameters'
-                      '\n --azione pullReqWithParameters'
-                      '\n --azione esci ')
+                      '\n --a importIssue'
+                      '\n --a importPullrequests'
+                      '\n --a importWorkflowlogs'
+                      '\n --a newAuth'
+                      '\n --a filterOutput'
+                      '\n --a search_repo'
+                      '\n --a importPullrequestswithoutcomments'
+                      '\n --a importIssuewithoutcomments'
+                      '\n --a issuesWithParameters'
+                      '\n --a pullReqWithParameters'
+                      '\n --a esci ')
             else:
                 print(
                     "Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente")
@@ -103,17 +100,17 @@ def main():
                     user = response.json()
                     print("Benvenut* :" + user['login'] +
                           '\n Questo è il nuovo tool di mining per GitHub. Le azioni consentite sono:'
-                          '\n --azione importIssue'
-                          '\n --azione importPullrequests'
-                          '\n --azione importWorkflowlogs'
-                          '\n --azione newAuth'
-                          '\n --azione filterOutput'
-                          '\n --azione search_repo'
-                          '\n --azione importPullrequestswithoutcomments'
-                          '\n --azione importIssuewithoutcomments'
-                          '\n --azione issuesWithParameters'
-                          '\n --azione pullReqWithParameters'
-                          '\n --azione esci ')
+                          '\n --a importIssue'
+                          '\n --a importPullrequests'
+                          '\n --a importWorkflowlogs'
+                          '\n --a newAuth'
+                          '\n --a filterOutput'
+                          '\n --a search_repo'
+                          '\n --a importPullrequestswithoutcomments'
+                          '\n --a importIssuewithoutcomments'
+                          '\n --a issuesWithParameters'
+                          '\n --a pullReqWithParameters'
+                          '\n --a esci ')
                     auth = True
                     with open('auth.txt', 'r+') as file:
                         line = file.readline()
@@ -167,17 +164,17 @@ def main():
                 args.azione = None
             else:
                 print(f'Azione non riconosciuta. Le opzioni valide sono:'
-                      '\n --azione importIssue'
-                      '\n --azione importPullrequests'
-                      '\n --azione importWorkflowlogs'
-                      '\n --azione newAuth'
-                      '\n --azione filterOutput'
-                      '\n --azione search_repo'
-                      '\n --azione importPullrequestswithoutcomments'
-                      '\n --azione importIssuewithoutcomments'
-                      '\n --azione issuesWithParameters'
-                      '\n --azione pullReqWithParameters'
-                      '\n --azione esci ')
+                      '\n --a importIssue'
+                      '\n --a importPullrequests'
+                      '\n --a importWorkflowlogs'
+                      '\n --a newAuth'
+                      '\n --a filterOutput'
+                      '\n --a search_repo'
+                      '\n --a importPullrequestswithoutcomments'
+                      '\n --a importIssuewithoutcomments'
+                      '\n --a issuesWithParameters'
+                      '\n --a pullReqWithParameters'
+                      '\n --a esci ')
                 args.azione = None
 
 

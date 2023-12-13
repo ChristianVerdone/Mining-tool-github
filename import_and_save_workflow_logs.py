@@ -35,9 +35,6 @@ def save_github_workflow_logs(token):
             
             if not workflow_runs:
                 break
-            
-            for run in workflow_runs['workflow_runs']:
-                print_workflow_info(run)
                 
             if temp is None:
                 temp = workflow_runs
@@ -67,19 +64,9 @@ def get_github_workflow_logs(token, owner, repository, i):
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()
-    rate_limit_handler.wait_for_rate_limit_reset(headers)
-
+    rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
+                                                 response.headers['X-RateLimit-Reset'])
     return response
-
-
-def print_workflow_info(run):
-    # Stampa le informazioni sui workflow logs sulla console
-    print(f"Workflow Run #{run['id']}:")
-    print(f"  Nome: {run['name']}")
-    print(f"  Stato: {run['status']}")
-    print(f"  Concluso: {run['conclusion']}")
-    print(f"  URL: {run['html_url']}")
-    print('\n' + '-'*30 + '\n')  # Separatore per chiarezza
 
 
 def make_workflow_logs_directory(repository):

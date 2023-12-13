@@ -1,10 +1,20 @@
 import json
+import os
+import tempfile
 from unittest.mock import patch
 
 import pytest
 import requests
-
+import coverage
 import import_pull_requests
+
+# da modificare per unit testing
+def test_make_pull_requests_directory_path_not_exists():
+    with patch('os.makedirs') as pyMakeDir:
+        import_pull_requests.save_github_pull_requests("token", "test", "test")
+
+    pyMakeDir.assert_called()
+
 
 def test_input_vuoto():
     # Inserisci un input vuoto per l'owner e il repository.
@@ -17,6 +27,7 @@ def test_input_vuoto():
 
     pyEmpty.assert_called()
 
+
 def test_input_non_valido():
     # Inserisci un input non valido per l'owner o il repository.
     owner = "non_esistente"
@@ -28,12 +39,14 @@ def test_input_non_valido():
 
     pyNotvalid.assert_called()
 
+
 def test_flusso_di_controllo():
     # Prova a eseguire il codice senza un token GitHub valido.
     with patch('request_error_handler.request_error_handler') as NotToken:
          import_pull_requests.save_github_pull_requests(None, "tensorflow", "tensorflow")
 
     NotToken.assert_called()
+
 
 def test_output():
     # Verifica che il file JSON sia stato creato, da cambaire il file json, (bisogna prendere uno per le pull request)
@@ -63,3 +76,60 @@ def test_call_rate_limit():
                                          "vmprotect-3.5.1")
 
     pyRateLimit.assert_called()
+
+def test_not_pull_request():
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
+        import_pull_requests.save_github_pull_requests('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', 'keras-team',
+                                         'keras-core')
+
+        # Verifica che il file JSON sia stato creato.
+        assert os.path.exists(tmp_file.name)
+        dim = os.path.getsize(tmp_file.name)
+        assert dim == 0
+
+def test_request_github_issues():
+    i = 0
+    response = issue_handler.request_github_issues('', 'keras-team',
+                                                   'keras-core', i)
+
+    assert response.status_code == 200
+
+
+# da aggiustare n
+def test_input_valido():
+    with patch('import_pull_requests.import_pull_request_comments') as pyHasComments:
+        pyHasComments.return_value = {'comment': 'This is a comment'}
+        import_pull_requests.save_github_pull_requests('', "jmpoep",
+                                         "vmprotect-3.5.1")
+
+    pyHasComments.assert_called()
+
+
+def test_input_valido_no_comments():
+    with patch('import_pull_requests.import_pull_request_comments') as pyHasComments:
+        pyHasComments.return_value = {'comment': 'This is a comment'}
+        import_pull_requests.save_github_pull_requests('', "linexjlin",
+                                         "GPTs")
+
+    pyHasComments.assert_not_called()
+
+
+# testiamo la situazione in cui riceviamo una risposa con status code != 200 per i commenti di una issue
+def test_import_pull_requests_comments_status_error():
+    pullrequest = {"number": None}
+
+    with patch('request_error_handler.request_error_handler') as ResponseError:
+        response = import_pull_requests.save_github_pull_requests("token", "owner", "repo", pullrequest)
+
+    ResponseError.assert_called()
+    assert response == None
+    
+
+def test_import_pull_request_comments_status_ok():
+    pullrequest = {"number": 2}
+
+    with patch('request_error_handler.request_error_handler') as ResponseError:
+        response = import_pull_requests.import_pull_request_comments("",
+                                                       "jmpoep", "vmprotect-3.5.1", pullrequest)
+
+    ResponseError.assert_not_called()
