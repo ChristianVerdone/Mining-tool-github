@@ -1,8 +1,7 @@
 import requests
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 from search_repository import request_github, controller_repo 
-import pytest 
-import os
+
 
 # Test con percorso del file esistente
 # Ogni riga del file è del tipo owner\repository         
@@ -26,7 +25,7 @@ def test_controller_repo(monkeypatch):
 # Test con percorso che non esiste        
 def test_controller_repo_not_path(monkeypatch, capsys):
     # Insierisci il tuo token
-    token = 'Your_token'
+    token = 'Your_Token'
     path = 'C:path_not_exist'
     
     monkeypatch.setattr('builtins.input', lambda _: path)
