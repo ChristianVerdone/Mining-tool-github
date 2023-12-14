@@ -74,9 +74,9 @@ def test_not_workflow_log():  #metodo da rivedere
         assert dim == 0
 
 
-def test_request_github_workflow_logs(): #metodo da rivedere
+def test_request_github_workflow_logs(): #da inserire il proprio token prima di eseguire
     i = 0
-    response = import_and_save_workflow_logs.save_github_workflow_logs('', 'keras-team',
+    response = import_and_save_workflow_logs.get_github_workflow_logs('', 'keras-team',
                                                    'keras-core', i)
 
     assert response.status_code == 200

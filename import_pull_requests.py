@@ -39,6 +39,8 @@ def save_github_pull_requests(token, owner, repository):
         repository = input("Inserisci il nome del repository su GitHub: ")
     if token is None:
         request_error_handler.request_error_handler(505)
+        return
+        
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     pull_requests_folder = make_pull_requests_directory(repository)
     file_path = os.path.join(pull_requests_folder, f'pull_requests_{timestamp}.json')

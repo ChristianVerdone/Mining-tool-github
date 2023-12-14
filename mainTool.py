@@ -132,10 +132,10 @@ def main():
                 issue_handler.save_github_issues(args.AccessToken, None, None)
                 args.azione = None
             elif args.azione == 'importPullrequests':
-                import_pull_requests.save_github_pull_requests(args.AccessToken)
+                import_pull_requests.save_github_pull_requests(args.AccessToken, None, None)
                 args.azione = None
             elif args.azione == 'importWorkflowlogs':
-                import_and_save_workflow_logs.save_github_workflow_logs(args.AccessToken)
+                import_and_save_workflow_logs.save_github_workflow_logs(args.AccessToken, None, None)
                 args.azione = None
             elif args.azione == 'search_repo':
                 search_repository.controller_repo(args.AccessToken)

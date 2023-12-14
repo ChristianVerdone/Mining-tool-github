@@ -35,6 +35,7 @@ def save_github_issues_without_comments(token, owner, repository):
         repository = input("Inserisci il nome del repository su GitHub: ")
     if token is None:
         request_error_handler.request_error_handler(505)
+        return
 
     # Aggiungi un timestamp alle informazioni delle issue
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
