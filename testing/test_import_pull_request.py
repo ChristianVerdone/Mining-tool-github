@@ -1,11 +1,7 @@
-import json
 import os
 import tempfile
 from unittest.mock import patch, MagicMock
 from import_pull_requests import request_github_pull_requests
-import pytest
-import requests
-import coverage
 import import_pull_requests
 
 

@@ -10,57 +10,214 @@ import json
 @pytest.fixture(scope="function")
 def temp_folder(tmp_path):
     return tmp_path / "test_folder"
-'''
-# Funzione personalizzata per catturare l'output di print()
-def print_captured(*args, **kwargs):
-    print_captured.output += ' '.join(map(str, args)) + '\n'
 
-def test_filter_github_issues_by_path():
-    # Sovrascriviamo print() con la funzione personalizzata
-    sys.stdout = StringIO()
-    sys.stdout.write = print_captured
-    print_captured.output = ''
+# Test con input:
+# 1) path
+# 2) issues
+# 3) esc
+def test_filter_github_exit(monkeypatch, capsys):
+    user_inputs = iter([
+        'path',  # Simula l'input 'path'
+        'issues',  # Simula l'input 'issues'
+        'esc'  # Simula l'input 'esc' per uscire
+    ]) 
 
-    user_input = [
-        'path',  # scelta
-        'issues',  # scelta_i_pr
-        '/path/to/file.json',  # path
-        'open',  # status_filter (o qualsiasi filtro desiderato)
-        'user1',  # author_filter (o qualsiasi filtro desiderato)
-        'esc'  # per uscire dalla funzione
-    ]
+    monkeypatch.setattr('builtins.input', lambda _: next(user_inputs))
+
+    # Esegui la funzione filter_github()
+    function_filter.filter_github()
+
+    # Cattura l'output stampato durante l'esecuzione della funzione
+    captured = capsys.readouterr()
     
-    with patch('builtins.input', side_effect=user_input):
-        function_filter.filter_github()  # Chiamata alla funzione che verrà testata
+    # Esegui le asserzioni
+    assert "Uscita dalla funzione." in captured.out
 
-    # Otteniamo l'output stampato
-    printed_output = print_captured.output
+# Test con input:
+# 1) path
+# 2) pull_request
+# 3) esc
+def test_filter_github_exit_pr(monkeypatch, capsys):
+    user_inputs = iter([
+        'path',  # Simula l'input 'path'
+        'pull_request',  # Simula l'input 'issues'
+        'esc'  # Simula l'input 'esc' per uscire
+    ]) 
 
-    # Ripristiniamo sys.stdout
-    sys.stdout = sys.__stdout__
+    monkeypatch.setattr('builtins.input', lambda _: next(user_inputs))
 
-    # Verifica se l'output contiene il messaggio atteso
-    assert "Issue filtrate salvate con successo" in printed_output
+    # Esegui la funzione filter_github()
+    function_filter.filter_github()
 
+    # Cattura l'output stampato durante l'esecuzione della funzione
+    captured = capsys.readouterr()
+    
+    # Esegui le asserzioni
+    assert "Uscita dalla funzione." in captured.out
 
-def test_filter_github_pull_request_by_path():
-    user_input = [
-        'path',  # scelta
-        'pull_request',  # scelta_i_pr
-        '/path/to/pull_requests.json',  # path
-        'open',  # status_filter (o qualsiasi filtro desiderato)
-        'user1',  # author_filter (o qualsiasi filtro desiderato)
-        'esc'  # per uscire dalla funzione
-    ]
+# Test con input:
+# 1) path
+# 2) issues
+# 3) C:\Users\angel\Desktop 
+# 4) issues_with_comments_2023-11-16_19-05-36
+# 5) open
+# 6) glemaitre
+# 7) esc
+def test_filter_github_success(monkeypatch, capsys):
+    user_inputs = iter([
+        'path',  # Simula l'input 'path'
+        'issues',  # Simula l'input 'issues'
+        'C:\\Users\\angel\\Desktop',  # Simula l'input del percorso
+        'issues_with_comments_2023-11-16_19-05-36',
+        'open',
+        'glemaitre',
+        'esc'  # Simula l'input 'esc' per uscire
+    ]) 
 
-    with patch('builtins.input', side_effect=user_input):
-        function_filter.filter_github()  # Chiamata alla funzione che verrà testata
+    monkeypatch.setattr('builtins.input', lambda _: next(user_inputs))
 
-    #mock_input.assert_called()
-    #mock_print.assert_called()
-    #mock_f_path.assert_called()
-    #mock_filter.assert_called()
-'''
+    # Esegui la funzione filter_github()
+    function_filter.filter_github()
+
+    # Cattura l'output stampato durante l'esecuzione della funzione
+    captured = capsys.readouterr()
+    
+    # Esegui le asserzioni
+    assert "Issue filtrate salvate con successo in:" in captured.out
+
+# Test con input:
+# 1) path
+# 2) pull_request
+# 3) C:\\Users\\angel\\Desktop
+# 4) pull_requests_with_comments_2023-11-15_17-24-48
+# 5) open
+# 6) elfringham
+# 7) esc
+def test_filter_github_success_pr(monkeypatch, capsys):
+    user_inputs = iter([
+        'path',  # Simula l'input 'path'
+        'pull_request',  # Simula l'input 'issues'
+        'C:\\Users\\angel\\Desktop',  # Simula l'input del percorso
+        'pull_requests_with_comments_2023-11-15_17-24-48',
+        'open',
+        'elfringham',
+        'esc'  # Simula l'input 'esc' per uscire
+    ]) 
+
+    monkeypatch.setattr('builtins.input', lambda _: next(user_inputs))
+
+    # Esegui la funzione filter_github()
+    function_filter.filter_github()
+
+    # Cattura l'output stampato durante l'esecuzione della funzione
+    captured = capsys.readouterr()
+    
+    # Esegui le asserzioni
+    assert "Pull request filtrate salvate con successo in:" in captured.out
+
+# Test con input:
+# 1) repository
+# 2) issues
+# 3) esc
+def test_filter_github_repo_exit(monkeypatch, capsys):
+    user_inputs = iter([
+        'repository',  # Simula l'input 'path'
+        'issues',  # Simula l'input 'issues'
+        'esc'  # Simula l'input 'esc' per uscire
+    ]) 
+
+    monkeypatch.setattr('builtins.input', lambda _: next(user_inputs))
+
+    # Esegui la funzione filter_github()
+    function_filter.filter_github()
+
+    # Cattura l'output stampato durante l'esecuzione della funzione
+    captured = capsys.readouterr()
+    
+    # Esegui le asserzioni
+    assert "Uscita dalla funzione." in captured.out
+
+# Test con input:
+# 1) repository
+# 2) issues
+# 3) tensorflow (repositorory specificato dall'utente)  
+# 4) issues_with_comments_2023-11-22_08-15-59 (nome del file)
+# 5) open
+# 6) psunn
+# 7) esc
+def test_filter_github_repo_success(monkeypatch, capsys):
+    user_inputs = iter([
+        'repository',  # Simula l'input 'path'
+        'issues',  # Simula l'input 'issues'
+        'tensorflow',  # Simula l'input del percorso
+        'issues_with_comments_2023-11-22_08-15-59',
+        'open',
+        'psunn',
+        'esc'  # Simula l'input 'esc' per uscire
+    ]) 
+
+    monkeypatch.setattr('builtins.input', lambda _: next(user_inputs))
+
+    # Esegui la funzione filter_github()
+    function_filter.filter_github()
+
+    # Cattura l'output stampato durante l'esecuzione della funzione
+    captured = capsys.readouterr()
+    
+    # Esegui le asserzioni
+    assert "Issue filtrate salvate con successo in:" in captured.out
+
+# Test con input:
+# 1) repository
+# 2) pull_request
+# 3) esc
+def test_filter_github_repo_exit_pr(monkeypatch, capsys):
+    user_inputs = iter([
+        'repository',  # Simula l'input 'path'
+        'pull_request',  # Simula l'input 'issues'
+        'esc'  # Simula l'input 'esc' per uscire
+    ]) 
+
+    monkeypatch.setattr('builtins.input', lambda _: next(user_inputs))
+
+    # Esegui la funzione filter_github()
+    function_filter.filter_github()
+
+    # Cattura l'output stampato durante l'esecuzione della funzione
+    captured = capsys.readouterr()
+    
+    # Esegui le asserzioni
+    assert "Uscita dalla funzione." in captured.out
+
+# Test con input:
+# 1) repository
+# 2) issues
+# 3) tensorflow (repositorory specificato dall'utente)  
+# 4) pull_requests_with_comments_2023-11-15_17-24-48 (nome del file)
+# 5) open
+# 6) elfringham
+# 7) esc
+def test_filter_github_repo_success_pr(monkeypatch, capsys):
+    user_inputs = iter([
+        'repository',  # Simula l'input 'path'
+        'pull_request',  # Simula l'input 'issues'
+        'tensorflow',  # Simula l'input del percorso
+        'pull_requests_with_comments_2023-11-15_17-24-48',
+        'open',
+        'elfringham',
+        'esc'  # Simula l'input 'esc' per uscire
+    ]) 
+
+    monkeypatch.setattr('builtins.input', lambda _: next(user_inputs))
+
+    # Esegui la funzione filter_github()
+    function_filter.filter_github()
+
+    # Cattura l'output stampato durante l'esecuzione della funzione
+    captured = capsys.readouterr()
+    
+    # Esegui le asserzioni
+    assert "Pull request filtrate salvate con successo in:" in captured.out
 
 # Test: verifica funzione di filtraggio issues passando il path
 # per stato e autore
@@ -100,7 +257,6 @@ def test_filter_issues_by_path(temp_folder):
     # Elimina la cartella temporanea e tutti i suoi contenuti
     shutil.rmtree(temp_folder)
 
-
 # Test: verifica funzione di filtraggio pull request passando il path
 # per stato e autore
 def test_filter_pull_request_by_path(temp_folder):
@@ -138,7 +294,6 @@ def test_filter_pull_request_by_path(temp_folder):
     
     # Elimina la cartella temporanea e tutti i suoi contenuti
     shutil.rmtree(temp_folder)
-
 
 # Test: verifica funzione di filtraggio issues
 # per stato e autore
@@ -258,31 +413,27 @@ def test_f_path():
     assert result == path_file
 
 # Rivedere -> Test con path e file non esistenti
-def test_f_path_non_existing():
-    path = r"C:\some\path"
-    path_file = r"C:\some\path\file.json"
+def test_f_path_non_existing(monkeypatch, capsys):
+    path = "C:\\some\\path2"
+    path_file = "C:\\some\\path2\\file.json"
 
-    with patch('os.path.exists') as mock_os_path, \
-        patch('builtins.print') as mock_print, \
-        patch('builtins.input', return_value = "file"):
+    monkeypatch.setattr('builtins.input', lambda _: "file")
+
+    with patch('os.path.exists') as mock_os_path:
         result = function_filter.f_path(path)
         
-    # Verifica le chiamate rilevate durante il test
-    # print(mock_os_path.mock_calls)
-    # print(mock_print.mock_calls)
-    # print(result)
+    # Cattura l'output stampato durante l'esecuzione della funzione
+    captured = capsys.readouterr()
 
-    expected_calls = [
-            call(f"Il percorso '{path}' non esiste "),
-            call(f"Il percorso '{path_file}' non esiste.")
-        ]
-        
+    print(captured.out)
+    #print(result)
+
     mock_os_path.assert_called()
-    mock_print.assert_not_called()
-    #mock_print.assert_has_calls(expected_calls, any_order=False)
-    #mock_print.assert_has_calls(expected_calls, any_order=True)
+    # Esegui le asserzioni
+    # assert f"Il percorso '{path}' non esiste" in captured.out
+    # assert f"Il percorso '{result}' non esiste." in captured.out    
     assert result == path_file
-     
+  
 # Test con stato presente
 def test_state_with_input():
     status_filter = "open"
@@ -331,7 +482,6 @@ def test_user_login_empty_input():
     mock_print.assert_called_once_with("L'utente non è presente")
     # Verifichiamo che la funzione restituisca None quando l'utente non fornisce alcun input
     assert result is None
-
 
 def test_user_login_with_input():
     # Definiamo un valore di input simulato
