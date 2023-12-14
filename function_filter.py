@@ -72,8 +72,7 @@ def filter_github():
 
                 filtered_pr_file_path = filter_github_pull_request(repository, path_file, status_filter, author_filter)
                 print(f"Pull request filtrate salvate con successo in: {filtered_pr_file_path}")
-
-        return
+    
     return
 
 
