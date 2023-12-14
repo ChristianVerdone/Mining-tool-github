@@ -27,10 +27,14 @@ def request_github_issues(token, owner, repository, i):
     return response
 
 
-def save_github_issues_without_comments(token):
+def save_github_issues_without_comments(token, owner, repository):
     # Richiedi all'utente di inserire l'owner e il repository
-    owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
-    repository = input("Inserisci il nome del repository su GitHub: ")
+    if owner is None:
+        owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
+    if repository is None:
+        repository = input("Inserisci il nome del repository su GitHub: ")
+    if token is None:
+        request_error_handler.request_error_handler(505)
 
     # Aggiungi un timestamp alle informazioni delle issue
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
