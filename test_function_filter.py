@@ -412,7 +412,7 @@ def test_f_path():
     mock_print.assert_not_called()
     assert result == path_file
 
-# Test con path e file non esistenti
+# Rivedere -> Test con path e file non esistenti
 def test_f_path_non_existing(monkeypatch, capsys):
     path = "C:\\some\\path2"
     path_file = "C:\\some\\path2\\file.json"
