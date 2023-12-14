@@ -9,7 +9,8 @@ import import_pull_request_without_comments
 # da modificare per unit testing
 def test_make_issue_directory_path_not_exists():
     with patch('os.makedirs') as pyMakeDir:
-        import_pull_request_without_comments.save_github_pull_requests_without_comments("token", "test", "test")
+        import_pull_request_without_comments.save_github_pull_requests_without_comments("token", "test",
+                                                                                        "test")
 
     pyMakeDir.assert_called()
 
@@ -48,7 +49,7 @@ def test_flusso_di_controllo():
 
 def test_output():
     # Verifica che il file JSON sia stato creato. #da modificare il file .json
-    with open('tensorflow_data/issues/issues_with_comments_2023-11-21_20-20-31.json', "r",
+    with open('tensorflow_data/issues/issues_with_comments_2023-11-21_20-20-31.json', "r", #da modificare con giusto path
               encoding='utf-8') as json_file:
         pullrequests = json.load(json_file)
 
@@ -58,7 +59,7 @@ def test_output():
 
 def test_call_rate_limit():
     with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
-        import_pull_request_without_comments.save_github_pull_requests_without_comments('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', "jmpoep",
+        import_pull_request_without_comments.save_github_pull_requests_without_comments('', "jmpoep",
                                          "vmprotect-3.5.1")
 
     pyRateLimit.assert_called()
@@ -66,7 +67,7 @@ def test_call_rate_limit():
 
 def test_not_pull_req_without_comments():
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
-        import_pull_request_without_comments.save_github_pull_requests_without_comments('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', 'keras-team',
+        import_pull_request_without_comments.save_github_pull_requests_without_comments('', 'keras-team',
                                          'keras-core')
 
         # Verifica che il file JSON sia stato creato.

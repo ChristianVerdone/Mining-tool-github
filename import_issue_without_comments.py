@@ -12,8 +12,9 @@ def request_github_issues(token, owner, repository, i):
     # Costruisci l'URL dell'API GitHub per ottenere le issue
     api_url = f'https://api.github.com/repos/{owner}/{repository}/issues?per_page=100&page={i}'
 
+    tok = f'{token}'
     # Provide your GitHub API token if you have one
-    headers = {'Authorization': 'Bearer ' + token}  # Replace with your GitHub token
+    headers = {'Authorization': 'Bearer ' + tok}  # Replace with your GitHub token
 
     # Make the GET request to the GitHub API
     response = requests.get(api_url, headers=headers)

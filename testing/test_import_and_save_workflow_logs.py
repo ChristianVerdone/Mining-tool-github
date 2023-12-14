@@ -49,6 +49,7 @@ def test_flusso_di_controllo():
 def test_output():
     # Verifica che il file JSON sia stato creato. #da modificare il file .json
     with open('tensorflow_data/issues/issues_with_comments_2023-11-21_20-20-31.json', "r",
+              # da modificare con path giusto
               encoding='utf-8') as json_file:
         workflow_runs = json.load(json_file)
 
@@ -57,16 +58,17 @@ def test_output():
 
 def test_call_rate_limit():
     with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
-        import_and_save_workflow_logs.save_github_workflow_logs('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', "jmpoep",
-                                         "vmprotect-3.5.1")
+        import_and_save_workflow_logs.save_github_workflow_logs('', "jmpoep",
+                                                                "vmprotect-3.5.1")
 
     pyRateLimit.assert_called()
 
 
-def test_not_workflow_log():  #metodo da rivedere
+def test_not_workflow_log():  # metodo da rivedere
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
-        import_and_save_workflow_logs.save_github_workflow_logs('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', 'keras-team',
-                                         'keras-core')
+        import_and_save_workflow_logs.save_github_workflow_logs('',
+                                                                'keras-team',
+                                                                'keras-core')
 
         # Verifica che il file JSON sia stato creato.
         assert os.path.exists(tmp_file.name)
@@ -80,5 +82,3 @@ def test_request_github_workflow_logs(): #da inserire il proprio token prima di 
                                                    'keras-core', i)
 
     assert response.status_code == 200
-
-
