@@ -2,6 +2,7 @@ import requests
 from unittest.mock import patch, Mock
 from search_repository import request_github, controller_repo 
 import pytest 
+import os
 
 # Test con percorso del file esistente
 # Ogni riga del file è del tipo owner\repository         
@@ -22,12 +23,45 @@ def test_controller_repo(monkeypatch):
 
     mock_open.assert_called()
 
+# Test con percorso che non esiste        
+def test_controller_repo_not_path(monkeypatch, capsys):
+    # Insierisci il tuo token
+    token = 'Your_token'
+    path = 'C:path_not_exist'
+    
+    monkeypatch.setattr('builtins.input', lambda _: path)
+
+    with patch('builtins.open', create=True) as mock_open:
+        controller_repo(token)
+
+    # Cattura l'output stampato durante l'esecuzione della funzione
+    captured = capsys.readouterr()
+
+    # Esegui le asserzioni
+    assert f"Il percorso '{path}' non esiste " in captured.out
+    mock_open.assert_not_called()
+
+# Test con input = esci       
+def test_controller_repo_esc(monkeypatch, capsys):
+    # Insierisci il tuo token
+    token = 'Your_token'
+    path = 'esci'
+    
+    monkeypatch.setattr('builtins.input', lambda _: path)
+
+    with patch('builtins.open', create=True) as mock_open, \
+        patch('os.path.exists') as mock_os_path:
+        controller_repo(token)
+
+    # Asserzioni
+    mock_os_path.assert_not_called()
+    mock_open.assert_not_called()
 
 # Test: verifica è possibile effettuare la richiesta
 # passanfo come parametri: token, owner, repository 
 def test_request_github():
     # Parametri di esempio
-    token = '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' # Sostituire il token con il proprio e ricordarsi di rimuoverlo
+    token = 'Your_token' # Sostituire il token con il proprio e ricordarsi di rimuoverlo
     owner = 'tensorflow'
     repository = 'tensorflow'
 
