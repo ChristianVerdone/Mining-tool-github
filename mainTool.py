@@ -113,7 +113,6 @@ def main():
                           '\n --a esci ')
                     auth = True
                     with open('auth.txt', 'r+') as file:
-                        line = file.readline()
                         line = args.AccessToken
                         file.seek(0)
                         file.writelines(line)
