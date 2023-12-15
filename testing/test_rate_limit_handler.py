@@ -4,7 +4,7 @@ from rate_limit_handler import wait_for_rate_limit_reset
 
 
 # Test quando il numero di richieste rimanenti è zero
-# Esempio -> reset_time: 9:50  > nowTs: 9:00 
+# Esempio -> reset_time: 9:50 > nowTs: 9:00
 # Richieste rimanenti = 0 
 # Sleep
 def test_wait_for_rate_limit_reset_zero_remaining():
@@ -21,7 +21,7 @@ def test_wait_for_rate_limit_reset_zero_remaining():
 
 
 # Test quando il numero di richieste rimanenti è diverso da zero
-# Esempio -> reset_time: 9:50  > nowTs: 9:00 
+# Esempio -> reset_time: 9:50 > nowTs: 9:00
 # Richieste rimanenti = 50
 # NO sleep
 def test_wait_for_rate_limit_reset_non_zero_remaining():
@@ -36,7 +36,7 @@ def test_wait_for_rate_limit_reset_non_zero_remaining():
 
 
 # Ipotizzando che nowTs un'ora aventi
-# Esempio -> reset_time: 8:50  < nowTs: 9:00 
+# Esempio -> reset_time: 8:50 < nowTs: 9:00
 # Richieste rimanenti = 100
 # NO sleep
 def test_wait_for_rate_limit_reset_negative_time():
@@ -49,7 +49,7 @@ def test_wait_for_rate_limit_reset_negative_time():
     mock_sleep.assert_not_called()  # Verifica che la funzione time.sleep non è stata chiamata
 
 
-# Esempio -> reset_time: 8:50  < nowTs: 9:00 
+# Esempio -> reset_time: 8:50 < nowTs: 9:00
 # Richieste rimanenti = 0
 # No Sleep
 def test_wait_for_rate_limit_reset_remaining():

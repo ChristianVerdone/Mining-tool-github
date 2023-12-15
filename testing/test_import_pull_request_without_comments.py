@@ -42,25 +42,26 @@ def test_input_non_valido():
 def test_flusso_di_controllo():
     # Prova a eseguire il codice senza un token GitHub valido.
     with patch('request_error_handler.request_error_handler') as NotToken:
-        import_pull_request_without_comments.save_github_pull_requests_without_comments(None, "tensorflow", "tensorflow")
+        import_pull_request_without_comments.save_github_pull_requests_without_comments(None, "tensorflow",
+                                                                                        "tensorflow")
 
     NotToken.assert_called()
 
 
 def test_output():
     # Verifica che il file JSON sia stato creato. #da modificare il file .json
-    with open('tensorflow_data/issues/issues_with_comments_2023-11-21_20-20-31.json', "r", #da modificare con giusto path
+    with open('tensorflow_data/issues/issues_with_comments_2023-11-21_20-20-31.json', "r",
+              # da modificare con giusto path
               encoding='utf-8') as json_file:
         pullrequests = json.load(json_file)
 
     assert len(pullrequests) > 0
 
 
-
 def test_call_rate_limit():
     with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
         import_pull_request_without_comments.save_github_pull_requests_without_comments('', "jmpoep",
-                                         "vmprotect-3.5.1")
+                                                                                        "vmprotect-3.5.1")
 
     pyRateLimit.assert_called()
 
@@ -68,7 +69,7 @@ def test_call_rate_limit():
 def test_not_pull_req_without_comments():
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
         import_pull_request_without_comments.save_github_pull_requests_without_comments('', 'keras-team',
-                                         'keras-core')
+                                                                                        'keras-core')
 
         # Verifica che il file JSON sia stato creato.
         assert os.path.exists(tmp_file.name)
@@ -79,6 +80,6 @@ def test_not_pull_req_without_comments():
 def test_request_github_pull_req_without_comments():
     i = 0
     response = import_pull_request_without_comments.request_github_pull_requests_without_comments('', 'keras-team',
-                                                   'keras-core', i)
+                                                                                                  'keras-core', i)
 
     assert response.status_code == 200

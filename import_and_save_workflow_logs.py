@@ -36,7 +36,7 @@ def save_github_workflow_logs(token, owner, repository):
             # La risposta è avvenuta con successo
             workflow_runs = response.json()
             
-            if not workflow_runs:
+            if len(workflow_runs['workflow_runs']) == 0:
                 break
                 
             if temp is None:
