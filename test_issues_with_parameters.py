@@ -8,7 +8,7 @@ import requests
 
 def test_request_github_issues():
     # Parametri di esempio
-    token = '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'
+    token = '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'
     owner = 'tensorflow'
     repository = 'tensorflow'
     i = 1
