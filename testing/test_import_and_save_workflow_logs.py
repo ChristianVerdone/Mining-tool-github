@@ -6,7 +6,6 @@ from unittest.mock import patch
 import import_and_save_workflow_logs
 
 
-# da modificare per unit testing
 def test_make_issue_directory_path_not_exists():
     with patch('os.makedirs') as pyMakeDir:
         import_and_save_workflow_logs.save_github_workflow_logs("token", "test", "test")
@@ -39,7 +38,7 @@ def test_input_non_valido():
 
 
 def test_flusso_di_controllo():
-    # Prova a eseguire il codice senza un token GitHub valido.
+    # Prova a eseguire il codice senza un token GitHub non valido.
     with patch('request_error_handler.request_error_handler') as NotToken:
         import_and_save_workflow_logs.save_github_workflow_logs(None, "tensorflow", "tensorflow")
 

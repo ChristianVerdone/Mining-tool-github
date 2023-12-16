@@ -5,13 +5,13 @@ def request_error_handler(status_code):
 
     elif status_code == 401:
         print(f"Errore nella richiesta: {status_code}")
-        print(
-            "UNAUTHORIZED: Le credenziali di autenticazione mancano, o se fornite non sono valide o non sono sufficienti per accedere alla risorsa.")
+        print("UNAUTHORIZED: Le credenziali di autenticazione mancano, o se fornite non sono valide o "
+              "non sono sufficienti per accedere alla risorsa.")
 
     elif status_code == 403:
         print(f"Errore nella richiesta: {status_code}")
-        print(
-            "FORBIDDEN: La richiesta è stata rifiutata. Consultare il messaggio allegato per il motivo specifico (molto probabilmente per aver superato il limite di richieste).")
+        print("FORBIDDEN: La richiesta è stata rifiutata. Consultare il messaggio allegato per il motivo specifico "
+              "(molto probabilmente per aver superato il limite di richieste).")
 
     elif status_code == 404:
         print(f"Errore nella richiesta: {status_code}")
@@ -35,8 +35,8 @@ def request_error_handler(status_code):
 
     elif status_code == 504:
         print(f"Errore nella richiesta: {status_code}")
-        print(
-            "GATEWAY TIMEOUT: I server sono attivi, ma la richiesta non può essere servita a causa di un fallimento all'interno del nostro stack. Riprova più tardi.")
+        print("GATEWAY TIMEOUT: I server sono attivi, ma la richiesta non può essere servita a causa di un fallimento "
+              "all'interno del nostro stack. Riprova più tardi.")
 
     elif status_code == 505:
         print(f"Errore nella richiesta: {status_code}")

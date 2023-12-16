@@ -58,7 +58,8 @@ def save_github_workflow_logs(token, owner, repository):
 def get_github_workflow_logs(token, owner, repository, i):
     # Ottieni i workflow logs
     api_url = f'https://api.github.com/repos/{owner}/{repository}/actions/runs?per_page=100&page={i}'
-    headers = {'Authorization': 'Bearer ' + token}
+    tok = f'{token}'
+    headers = {'Authorization': 'Bearer ' + tok}
     
     response = requests.get(api_url, headers=headers)
     rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],

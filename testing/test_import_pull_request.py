@@ -54,7 +54,6 @@ def test_request_github_pull_requests(mock_requests_get, mock_main_tool, mock_ra
 
     # Verifica che la funzione restituisca la response corretta
     assert result == mock_response
-
     # pyRateLimit.assert_called()
 
 
