@@ -10,11 +10,14 @@ import rate_limit_handler
 import rate_limit
 
 
-def save_github_workflow_logs(token):
-
-    # Richiedi all'utente di inserire l'owner e il repository
-    owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
-    repository = input("Inserisci il nome del repository su GitHub: ")
+def save_github_workflow_logs(token, owner, repository):
+    if owner is None:
+        # Richiedi all'utente di inserire l'owner e il repository
+        owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
+    if repository is None:
+        repository = input("Inserisci il nome del repository su GitHub: ")
+    if token is None:
+        request_error_handler.request_error_handler(505)
 
     # Aggiungi un timestamp alle informazioni dei workflow logs
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -33,7 +36,7 @@ def save_github_workflow_logs(token):
             # La risposta è avvenuta con successo
             workflow_runs = response.json()
             
-            if not workflow_runs:
+            if len(workflow_runs['workflow_runs']) == 0:
                 break
                 
             if temp is None:

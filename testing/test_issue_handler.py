@@ -71,7 +71,7 @@ def test_output():
 
 def test_call_rate_limit():
     with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
-        issue_handler.save_github_issues('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', "jmpoep",
+        issue_handler.save_github_issues('', "jmpoep",
                                          "vmprotect-3.5.1")
 
     pyRateLimit.assert_called()
@@ -79,7 +79,7 @@ def test_call_rate_limit():
 
 def test_not_issue():
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
-        issue_handler.save_github_issues('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', 'keras-team',
+        issue_handler.save_github_issues('', 'keras-team',
                                          'keras-core')
 
         # Verifica che il file JSON sia stato creato.

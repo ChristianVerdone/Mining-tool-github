@@ -3,13 +3,14 @@ Test unitari relativi al file search_repository.py
 """
 from unittest.mock import patch
 import requests
+from unittest.mock import patch
 from search_repository import request_github, controller_repo
 
 # Test con percorso del file esistente
 # Ogni riga del file è del tipo owner\repository
 def test_controller_repo(monkeypatch):
-    # Insierisci il tuo token
-    token = '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'
+    # Inserisci il tuo token
+    token = ''
 
     inputs = iter([
         'C:\\Users\\angel\\Desktop',
@@ -26,11 +27,13 @@ def test_controller_repo(monkeypatch):
     # Verifica che la funzione request_error_handler non sia stata chiamata
     mock_err.assert_not_called()
 
+
 # Test con percorso che non esiste
 def test_controller_repo_not_path(monkeypatch, capsys):
-    # Insierisci il tuo token
-    token = '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'
+    # Inserisci il tuo token
+    token = ''
     path = 'C:path_not_exist'
+
     monkeypatch.setattr('builtins.input', lambda _: path)
 
     with patch('builtins.open', create=True) as mock_open:
@@ -43,28 +46,29 @@ def test_controller_repo_not_path(monkeypatch, capsys):
     assert f"Il percorso '{path}' non esiste " in captured.out
     mock_open.assert_not_called()
 
+
 # Test con input = esci
-def test_controller_repo_esc(monkeypatch):
-    # Insierisci il tuo token
-    token = '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'
+def test_controller_repo_esc(monkeypatch, capsys):
+    # Inserisci il tuo token
+    token = ''
     path = 'esci'
 
     monkeypatch.setattr('builtins.input', lambda _: path)
 
     with patch('builtins.open', create=True) as mock_open, \
-        patch('os.path.exists') as mock_os_path:
+            patch('os.path.exists') as mock_os_path:
         controller_repo(token)
 
     # Asserzioni
     mock_os_path.assert_not_called()
     mock_open.assert_not_called()
 
+
 # Test: verifica è possibile effettuare la richiesta
-# passando come parametri: token, owner, repository
+# passano come parametri: token, owner, repository
 def test_request_github():
     # Parametri di esempio
-    # Sostituire il token con il proprio e ricordarsi di rimuoverlo
-    token = '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'
+    token = ''  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
     owner = 'tensorflow'
     repository = 'tensorflow'
 
@@ -76,8 +80,8 @@ def test_request_github():
             self.headers = headers
 
     # Simuliamo una risposta con un codice di stato 200 OK e headers di rate limit
-    # Esempio di headers per il rate limit
-    headers = {'X-RateLimit-Remaining': '500', 'X-RateLimit-Reset': '1609459200'}
+    headers = {'X-RateLimit-Remaining': '500',
+               'X-RateLimit-Reset': '1609459200'}  # Esempio di headers per il rate limit
 
     with patch('requests.get') as mock_get:
         mock_get.return_value = MockResponse(200, headers)
@@ -87,7 +91,7 @@ def test_request_github():
 
     # Assicuriamoci che la richiesta GET sia stata effettuata con i parametri corretti
     mock_get.assert_called_with(f'https://api.github.com/repos/{owner}/{repository}',
-                            headers={'Authorization': 'Bearer ' + token})
+                                headers={'Authorization': 'Bearer ' + token})
 
     # Assicuriamoci che la funzione abbia restituito una risposta
     assert isinstance(response, requests.Response)
