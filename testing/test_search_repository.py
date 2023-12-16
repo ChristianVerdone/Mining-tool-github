@@ -13,7 +13,7 @@ def test_controller_repo(monkeypatch):
     token = ''
 
     inputs = iter([
-        'C:\\Users\\angel\\Desktop',
+        'C:\Users\angel\Desktop\Progetto Ing\Mining-tool-github',
         'repositories',
         'esci'
     ])
