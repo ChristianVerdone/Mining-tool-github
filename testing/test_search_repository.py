@@ -9,7 +9,7 @@ from search_repository import request_github, controller_repo
 # Ogni riga del file è del tipo owner\repository
 def test_controller_repo(monkeypatch):
     # Insierisci il tuo token
-    token = 'Your_token'
+    token = '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'
 
     inputs = iter([
         'C:\\Users\\angel\\Desktop',
@@ -18,15 +18,18 @@ def test_controller_repo(monkeypatch):
     ])
 
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
-    with patch('builtins.open', create=True) as mock_open:
+    with patch('builtins.open', create=True) as mock_open, \
+        patch('request_error_handler.request_error_handler') as mock_err:
         controller_repo(token)
 
     mock_open.assert_called()
+    # Verifica che la funzione request_error_handler non sia stata chiamata
+    mock_err.assert_not_called()
 
 # Test con percorso che non esiste
 def test_controller_repo_not_path(monkeypatch, capsys):
     # Insierisci il tuo token
-    token = 'Your_Token'
+    token = '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'
     path = 'C:path_not_exist'
     monkeypatch.setattr('builtins.input', lambda _: path)
 
@@ -43,7 +46,7 @@ def test_controller_repo_not_path(monkeypatch, capsys):
 # Test con input = esci
 def test_controller_repo_esc(monkeypatch):
     # Insierisci il tuo token
-    token = 'Your_token'
+    token = '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'
     path = 'esci'
 
     monkeypatch.setattr('builtins.input', lambda _: path)
@@ -57,10 +60,11 @@ def test_controller_repo_esc(monkeypatch):
     mock_open.assert_not_called()
 
 # Test: verifica è possibile effettuare la richiesta
-# passanfo come parametri: token, owner, repository
+# passando come parametri: token, owner, repository
 def test_request_github():
     # Parametri di esempio
-    token = 'Your_token' # Sostituire il token con il proprio e ricordarsi di rimuoverlo
+    # Sostituire il token con il proprio e ricordarsi di rimuoverlo
+    token = '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'
     owner = 'tensorflow'
     repository = 'tensorflow'
 
