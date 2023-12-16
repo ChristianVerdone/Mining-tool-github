@@ -20,7 +20,7 @@ from pull_req_with_parameters import github_pullreq_with_par
 start_time = 0
 requests_count = 0
 
-
+#main function
 def main():
     global requests_count
     parser = argparse.ArgumentParser(description='tool di Mining a riga di comando.')
