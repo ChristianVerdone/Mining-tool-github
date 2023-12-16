@@ -1,10 +1,13 @@
+"""
+Test unitari relativi al file search_repository.py
+"""
+from unittest.mock import patch
 import requests
 from unittest.mock import patch
 from search_repository import request_github, controller_repo
 
-
 # Test con percorso del file esistente
-# Ogni riga del file è del tipo owner\repository         
+# Ogni riga del file è del tipo owner\repository
 def test_controller_repo(monkeypatch):
     # Inserisci il tuo token
     token = ''
@@ -16,11 +19,13 @@ def test_controller_repo(monkeypatch):
     ])
 
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
-
-    with patch('builtins.open', create=True) as mock_open:
+    with patch('builtins.open', create=True) as mock_open, \
+        patch('request_error_handler.request_error_handler') as mock_err:
         controller_repo(token)
 
     mock_open.assert_called()
+    # Verifica che la funzione request_error_handler non sia stata chiamata
+    mock_err.assert_not_called()
 
 
 # Test con percorso che non esiste
