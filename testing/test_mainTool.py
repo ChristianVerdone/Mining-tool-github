@@ -90,7 +90,7 @@ def test_importIssuewithoutcomments(monkeypatch):
 
 def test_newAuth_filterOutput(monkeypatch):
     inputs = iter(['newAuth',
-                   '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',  # inserire token valido
+                   '',  # inserire token valido
                    'filterOutput',
                    'repository',
                    'issues',
@@ -108,7 +108,7 @@ def test_newAuth_filterOutput(monkeypatch):
 def test_newAuthNotValid(monkeypatch):
     inputs = iter(['newAuth',
                    '',  # token non valido
-                   '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',
+                   '',  # token valido
                    'esci'])
 
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
@@ -172,6 +172,3 @@ def test_noAction(monkeypatch, capsys):
 
     # Verifica che l'output includa 'Arrivederci!'
     assert 'Arrivederci!' in captured.out
-
-
-

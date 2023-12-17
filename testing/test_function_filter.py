@@ -71,8 +71,9 @@ def test_filter_github_success(monkeypatch, capsys):
     user_inputs = iter([
         'path',  # Simula l'input 'path'
         'issues',  # Simula l'input 'issues'
-        'C:\\Users\\angel\\Desktop',  # Simula l'input del percorso
-        'issues_with_comments_2023-11-16_19-05-36',
+        # Si inserisce un percorso che dipende da chi esegue il test dove si vuole cercare il file
+        '',  # Simula l'input del percorso
+        'issues_with_comments_2023-11-16_10-53-48',
         'open',
         'glemaitre',
         'esc'  # Simula l'input 'esc' per uscire
@@ -102,8 +103,10 @@ def test_filter_github_success_pr(monkeypatch, capsys):
     user_inputs = iter([
         'path',  # Simula l'input 'path'
         'pull_request',  # Simula l'input 'issues'
-        'C:\\Users\\angel\\Desktop',  # Simula l'input del percorso
-        'pull_requests_with_comments_2023-11-15_17-24-48',
+        # Si inserisce un percorso che dipende da chi esegue il test dove si vuole cercare il file
+        '',  # Simula l'input del percorso
+        # Si utilizza un file presente nella directory
+        'pull_requests_2023-11-20_11-02-58',
         'open',
         'elfringham',
         'esc'  # Simula l'input 'esc' per uscire
@@ -147,7 +150,7 @@ def test_filter_github_repo_exit(monkeypatch, capsys):
 # Test con input:
 # 1) repository
 # 2) issues
-# 3) tensorflow (repositorory specificato dall'utente)  
+# 3) tensorflow (repository specificato dall'utente)
 # 4) issues_with_comments_2023-11-22_08-15-59 (nome del file)
 # 5) open
 # 6) psunn
@@ -157,7 +160,7 @@ def test_filter_github_repo_success(monkeypatch, capsys):
         'repository',  # Simula l'input 'path'
         'issues',  # Simula l'input 'issues'
         'tensorflow',  # Simula l'input del percorso
-        'issues_with_comments_2023-11-22_08-15-59',
+        'issues_with_comments_2023-11-16_10-53-48',
         'open',
         'psunn',
         'esc'  # Simula l'input 'esc' per uscire
@@ -201,7 +204,7 @@ def test_filter_github_repo_exit_pr(monkeypatch, capsys):
 # Test con input:
 # 1) repository
 # 2) issues
-# 3) tensorflow (repositorory specificato dall'utente)  
+# 3) tensorflow (repository specificato dall'utente)
 # 4) pull_requests_with_comments_2023-11-15_17-24-48 (nome del file)
 # 5) open
 # 6) elfringham
@@ -211,7 +214,7 @@ def test_filter_github_repo_success_pr(monkeypatch, capsys):
         'repository',  # Simula l'input 'path'
         'pull_request',  # Simula l'input 'issues'
         'tensorflow',  # Simula l'input del percorso
-        'pull_requests_with_comments_2023-11-15_17-24-48',
+        'pull_requests_2023-11-20_11-02-58',
         'open',
         'elfringham',
         'esc'  # Simula l'input 'esc' per uscire
@@ -416,12 +419,15 @@ def test_create_folder_creates_directory_and_file(temp_folder):
 
 # Test con path e file esistente
 def test_f_path():
-    file_path = r"C:\Users\angel\Desktop"
-    path_file = r"C:\Users\angel\Desktop\issues_with_comments_2023-11-16_19-05-36.json"
+    # Path della directory dove cercare il file
+    file_path = r""
+    # Path completo della directory con il file alla fine
+    path_file = r""
 
     with patch('os.path.exists') as mock_os_path, \
             patch('builtins.print') as mock_print, \
-            patch('builtins.input', return_value="issues_with_comments_2023-11-16_19-05-36"):
+            patch('builtins.input', return_value="issues_with_comments_2023-11-16_10-53-48"):
+        # Il nome del file deve essere uguale a quello che cerchiamo
         result = function_filter.f_path(file_path)
 
     # print(result)

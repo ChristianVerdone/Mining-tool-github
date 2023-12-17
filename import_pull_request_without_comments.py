@@ -12,8 +12,10 @@ def request_github_pull_requests_without_comments(token, owner, repository, i):
     # Costruisci l'URL dell'API GitHub per ottenere le pull request
     api_url = f'https://api.github.com/repos/{owner}/{repository}/pulls?per_page=100&page={i}'
 
+    tok = f'{token}'
+
     # Utilizza il token di Github per autenticarsi 
-    headers = {'Authorization': 'Bearer ' + token}
+    headers = {'Authorization': 'Bearer ' + tok}
 
     # GET request al GitHub API
     response = requests.get(api_url, headers=headers)

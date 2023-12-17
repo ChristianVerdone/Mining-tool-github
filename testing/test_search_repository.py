@@ -2,9 +2,11 @@
 Test unitari relativi al file search_repository.py
 """
 from unittest.mock import patch
+
 import requests
-from unittest.mock import patch
+
 from search_repository import request_github, controller_repo
+
 
 # Test con percorso del file esistente
 # Ogni riga del file è del tipo owner\repository
@@ -13,14 +15,14 @@ def test_controller_repo(monkeypatch):
     token = ''
 
     inputs = iter([
-        'C:\Users\angel\Desktop\Progetto Ing\Mining-tool-github',
+        '',  # Path della repo dove si cerca il file
         'repositories',
         'esci'
     ])
 
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
     with patch('builtins.open', create=True) as mock_open, \
-        patch('request_error_handler.request_error_handler') as mock_err:
+            patch('request_error_handler.request_error_handler') as mock_err:
         controller_repo(token)
 
     mock_open.assert_called()
