@@ -33,7 +33,7 @@ def github_issues_with_par(token):
         # Richiedi all'utente di inserire l'owner e il repository
         owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
         repository = input("Inserisci il nome del repository su GitHub: ")
-
+        
         if repository == 'esci' or owner == 'esci':
             print("Uscita dalla funzione.")
             break  # Esci dal ciclo while
@@ -43,13 +43,18 @@ def github_issues_with_par(token):
 
         # Creiamo la directory
         issues_folder = make_issues_directory(repository)
+        
         # Costruisci il percorso del file JSON con il timestamp nel titolo
         file_path = os.path.join(issues_folder, f'issues_with_parameters_{timestamp}.json')
         i = 1
         temp = None
+        
         while True:
             response = request_github_issues(token, owner, repository, i)
+            
             i = i + 1
+            #print(response.status_code)
+
             if response.status_code == 200:
                 # La risposta è avvenuta con successo
                 issues = response.json()
