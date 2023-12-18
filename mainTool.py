@@ -13,14 +13,14 @@ import rate_limit_handler
 import request_error_handler
 import search_repository
 from function_filter import filter_github
-from issues_with_parameters import github_issues_with_par
-from pull_req_with_parameters import github_pullreq_with_par
+import issues_with_parameters
+import pull_req_with_parameters
 
 # global start_time
 start_time = 0
 requests_count = 0
 
-
+#main function
 def main():
     global requests_count
     parser = argparse.ArgumentParser(description='tool di Mining a riga di comando.')
@@ -69,8 +69,8 @@ def main():
                       '\n --a pullReqWithParameters'
                       '\n --a esci ')
             else:
-                print(
-                    "Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente")
+                print("Non è stato possibile recuperare il token dal file di inizializzazione, "
+                      "si prega di inserirlo manualmente")
     else:
         with open('auth.txt', 'x'):
             pass
@@ -119,8 +119,8 @@ def main():
 
                 else:
                     request_error_handler.request_error_handler(response.status_code)
-                    print(
-                        "Assicurati di aver inserito il token correttamente o che sia ancora valido per accedere all'API\n")
+                    print("Assicurati di aver inserito il token correttamente o "
+                          "che sia ancora valido per accedere all'API\n")
                     args.AccessToken = None
 
         if auth:
@@ -140,10 +140,12 @@ def main():
                 search_repository.controller_repo(args.AccessToken)
                 args.a = None
             elif args.a == 'importPullrequestswithoutcomments':
-                import_pull_request_without_comments.save_github_pull_requests_without_comments(args.AccessToken)
+                import_pull_request_without_comments.save_github_pull_requests_without_comments(args.AccessToken,
+                                                                                                None, None)
                 args.a = None
             elif args.a == 'importIssuewithoutcomments':
-                import_issue_without_comments.save_github_issues_without_comments(args.AccessToken, None, None)
+                import_issue_without_comments.save_github_issues_without_comments(args.AccessToken,
+                                                                                  None, None)
                 args.a = None
             elif args.a == 'esci':
                 print('Arrivederci!')
@@ -156,10 +158,10 @@ def main():
                 filter_github()
                 args.a = None
             elif args.a == 'issuesWithParameters':
-                github_issues_with_par(args.AccessToken)
+                issues_with_parameters.github_issues_with_par(args.AccessToken)
                 args.a = None
             elif args.a == 'pullReqWithParameters':
-                github_pullreq_with_par(args.AccessToken)
+                pull_req_with_parameters.github_pullreq_with_par(args.AccessToken)
                 args.a = None
             else:
                 print(f'Azione non riconosciuta. Le opzioni valide sono:'
