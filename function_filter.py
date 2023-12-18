@@ -72,7 +72,7 @@ def filter_github():
 
                 filtered_pr_file_path = filter_github_pull_request(repository, path_file, status_filter, author_filter)
                 print(f"Pull request filtrate salvate con successo in: {filtered_pr_file_path}")
-    
+
     return
 
 
@@ -96,6 +96,7 @@ def filter_issues_by_path(path_file, status_filter, author_filter):
 
     return filtered_issues_file_path
 
+
 def filter_pull_request_by_path(path_file, status_filter, author_filter):
     status_filter = status_filter
     author_filter = author_filter
@@ -114,8 +115,9 @@ def filter_pull_request_by_path(path_file, status_filter, author_filter):
 
         filtered_pull_request_path = "p_req_by_path"
         filtered_pr_file_path = create_folder(filtered_pull_request_path, filtered_pull_request)
-            
+
     return filtered_pr_file_path
+
 
 def filter_github_issues(repository, path_file, status_filter, author_filter):
     status_filter = status_filter
@@ -137,6 +139,7 @@ def filter_github_issues(repository, path_file, status_filter, author_filter):
 
     return filtered_issues_file_path
 
+
 def filter_github_pull_request(repository, path_file, status_filter, author_filter):
     status_filter = status_filter
     author_filter = author_filter
@@ -155,8 +158,9 @@ def filter_github_pull_request(repository, path_file, status_filter, author_filt
 
         filtered_pull_request_path = f"{repository}_filter_pull_request"
         filtered_pr_file_path = create_folder(filtered_pull_request_path, filtered_pull_request)
-        
+
     return filtered_pr_file_path
+
 
 def create_folder(folder_path, filter):
     os.makedirs(folder_path, exist_ok=True)
@@ -177,13 +181,13 @@ def f_path(path):
         return
 
     file = input("Inserisci il nome del file json: ")
-    #path_file = f"{path}\{file}.json"
+    # path_file = f"{path}\{file}.json"
     path_file = os.path.join(path, f"{file}.json")
 
     if not os.path.exists(path_file):
         print(f"Il percorso '{path_file}' non esiste.")
         return
-    
+
     return path_file
 
 
@@ -200,6 +204,5 @@ def user_login():
     if not author_filter:
         print("L'utente non è presente")
         return
-    
-    return author_filter
 
+    return author_filter

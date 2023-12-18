@@ -13,8 +13,8 @@ import rate_limit_handler
 import request_error_handler
 import search_repository
 from function_filter import filter_github
-from issues_with_parameters import github_issues_with_par
-from pull_req_with_parameters import github_pullreq_with_par
+import issues_with_parameters
+import pull_req_with_parameters
 
 # global start_time
 start_time = 0
@@ -69,8 +69,8 @@ def main():
                       '\n --a pullReqWithParameters'
                       '\n --a esci ')
             else:
-                print(
-                    "Non è stato possibile recuperare il token dal file di inizializzazione, si prega di inserirlo manualmente")
+                print("Non è stato possibile recuperare il token dal file di inizializzazione, "
+                      "si prega di inserirlo manualmente")
     else:
         with open('auth.txt', 'x'):
             pass
@@ -113,55 +113,56 @@ def main():
                           '\n --a esci ')
                     auth = True
                     with open('auth.txt', 'r+') as file:
-                        line = file.readline()
                         line = args.AccessToken
                         file.seek(0)
                         file.writelines(line)
 
                 else:
                     request_error_handler.request_error_handler(response.status_code)
-                    print(
-                        "Assicurati di aver inserito il token correttamente o che sia ancora valido per accedere all'API\n")
+                    print("Assicurati di aver inserito il token correttamente o "
+                          "che sia ancora valido per accedere all'API\n")
                     args.AccessToken = None
 
         if auth:
 
-            if args.azione is None:
-                args.azione = input("Inserisci l'azione che desideri effettuare: ")
-            if args.azione == 'importIssue':
+            if args.a is None:
+                args.a = input("Inserisci l'azione che desideri effettuare: ")
+            if args.a == 'importIssue':
                 issue_handler.save_github_issues(args.AccessToken, None, None)
-                args.azione = None
-            elif args.azione == 'importPullrequests':
+                args.a = None
+            elif args.a == 'importPullrequests':
                 import_pull_requests.save_github_pull_requests(args.AccessToken, None, None)
-                args.azione = None
-            elif args.azione == 'importWorkflowlogs':
+                args.a = None
+            elif args.a == 'importWorkflowlogs':
                 import_and_save_workflow_logs.save_github_workflow_logs(args.AccessToken, None, None)
-                args.azione = None
-            elif args.azione == 'search_repo':
+                args.a = None
+            elif args.a == 'search_repo':
                 search_repository.controller_repo(args.AccessToken)
-                args.azione = None
-            elif args.azione == 'importPullrequestswithoutcomments':
-                import_pull_request_without_comments.save_github_pull_requests_without_comments(args.AccessToken)
-                args.azione = None
-            elif args.azione == 'importIssuewithoutcomments':
-                import_issue_without_comments.save_github_issues_without_comments(args.AccessToken, None, None)
-                args.azione = None
-            elif args.azione == 'esci':
+                args.a = None
+            elif args.a == 'importPullrequestswithoutcomments':
+                import_pull_request_without_comments.save_github_pull_requests_without_comments(args.AccessToken,
+                                                                                                None, None)
+                args.a = None
+            elif args.a == 'importIssuewithoutcomments':
+                import_issue_without_comments.save_github_issues_without_comments(args.AccessToken,
+                                                                                  None, None)
+                args.a = None
+            elif args.a == 'esci':
                 print('Arrivederci!')
                 break  # Esci dal loop
-            elif args.azione == 'newAuth':
-                args.azione = None
+            elif args.a == 'newAuth':
+                args.a = None
                 args.AccessToken = None
                 auth = False
-            elif args.azione == 'filterOutput':
+            elif args.a == 'filterOutput':
                 filter_github()
-                args.azione = None
-            elif args.azione == 'issuesWithParameters':
-                github_issues_with_par(args.AccessToken)
-                args.azione = None
-            elif args.azione == 'pullReqWithParameters':
-                github_pullreq_with_par(args.AccessToken)
-                args.azione = None
+                args.a = None
+            elif args.a == 'issuesWithParameters':
+                issues_with_parameters.github_issues_with_par(args.AccessToken)
+                args.a = None
+            elif args.a == 'pullReqWithParameters':
+                pull_req_with_parameters.github_pullreq_with_par(args.AccessToken)
+                args.a = None
             else:
                 print(f'Azione non riconosciuta. Le opzioni valide sono:'
                       '\n --a importIssue'
@@ -175,7 +176,7 @@ def main():
                       '\n --a issuesWithParameters'
                       '\n --a pullReqWithParameters'
                       '\n --a esci ')
-                args.azione = None
+                args.a = None
 
 
 if __name__ == '__main__':

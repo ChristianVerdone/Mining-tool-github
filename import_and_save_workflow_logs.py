@@ -11,15 +11,13 @@ import rate_limit
 
 
 def save_github_workflow_logs(token, owner, repository):
-
-    # Richiedi all'utente di inserire l'owner e il repository
     if owner is None:
+        # Richiedi all'utente di inserire l'owner e il repository
         owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
     if repository is None:
         repository = input("Inserisci il nome del repository su GitHub: ")
     if token is None:
         request_error_handler.request_error_handler(505)
-        return
 
     # Aggiungi un timestamp alle informazioni dei workflow logs
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -38,7 +36,7 @@ def save_github_workflow_logs(token, owner, repository):
             # La risposta è avvenuta con successo
             workflow_runs = response.json()
             
-            if not workflow_runs:
+            if len(workflow_runs['workflow_runs']) == 0:
                 break
                 
             if temp is None:
@@ -60,7 +58,8 @@ def save_github_workflow_logs(token, owner, repository):
 def get_github_workflow_logs(token, owner, repository, i):
     # Ottieni i workflow logs
     api_url = f'https://api.github.com/repos/{owner}/{repository}/actions/runs?per_page=100&page={i}'
-    headers = {'Authorization': 'Bearer ' + token}
+    tok = f'{token}'
+    headers = {'Authorization': 'Bearer ' + tok}
     
     response = requests.get(api_url, headers=headers)
     rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],

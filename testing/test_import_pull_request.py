@@ -54,8 +54,7 @@ def test_request_github_pull_requests(mock_requests_get, mock_main_tool, mock_ra
 
     # Verifica che la funzione restituisca la response corretta
     assert result == mock_response
-
-    #pyRateLimit.assert_called()
+    # pyRateLimit.assert_called()
 
 
 def test_not_pull_request():
@@ -105,4 +104,4 @@ def test_import_pull_requests_comments_status_error():
                                                                      pullrequest)
 
     ResponseError.assert_called()
-    assert response == None
+    assert response is None
