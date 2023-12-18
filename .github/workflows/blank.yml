@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.11.6
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Install pip-tools
+      run: python -m pip install pip-tools
+
+    - name: Generate requirements.txt
+      run: pip-compile requirements.in
+
+    - name: Run linter and static analysis
+      run: |
+        pylint mainTool.py
+        flake8 mainTool.py
+
+  
