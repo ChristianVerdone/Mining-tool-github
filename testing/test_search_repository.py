@@ -49,10 +49,10 @@ def test_controller_repo_2(monkeypatch):
 # Ogni riga del file è del tipo owner\repository
 def test_controller_repo(monkeypatch):
     # Inserisci il tuo token
-    token = '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'
+    token = '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'
 
     inputs = iter([
-        r'C:\Users\angel\Desktop\Progetto Ing\Mining-tool-github',  # Path della repo dove si cerca il file
+        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github',  # Path della repo dove si cerca il file
         'repositories',
         'esci'
     ])
@@ -94,7 +94,7 @@ def test_controller_repo_not_file(monkeypatch, capsys):
 # Test con percorso che non esiste
 def test_controller_repo_not_path(monkeypatch, capsys):
     # Inserisci il tuo token
-    token = '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'
+    token = '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'
     path = 'C:path_not_exist'
 
     monkeypatch.setattr('builtins.input', lambda _: path)
@@ -113,7 +113,7 @@ def test_controller_repo_not_path(monkeypatch, capsys):
 # Test con input = esci
 def test_controller_repo_esc(monkeypatch, capsys):
     # Inserisci il tuo token
-    token = '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'
+    token = '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'
     path = 'esci'
 
     monkeypatch.setattr('builtins.input', lambda _: path)
@@ -131,7 +131,7 @@ def test_controller_repo_esc(monkeypatch, capsys):
 # passano come parametri: token, owner, repository
 def test_request_github():
     # Parametri di esempio
-    token = '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'  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
+    token = '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'  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
     owner = 'tensorflow'
     repository = 'tensorflow'
 

@@ -18,6 +18,7 @@ def save_github_workflow_logs(token, owner, repository):
         repository = input("Inserisci il nome del repository su GitHub: ")
     if token is None:
         request_error_handler.request_error_handler(505)
+        return
 
     # Aggiungi un timestamp alle informazioni dei workflow logs
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')

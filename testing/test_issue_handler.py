@@ -71,7 +71,7 @@ def test_output():
 
 def test_call_rate_limit():
     with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
-        issue_handler.save_github_issues('', "jmpoep",
+        issue_handler.save_github_issues('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', "jmpoep",
                                          "vmprotect-3.5.1")
 
     pyRateLimit.assert_called()
@@ -79,7 +79,7 @@ def test_call_rate_limit():
 
 def test_not_issue():
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
-        issue_handler.save_github_issues('', 'keras-team',
+        issue_handler.save_github_issues('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', 'keras-team',
                                          'keras-core')
 
         # Verifica che il file JSON sia stato creato.
@@ -90,7 +90,7 @@ def test_not_issue():
 
 def test_request_github_issues():
     i = 0
-    response = issue_handler.request_github_issues('', 'keras-team',
+    response = issue_handler.request_github_issues('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', 'keras-team',
                                                    'keras-core', i)
 
     assert response.status_code == 200
@@ -100,7 +100,7 @@ def test_request_github_issues():
 def test_input_valido():
     with patch('issue_handler.import_issue_comments') as pyHasComments:
         pyHasComments.return_value = {'comment': 'This is a comment'}
-        issue_handler.save_github_issues('', "jmpoep",
+        issue_handler.save_github_issues('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', "jmpoep",
                                          "vmprotect-3.5.1")
 
     pyHasComments.assert_called()
@@ -109,7 +109,7 @@ def test_input_valido():
 def test_input_valido_no_comments():
     with patch('issue_handler.import_issue_comments') as pyHasComments:
         pyHasComments.return_value = {'comment': 'This is a comment'}
-        issue_handler.save_github_issues('', "ChristianVerdone",
+        issue_handler.save_github_issues('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', "ChristianVerdone",
                                          "testing")
 
     pyHasComments.assert_not_called()
@@ -130,7 +130,7 @@ def test_import_issue_comments_status_ok():
     issue = {"number": 2}
 
     with patch('request_error_handler.request_error_handler') as ResponseError:
-        response = issue_handler.import_issue_comments("",
+        response = issue_handler.import_issue_comments("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",
                                                        "jmpoep", "vmprotect-3.5.1", issue)
 
     ResponseError.assert_not_called()

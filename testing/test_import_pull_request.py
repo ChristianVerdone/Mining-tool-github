@@ -1,8 +1,9 @@
 import os
 import tempfile
 from unittest.mock import patch, MagicMock
-from import_pull_requests import request_github_pull_requests
+
 import import_pull_requests
+from import_pull_requests import request_github_pull_requests
 
 # Test per verificare la richiesta 
 def test_request_github_pull_requests():
@@ -29,7 +30,7 @@ def test_request_github_pull_requests():
 
 def test_not_pull_request():
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
-        import_pull_requests.save_github_pull_requests('', 'keras-team',
+        import_pull_requests.save_github_pull_requests('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', 'keras-team',
                                                        'keras-core')
 
         # Verifica che il file JSON sia stato creato.
@@ -40,7 +41,7 @@ def test_not_pull_request():
 
 def test_request_github_pulls():
     i = 0
-    response = import_pull_requests.request_github_pull_requests('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',
+    response = import_pull_requests.request_github_pull_requests('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',
                                                                  'keras-team', 'keras-core', i)
 
     assert response.status_code == 200
@@ -50,7 +51,7 @@ def test_request_github_pulls():
 def test_input_valido():
     with patch('import_pull_requests.import_pull_request_comments') as pyHasComments:
         pyHasComments.return_value = {'comment': 'This is a comment'}
-        import_pull_requests.save_github_pull_requests('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', "jmpoep",
+        import_pull_requests.save_github_pull_requests('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', "jmpoep",
                                                        "vmprotect-3.5.1")
 
     pyHasComments.assert_called()
@@ -59,10 +60,9 @@ def test_input_valido():
 def test_input_valido_no_comments():
     with patch('import_pull_requests.import_pull_request_comments') as pyHasComments:
         pyHasComments.return_value = {'comment': 'This is a comment'}
-        import_pull_requests.save_github_pull_requests('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', "linexjlin",
-                                                       "GPTs")
+        import_pull_requests.save_github_pull_requests('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', "ChristianVerdone",
+                                                       "testing")
 
-    #pyHasComments.assert_not_called()
     pyHasComments.assert_called()
 
 # testiamo la situazione in cui riceviamo una risposa con status code != 200 per i commenti di una issue
