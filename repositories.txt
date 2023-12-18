@@ -1,10 +1,2 @@
 tensorflow/tensorflow
 scikit-learn/scikit-learn
-twbs/bootstrap
-kubernetes/kubernetes
-aaaaa/bbbbbccc
-tensorflow/tensorflow
-scikit-learn/scikit-learn
-twbs/bootstrap
-kubernetes/kubernetes
-aaaaa/bbbbbccc
