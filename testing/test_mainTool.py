@@ -90,7 +90,7 @@ def test_importIssuewithoutcomments(monkeypatch):
 
 def test_newAuth_filterOutput(monkeypatch):
     inputs = iter(['newAuth',
-                   '',  # inserire token valido
+                   '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',  # inserire token valido
                    'filterOutput',
                    'repository',
                    'issues',
@@ -107,8 +107,8 @@ def test_newAuth_filterOutput(monkeypatch):
 
 def test_newAuthNotValid(monkeypatch):
     inputs = iter(['newAuth',
-                   '',  # token non valido
-                   '',  # token valido
+                   'rg',  # token non valido
+                   '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',  # token valido
                    'esci'])
 
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
@@ -144,7 +144,7 @@ def test_issuesWithParameters(monkeypatch):
     with patch('issues_with_parameters.github_issues_with_par') as mock_issuesWithParameters:
         mainTool.main()
 
-    mock_issuesWithParameters.assert_not_called()
+    mock_issuesWithParameters.assert_called()
 
 
 def test_pullReqWithParameters(monkeypatch):
@@ -158,7 +158,7 @@ def test_pullReqWithParameters(monkeypatch):
     with patch('pull_req_with_parameters.github_pullreq_with_par') as mock_pullReqWithParameters:
         mainTool.main()
 
-    mock_pullReqWithParameters.assert_not_called()
+    mock_pullReqWithParameters.assert_called()
 
 
 def test_noAction(monkeypatch, capsys):

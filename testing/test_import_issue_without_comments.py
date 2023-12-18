@@ -9,7 +9,7 @@ import import_issue_without_comments
 # da modificare per unit testing
 def test_make_issue_directory_path_not_exists():
     with patch('os.makedirs') as pyMakeDir:
-        import_issue_without_comments.save_github_issues_without_comments("token", "test", "test")
+        import_issue_without_comments.save_github_issues_without_comments("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", "test", "test")
 
     pyMakeDir.assert_called()
 
@@ -18,7 +18,7 @@ def test_input_vuoto():
     # Inserisci un input vuoto per l'owner e il repository.
     owner = ""
     repository = ""
-    token = ""
+    token = None
 
     with patch('request_error_handler.request_error_handler') as pyEmpty:
         import_issue_without_comments.save_github_issues_without_comments(token, owner, repository)
@@ -30,7 +30,7 @@ def test_input_non_valido():
     # Inserisci un input non valido per l'owner o il repository.
     owner = "non_esistente"
     repository = "non_esistente"
-    token = "non_esistente"
+    token = None
 
     with patch('request_error_handler.request_error_handler') as pyNotvalid:
         import_issue_without_comments.save_github_issues_without_comments(token, owner, repository)
@@ -66,7 +66,7 @@ def test_output():
 
 def test_call_rate_limit():
     with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
-        import_issue_without_comments.save_github_issues_without_comments('',
+        import_issue_without_comments.save_github_issues_without_comments('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',
                                                                           "jmpoep",
                                                                           "vmprotect-3.5.1")
 
@@ -75,7 +75,7 @@ def test_call_rate_limit():
 
 def test_not_issue():
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
-        import_issue_without_comments.save_github_issues_without_comments('',
+        import_issue_without_comments.save_github_issues_without_comments('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',
                                                                           'keras-team',
                                                                           'keras-core')
 
@@ -87,7 +87,7 @@ def test_not_issue():
 
 def test_request_github_issues():
     i = 0
-    response = import_issue_without_comments.request_github_issues('',
+    response = import_issue_without_comments.request_github_issues('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',
                                                                    'keras-team',
                                                                    'keras-core', i)
 

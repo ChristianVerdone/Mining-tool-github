@@ -8,16 +8,17 @@ import requests
 
 from search_repository import request_github, controller_repo
 
+
 # Test per:
 # 1) testare la funzione request_github
 # 2) Simulare la risposta della richesta API
 def test_controller_repo_2(monkeypatch):
     # Inserisci il tuo token
-    token = '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'
+    token = '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'
 
     # Input simulati
     inputs = iter([
-        r'C:\Users\angel\Desktop\Progetto Ing\Mining-tool-github',  # Path della repo dove si cerca il file
+        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github',  # Path della repo dove si cerca il file
         'repositories',
         'esci'
     ])
@@ -31,7 +32,6 @@ def test_controller_repo_2(monkeypatch):
 
     # Test della funzione controller_repo
     with patch('search_repository.request_github') as mock_request:
-
         # Mock per simulare la risposta della richiesta API
         mock_request.side_effect = [
             Mock(status_code=200),  # Simulazione di una richiesta con successo
@@ -45,14 +45,15 @@ def test_controller_repo_2(monkeypatch):
     mock_request.assert_any_call(token, "tensorflow", "tensorflow")
     mock_request.assert_any_call(token, "scikit-learn", "scikit-learn")
 
+
 # Test con percorso del file esistente
 # Ogni riga del file è del tipo owner\repository
 def test_controller_repo(monkeypatch):
     # Inserisci il tuo token
-    token = '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'
+    token = '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'
 
     inputs = iter([
-        r'C:\Users\angel\Desktop\Progetto Ing\Mining-tool-github',  # Path della repo dove si cerca il file
+        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github',  # Path della repo dove si cerca il file
         'repositories',
         'esci'
     ])
@@ -70,12 +71,12 @@ def test_controller_repo(monkeypatch):
 # Test con file che non esiste
 def test_controller_repo_not_file(monkeypatch, capsys):
     # Inserisci il tuo token
-    token = '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'
+    token = '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'
     inputs = iter([
-        r'C:\Users\angel\Desktop\Progetto Ing\Mining-tool-github',  # Path della repo dove si cerca il file
+        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github',  # Path della repo dove si cerca il file
         'file_not_exists'
     ])
-    path_file = r'C:\Users\angel\Desktop\Progetto Ing\Mining-tool-github/file_not_exists.txt'
+    path_file = r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github/file_not_exists.txt'
 
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
 
@@ -87,14 +88,13 @@ def test_controller_repo_not_file(monkeypatch, capsys):
 
     # Esegui le asserzioni
     assert f"Il percorso '{path_file}' non esiste." in captured.out
-    mock_open.assert_not_called() 
+    mock_open.assert_not_called()
 
-    
 
 # Test con percorso che non esiste
 def test_controller_repo_not_path(monkeypatch, capsys):
     # Inserisci il tuo token
-    token = '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'
+    token = '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'
     path = 'C:path_not_exist'
 
     monkeypatch.setattr('builtins.input', lambda _: path)
@@ -113,7 +113,7 @@ def test_controller_repo_not_path(monkeypatch, capsys):
 # Test con input = esci
 def test_controller_repo_esc(monkeypatch, capsys):
     # Inserisci il tuo token
-    token = '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'
+    token = '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'
     path = 'esci'
 
     monkeypatch.setattr('builtins.input', lambda _: path)
@@ -131,7 +131,7 @@ def test_controller_repo_esc(monkeypatch, capsys):
 # passano come parametri: token, owner, repository
 def test_request_github():
     # Parametri di esempio
-    token = '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'  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
+    token = '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'  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
     owner = 'tensorflow'
     repository = 'tensorflow'
 
@@ -161,5 +161,3 @@ def test_request_github():
     assert response.status_code == 200
     assert response.headers['X-RateLimit-Remaining'] == '500'
     assert response.headers['X-RateLimit-Reset'] == '1609459200'
-
-    

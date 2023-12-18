@@ -72,7 +72,7 @@ def test_filter_github_success(monkeypatch, capsys):
         'path',  # Simula l'input 'path'
         'issues',  # Simula l'input 'issues'
         # Si inserisce un percorso che dipende da chi esegue il test dove si vuole cercare il file
-        '',  # Simula l'input del percorso
+        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github\tensorflow_data\issues',  # Simula l'input del percorso
         'issues_with_comments_2023-11-16_10-53-48',
         'open',
         'glemaitre',
@@ -104,7 +104,7 @@ def test_filter_github_success_pr(monkeypatch, capsys):
         'path',  # Simula l'input 'path'
         'pull_request',  # Simula l'input 'issues'
         # Si inserisce un percorso che dipende da chi esegue il test dove si vuole cercare il file
-        '',  # Simula l'input del percorso
+        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github\tensorflow_data\pull_requests',  # Simula l'input del percorso
         # Si utilizza un file presente nella directory
         'pull_requests_2023-11-20_11-02-58',
         'open',
@@ -420,9 +420,9 @@ def test_create_folder_creates_directory_and_file(temp_folder):
 # Test con path e file esistente
 def test_f_path():
     # Path della directory dove cercare il file
-    file_path = r""
+    file_path = r"D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github\testing\tensorflow_data\issues"
     # Path completo della directory con il file alla fine
-    path_file = r""
+    path_file = r"D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github\testing\tensorflow_data\issues\issues_with_comments_2023-11-16_10-53-48.json"
 
     with patch('os.path.exists') as mock_os_path, \
             patch('builtins.print') as mock_print, \

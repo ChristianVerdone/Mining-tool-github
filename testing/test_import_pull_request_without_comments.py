@@ -60,7 +60,7 @@ def test_output():
 
 def test_call_rate_limit():
     with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
-        import_pull_request_without_comments.save_github_pull_requests_without_comments('', "jmpoep",
+        import_pull_request_without_comments.save_github_pull_requests_without_comments('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', "jmpoep",
                                                                                         "vmprotect-3.5.1")
 
     pyRateLimit.assert_called()
@@ -68,7 +68,7 @@ def test_call_rate_limit():
 
 def test_not_pull_req_without_comments():
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
-        import_pull_request_without_comments.save_github_pull_requests_without_comments('', 'keras-team',
+        import_pull_request_without_comments.save_github_pull_requests_without_comments('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', 'keras-team',
                                                                                         'keras-core')
 
         # Verifica che il file JSON sia stato creato.
@@ -79,7 +79,7 @@ def test_not_pull_req_without_comments():
 
 def test_request_github_pull_req_without_comments():
     i = 0
-    response = import_pull_request_without_comments.request_github_pull_requests_without_comments('', 'keras-team',
+    response = import_pull_request_without_comments.request_github_pull_requests_without_comments('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', 'keras-team',
                                                                                                   'keras-core', i)
 
     assert response.status_code == 200
