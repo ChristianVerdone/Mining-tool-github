@@ -10,8 +10,8 @@ persistent=no
 
 # Disabilita alcuni avvertimenti specifici
 disable=invalid-name, #Segnalato quando i nomi di variabili o funzioni non seguono le convenzioni di denominazione PEP 8. Ad esempio, se una variabile è chiamata MyVar invece di my_var.
-        missing-docstring,#Segnalato quando una funzione, un modulo o una classe non ha una docstring (stringa di documentazione). Le docstring sono utili per documentare il codice.
-        too-many-locals #Indica che una funzione ha un numero elevato di variabili locali. Questo può rendere la funzione difficile da comprendere e manutenere.
+        missing-docstring, #Segnalato quando una funzione, un modulo o una classe non ha una docstring (stringa di documentazione). Le docstring sono utili per documentare il codice.
+        too-many-locals, #Indica che una funzione ha un numero elevato di variabili locali. Questo può rendere la funzione difficile da comprendere e manutenere.
         unused-import, #Avverte quando un modulo è importato ma non utilizzato nel codice.
         no-member #Indica che si sta tentando di accedere a un membro (attributo o metodo) di un oggetto che Pylint non riconosce come definito nel codice. Può verificarsi quando si utilizzano oggetti dinamici.
 
