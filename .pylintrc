@@ -47,8 +47,8 @@ good-names=i, j, k, ex, Run, _
 [IMPORTS]
 
 # Specifica gli import che sono consentiti o vietati
-allow-wildcard-underscore=yes #Consente l'uso di import con caratteri jolly (wildcard) e il carattere underscore. Ad esempio, il seguente import sarebbe consentito:from my_module import *
-allow-package-unlisted-externals=yes #Consente l'importazione di pacchetti non elencati negli externals (moduli esterni). Ad esempio, il seguente import sarebbe consentito anche se il pacchetto non è elencato come external:import external_module
+#allow-wildcard-underscore=yes #Consente l'uso di import con caratteri jolly (wildcard) e il carattere underscore. Ad esempio, il seguente import sarebbe consentito:from my_module import *
+#allow-package-unlisted-externals=yes #Consente l'importazione di pacchetti non elencati negli externals (moduli esterni). Ad esempio, il seguente import sarebbe consentito anche se il pacchetto non è elencato come external:import external_module
 
 [DESIGN]   #da rivedere
 
