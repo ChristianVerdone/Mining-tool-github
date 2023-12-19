@@ -72,7 +72,11 @@ logging-modules=logging
 #i0011: Riguarda "errori indefiniti". Pylint di solito segnala un avvertimento quando si fa riferimento a variabili o attributi non definiti.
 #C0301: Riguarda "linea di codice troppo lunga"
 
+<<<<<<< HEAD
 disable= i0023, i0011, C0301
+=======
+disable=i0023, i0011, C0301, W0603
+>>>>>>> 60fae62c682c5467de28ea07f008a740acf910f2
 
 [UNITTEST]
 #nel file di configurazione Pylint è utilizzata per configurare Pylint in modo da riconoscere il codice di test, spesso scritto utilizzando il framework di testing integrato di Python, unittest.
