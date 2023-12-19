@@ -93,3 +93,12 @@ def test_request_error_generic(capsys):
     # Verifica che l'output includa 'Errore generico nella richiesta'
     s = 'Errore generico nella richiesta'
     assert s in captured.out
+
+
+def test_request_error_NOT_FOUND(capsys):
+    request_error_handler.request_error_handler(404)
+
+    captured = capsys.readouterr()
+    # Verifica che l'output includa 'Errore nella richiesta: NOT FOUND: L'URI richiesto non è valido o la risorsa richiesta non esiste.
+    s = ("Errore nella richiesta: 404\nNOT FOUND: L'URI richiesto non è valido o la risorsa richiesta non esiste.")
+    assert s in captured.out

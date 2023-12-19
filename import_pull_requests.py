@@ -83,22 +83,15 @@ def save_github_pull_requests(token, owner, repository):
 def make_pull_requests_directory(repository):
     # Creare la cartella principale con il nome del repository
     repository_folder = f'{repository}_data'
-    print('test 1')
     if not os.path.exists(repository_folder):
-        print('test 2')
         os.makedirs(repository_folder)
-        print('test 3')
 
-    print('test 4')
     # Creare la sottocartella con il nome "pull request"
     pull_requests_folder = os.path.join(repository_folder, 'pull_requests')
-    print('test 5')
+
     if not os.path.exists(pull_requests_folder):
-        print('test 6')
         os.makedirs(pull_requests_folder)
-        print('test 7')
-    
-    print('test 8')
+
     return pull_requests_folder
 
 
@@ -113,14 +106,9 @@ def import_pull_request_comments(token, owner, repository, pull_request):
     
     rate_limit_handler.wait_for_rate_limit_reset(comments_response.headers['X-RateLimit-Remaining'],
                                                  comments_response.headers['X-RateLimit-Reset'])
-    print('Test 1')
     if comments_response.status_code != 200:
-        print('Test 2')
         request_error_handler.request_error_handler(comments_response.status_code)
         comments = None
-        print('Test 3')
         return comments
-    print('Test 4')
     comments = comments_response.json()
-    print('Test 5')
     return comments
