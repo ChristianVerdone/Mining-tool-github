@@ -1,4 +1,4 @@
-﻿stroid==3.0.2
+a﻿stroid
 attrs==22.1.0
 camelcase==0.2
 certifi==2022.9.24
