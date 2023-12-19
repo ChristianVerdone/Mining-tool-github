@@ -71,6 +71,7 @@ logging-modules=logging
 #i0023: Riguarda "usare la funzione 'xxx'". Pylint di solito segnala un avvertimento quando una funzione deprecata o obsoleta viene utilizzata.
 #i0011: Riguarda "errori indefiniti". Pylint di solito segnala un avvertimento quando si fa riferimento a variabili o attributi non definiti.
 #C0301: Riguarda "linea di codice troppo lunga"
+#WO603: Riguarda "variabili globali"
 
 disable=i0023, i0011, C0301, W0603
 
