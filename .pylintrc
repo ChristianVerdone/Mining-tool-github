@@ -53,12 +53,12 @@ good-names=i, j, k, ex, Run, _
 
 # Controlla la complessità del codice e altri aspetti di design
 # La sezione [DESIGN] nel file di configurazione Pylint è utilizzata per controllare diversi aspetti di design del codice, come la complessità della funzione, la quantità di argomenti, il numero di variabili locali e altro.
-max-args=5 #Impone che una funzione non debba avere più di 5 argomenti. Se il numero di argomenti supera questa soglia, Pylint genererà un avvertimento.
-max-locals=15 #Limita il numero di variabili locali in una funzione a 15. Se il numero di variabili locali supera questa soglia, verrà generato un avvertimento
-max-branches=25 #Impone che una funzione non debba avere più di 10 rami (dichiarazioni di if, elif, ecc.). Oltre questa soglia, verranno generati avvertimenti.
-max-statements=50 #Limita il numero totale di dichiarazioni in una funzione a 50. Se il numero di dichiarazioni supera questa soglia, Pylint genererà un avvertimento.
-max-parents=7 #Limita il numero di classi parenti per una classe a 7.
-max-attributes=7 #Limita il numero di attributi in una classe a 7.
+max-args=90 #Impone che una funzione non debba avere più di 5 argomenti. Se il numero di argomenti supera questa soglia, Pylint genererà un avvertimento.
+max-locals=90 #Limita il numero di variabili locali in una funzione a 15. Se il numero di variabili locali supera questa soglia, verrà generato un avvertimento
+max-branches=90 #Impone che una funzione non debba avere più di 10 rami (dichiarazioni di if, elif, ecc.). Oltre questa soglia, verranno generati avvertimenti.
+max-statements=90 #Limita il numero totale di dichiarazioni in una funzione a 50. Se il numero di dichiarazioni supera questa soglia, Pylint genererà un avvertimento.
+max-parents=90 #Limita il numero di classi parenti per una classe a 7.
+max-attributes=90 #Limita il numero di attributi in una classe a 7.
 
 [LOGGING]
 

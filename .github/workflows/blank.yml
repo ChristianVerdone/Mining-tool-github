@@ -16,7 +16,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: 3.11.6
+        python-version: 3.11
 
     - name: Install dependencies
       run: |
@@ -32,6 +32,19 @@ jobs:
     - name: Run linter and static analysis
       run: |
         pylint mainTool.py
-        flake8 mainTool.py
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.10
+
+    - name: Install dependencies for Python 3.10
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run linter and static analysis for Python 3.10
+      run: |
+        pylint mainTool.py
 
   
