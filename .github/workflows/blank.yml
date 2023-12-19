@@ -34,18 +34,5 @@ jobs:
       run: |
         pylint mainTool.py
     
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.10
-
-    - name: Install dependencies for Python 3.10
-      run: |
-        python3.10 -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Run linter and static analysis for Python 3.10
-      run: |
-        pylint mainTool.py
 
   
