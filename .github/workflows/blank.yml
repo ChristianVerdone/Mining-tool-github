@@ -33,6 +33,18 @@ jobs:
     - name: Run linter and static analysis
       run: |
         pylint mainTool.py
+        pylint function_filter.py
+        pylint import_and_save_workflow_logs.py
+        pylint import_issue_without_comments.py
+        pylint import_pull_request_without_comments.py
+        pylint import_pull_requests.py
+        pylint issue_handler.py
+        pylint issues_with_parameters.py
+        pylint pull_req_with_parameters.py
+        pylint rate_limit.py
+        pylint rate_limit_handler.py
+        pylint request_error_handler.py
+        pylint search_repository.py
     
 
   
