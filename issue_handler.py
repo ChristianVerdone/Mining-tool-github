@@ -1,12 +1,12 @@
 import os
-import requests
 import json
+from datetime import datetime
+import requests
 import rate_limit
 import mainTool
 
 import rate_limit_handler
 import request_error_handler
-from datetime import datetime
 
 
 def request_github_issues(token, owner, repository, i):
@@ -18,7 +18,7 @@ def request_github_issues(token, owner, repository, i):
     headers = {'Authorization': 'Bearer ' + tok}  # Replace with your GitHub token
 
     # Make the GET request to the GitHub API
-    response = requests.get(api_url, headers=headers)
+    response = requests.get(api_url, headers=headers, timeout=30)
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()
@@ -102,11 +102,11 @@ def import_issue_comments(token, owner, repository, issue):
     # Ottieni i commenti della issue
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/issues/{issue["number"]}/comments'
     headers = {'Authorization': 'Bearer ' + token}
-    comments_response = requests.get(comments_url, headers=headers)
-    
+    comments_response = requests.get(comments_url, headers=headers, timeout=30)
+
     mainTool.requests_count += 1
     rate_limit.rate_minute()
-    
+
     rate_limit_handler.wait_for_rate_limit_reset(comments_response.headers['X-RateLimit-Remaining'],
                                                  comments_response.headers['X-RateLimit-Reset'])
 
