@@ -39,11 +39,11 @@ jobs:
         pylint function_filter.py
         pylint pull_req_with_parameters.py
         pylint issue_handler.py
+        pylint issues_with_parameters.py
         pylint import_and_save_workflow_logs.py
         pylint import_issue_without_comments.py
         pylint import_pull_request_without_comments.py
         pylint import_pull_requests.py
-        pylint issues_with_parameters.py
         pylint request_error_handler.py
         
     
