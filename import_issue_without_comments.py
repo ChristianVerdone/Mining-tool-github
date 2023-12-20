@@ -1,11 +1,11 @@
 import os
-import requests
 import json
+from datetime import datetime
+import requests
 import rate_limit
 import mainTool
 import rate_limit_handler
 import request_error_handler
-from datetime import datetime
 
 
 def request_github_issues(token, owner, repository, i):
@@ -17,7 +17,7 @@ def request_github_issues(token, owner, repository, i):
     headers = {'Authorization': 'Bearer ' + tok}  # Replace with your GitHub token
 
     # Make the GET request to the GitHub API
-    response = requests.get(api_url, headers=headers)
+    response = requests.get(api_url, headers=headers, timeout=30)
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()

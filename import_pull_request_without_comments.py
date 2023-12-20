@@ -1,11 +1,11 @@
 import os
-import requests
 import json
+from datetime import datetime
+import requests
 import rate_limit
 import mainTool
 import rate_limit_handler
 import request_error_handler
-from datetime import datetime
 
 
 def request_github_pull_requests_without_comments(token, owner, repository, i):
@@ -14,11 +14,11 @@ def request_github_pull_requests_without_comments(token, owner, repository, i):
 
     tok = f'{token}'
 
-    # Utilizza il token di Github per autenticarsi 
+    # Utilizza il token di Github per autenticarsi
     headers = {'Authorization': 'Bearer ' + tok}
 
     # GET request al GitHub API
-    response = requests.get(api_url, headers=headers)
+    response = requests.get(api_url, headers=headers, timeout=30)
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()
