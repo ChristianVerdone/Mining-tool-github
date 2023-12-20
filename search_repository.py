@@ -29,7 +29,7 @@ def controller_repo(token):
         repositories_found = []
 
         # Leggi da file .txt l'owner/repository
-        with open(path_file, 'r') as file:
+        with open(path_file, 'r', encoding='utf-8') as file:
             # Per ogni riga del file prendi l'owner e il repository
             lines = file.readlines()
             for line in lines:
@@ -55,7 +55,7 @@ def controller_repo(token):
                     request_error_handler.request_error_handler(response.status_code)
 
         # Scrivo i repository trovati nel file 'repo.txt'
-        with open('repo.txt', 'w') as repo_file:
+        with open('repo.txt', 'w', encoding='utf-8') as repo_file:
             for repo in repositories_found:
                 repo_file.write(f"{repo}\n")
 
@@ -66,7 +66,8 @@ def request_github(token, owner, repository):
     # Utilizza il token di Github per autenticarsi
     headers = {'Authorization': 'Bearer ' + token}
     # GET request al GitHub API
-    response = requests.get(api_url, headers=headers)
+    # timeout=10 specifica che la richiesta HTTP si interromperà dopo 10 secondi se non viene ricevuta una risposta.
+    response = requests.get(api_url, headers=headers, timeout=10)
     rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
                                                  response.headers['X-RateLimit-Reset'])
     return response

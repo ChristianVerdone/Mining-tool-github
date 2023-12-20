@@ -35,7 +35,7 @@ def main():
     auth = False
 
     if os.path.exists('auth.txt'):
-        with open('auth.txt', 'r') as file:
+        with open('auth.txt', 'r', encoding= 'utf-8') as file:
             temp = file.readline()
             # Imposta l'intestazione con il token di accesso
             headers = {
@@ -44,7 +44,7 @@ def main():
             }
             # richiesta GET a GitHub API
             url = 'https://api.github.com/user'
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=30)
 
             requests_count += 1
             rate_limit.rate_minute()
@@ -72,7 +72,7 @@ def main():
                 print("Non è stato possibile recuperare il token dal file di inizializzazione, "
                       "si prega di inserirlo manualmente")
     else:
-        with open('auth.txt', 'x'):
+        with open('auth.txt', 'x', encoding= 'utf-8'):
             pass
 
     while True:
@@ -87,7 +87,7 @@ def main():
 
                 # richiesta GET a GitHub API
                 url = 'https://api.github.com/user'
-                response = requests.get(url, headers=headers)
+                response = requests.get(url, headers=headers, timeout=30)
 
                 requests_count += 1
                 rate_limit.rate_minute()
@@ -112,7 +112,7 @@ def main():
                           '\n --a pullReqWithParameters'
                           '\n --a esci ')
                     auth = True
-                    with open('auth.txt', 'r+') as file:
+                    with open('auth.txt', 'r+', encoding='utf-8') as file:
                         line = args.AccessToken
                         file.seek(0)
                         file.writelines(line)
@@ -164,7 +164,7 @@ def main():
                 pull_req_with_parameters.github_pullreq_with_par(args.AccessToken)
                 args.a = None
             else:
-                print(f'Azione non riconosciuta. Le opzioni valide sono:'
+                print('Azione non riconosciuta. Le opzioni valide sono:'
                       '\n --a importIssue'
                       '\n --a importPullrequests'
                       '\n --a importWorkflowlogs'

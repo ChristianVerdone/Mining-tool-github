@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import json
 import requests
@@ -5,18 +6,17 @@ import mainTool
 import rate_limit_handler
 import request_error_handler
 import rate_limit
-from datetime import datetime
+
 
 
 def request_github_pull_requests(token, owner, repository, i):
     # Costruisci l'URL dell'API GitHub per ottenere le pull request
     api_url = f'https://api.github.com/repos/{owner}/{repository}/pulls?per_page=100&page={i}'
-
-    # Utilizza il token di Github per autenticarsi 
+    # Utilizza il token di Github per autenticarsi
     headers = {'Authorization': 'Bearer ' + token}
 
     # GET request al GitHub API
-    response = requests.get(api_url, headers=headers)
+    response = requests.get(api_url, headers=headers, timeout=10)
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()
