@@ -1,13 +1,14 @@
+#import time
+from datetime import datetime
 import os
-import requests
 import json
+import requests
 import rate_limit
 import mainTool
 
 import rate_limit_handler
 import request_error_handler
-#import time
-from datetime import datetime
+
 
 
 def request_github_pull_requests(token, owner, repository, i):
@@ -19,7 +20,7 @@ def request_github_pull_requests(token, owner, repository, i):
     headers = {'Authorization': 'Bearer ' + tok}
 
     # GET request al GitHub API
-    response = requests.get(api_url, headers=headers)
+    response = requests.get(api_url, headers=headers, timeout=30)
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()
@@ -38,7 +39,7 @@ def save_github_pull_requests(token, owner, repository):
     if token is None:
         request_error_handler.request_error_handler(505)
         return
-        
+
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     pull_requests_folder = make_pull_requests_directory(repository)
     file_path = os.path.join(pull_requests_folder, f'pull_requests_{timestamp}.json')
@@ -99,11 +100,11 @@ def import_pull_request_comments(token, owner, repository, pull_request):
     # Ottieni i commenti delle pull request
     comments_url = f'https://api.github.com/repos/{owner}/{repository}/pulls/{pull_request["number"]}/comments'
     headers = {'Authorization': 'Bearer ' + token}
-    comments_response = requests.get(comments_url, headers=headers)
+    comments_response = requests.get(comments_url, headers=headers, timeout=30)
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()
-    
+
     rate_limit_handler.wait_for_rate_limit_reset(comments_response.headers['X-RateLimit-Remaining'],
                                                  comments_response.headers['X-RateLimit-Reset'])
     if comments_response.status_code != 200:
