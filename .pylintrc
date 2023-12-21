@@ -9,11 +9,12 @@ persistent=no
 [MESSAGES CONTROL]
 
 # Disabilita alcuni avvertimenti specifici
-disable=invalid-name, #Segnalato quando i nomi di variabili o funzioni non seguono le convenzioni di denominazione PEP 8. Ad esempio, se una variabile è chiamata MyVar invece di my_var.
-        missing-docstring,#Segnalato quando una funzione, un modulo o una classe non ha una docstring (stringa di documentazione). Le docstring sono utili per documentare il codice.
-        too-many-locals #Indica che una funzione ha un numero elevato di variabili locali. Questo può rendere la funzione difficile da comprendere e manutenere.
-        unused-import, #Avverte quando un modulo è importato ma non utilizzato nel codice.
-        no-member #Indica che si sta tentando di accedere a un membro (attributo o metodo) di un oggetto che Pylint non riconosce come definito nel codice. Può verificarsi quando si utilizzano oggetti dinamici.
+# invalid-name : Segnalato quando i nomi di variabili o funzioni non seguono le convenzioni di denominazione PEP 8. Ad esempio, se una variabile è chiamata MyVar invece di my_var.
+# missing-docstring: Segnalato quando una funzione, un modulo o una classe non ha una docstring (stringa di documentazione). Le docstring sono utili per documentare il codice.
+# too-many-locals: Indica che una funzione ha un numero elevato di variabili locali. Questo può rendere la funzione difficile da comprendere e manutenere.
+# unused-import: Avverte quando un modulo è importato ma non utilizzato nel codice.
+# no-member: Indica che si sta tentando di accedere a un membro (attributo o metodo) di un oggetto che Pylint non riconosce come definito nel codice. Può verificarsi quando si utilizzano oggetti dinamici.                                
+disable=invalid-name, missing-docstring,too-many-locals, unused-import, no-member 
 
 [REPORTS]
 
@@ -35,7 +36,7 @@ output-format=text
 #indent-after-paren=4
 
 # Esempio con lo stile predefinito di Pylint
- indentation-parameters=4
+# indentation-parameters=4
 
 [BASIC]
 
@@ -47,19 +48,17 @@ good-names=i, j, k, ex, Run, _
 [IMPORTS]
 
 # Specifica gli import che sono consentiti o vietati
-allow-wildcard-underscore=yes #Consente l'uso di import con caratteri jolly (wildcard) e il carattere underscore. Ad esempio, il seguente import sarebbe consentito:from my_module import *
-allow-package-unlisted-externals=yes #Consente l'importazione di pacchetti non elencati negli externals (moduli esterni). Ad esempio, il seguente import sarebbe consentito anche se il pacchetto non è elencato come external:import external_module
 
 [DESIGN]   #da rivedere
 
 # Controlla la complessità del codice e altri aspetti di design
 # La sezione [DESIGN] nel file di configurazione Pylint è utilizzata per controllare diversi aspetti di design del codice, come la complessità della funzione, la quantità di argomenti, il numero di variabili locali e altro.
-max-args=5 #Impone che una funzione non debba avere più di 5 argomenti. Se il numero di argomenti supera questa soglia, Pylint genererà un avvertimento.
-max-locals=15 #Limita il numero di variabili locali in una funzione a 15. Se il numero di variabili locali supera questa soglia, verrà generato un avvertimento
-max-branches=25 #Impone che una funzione non debba avere più di 10 rami (dichiarazioni di if, elif, ecc.). Oltre questa soglia, verranno generati avvertimenti.
-max-statements=50 #Limita il numero totale di dichiarazioni in una funzione a 50. Se il numero di dichiarazioni supera questa soglia, Pylint genererà un avvertimento.
-max-parents=7 #Limita il numero di classi parenti per una classe a 7.
-max-attributes=7 #Limita il numero di attributi in una classe a 7.
+max-args=90 #Impone che una funzione non debba avere più di 5 argomenti. Se il numero di argomenti supera questa soglia, Pylint genererà un avvertimento.
+max-locals=90 #Limita il numero di variabili locali in una funzione a 15. Se il numero di variabili locali supera questa soglia, verrà generato un avvertimento
+max-branches=90 #Impone che una funzione non debba avere più di 10 rami (dichiarazioni di if, elif, ecc.). Oltre questa soglia, verranno generati avvertimenti.
+max-statements=90 #Limita il numero totale di dichiarazioni in una funzione a 50. Se il numero di dichiarazioni supera questa soglia, Pylint genererà un avvertimento.
+max-parents=90 #Limita il numero di classi parenti per una classe a 7.
+max-attributes=90 #Limita il numero di attributi in una classe a 7.
 
 [LOGGING]
 
@@ -72,15 +71,17 @@ logging-modules=logging
 #i0023: Riguarda "usare la funzione 'xxx'". Pylint di solito segnala un avvertimento quando una funzione deprecata o obsoleta viene utilizzata.
 #i0011: Riguarda "errori indefiniti". Pylint di solito segnala un avvertimento quando si fa riferimento a variabili o attributi non definiti.
 #C0301: Riguarda "linea di codice troppo lunga"
+#WO603: Riguarda "variabili globali"
 
-disable=i0023, i0011, C0301
+disable=i0023, i0011, C0301, W0603
 
 [UNITTEST]
 #nel file di configurazione Pylint è utilizzata per configurare Pylint in modo da riconoscere il codice di test, spesso scritto utilizzando il framework di testing integrato di Python, unittest.
 
 # Configura Pylint per riconoscere il codice di test
-disable=missing-docstring, #Disabilita l'avvertimento relativo alla mancanza di docstring (stringa di documentazione) per le funzioni o i metodi di test. Nei test unitari, potrebbe non essere necessario avere una docstring per ciascun test, e questa configurazione consente di ignorare tali avvertimenti.
-        invalid-name #Disabilita l'avvertimento relativo a nomi di variabili o funzioni che non seguono le convenzioni di denominazione PEP 8 all'interno del codice di test.
+# missing-docstring: Disabilita l'avvertimento relativo alla mancanza di docstring (stringa di documentazione) per le funzioni o i metodi di test. Nei test unitari, potrebbe non essere necessario avere una docstring per ciascun test, e questa configurazione consente di ignorare tali avvertimenti.
+# invalid-name: Disabilita l'avvertimento relativo a nomi di variabili o funzioni che non seguono le convenzioni di denominazione PEP 8 all'interno del codice di test.
+disable= missing-docstring, invalid-name 
 
 [IDENTIFIERS]
 

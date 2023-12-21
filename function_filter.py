@@ -38,7 +38,7 @@ def filter_github():
                 filtered_pr_file_path = filter_pull_request_by_path(path_file, status_filter, author_filter)
                 print(f"Pull request filtrate salvate con successo in: {filtered_pr_file_path}")
         return
-    elif scelta == 'repository':
+    if scelta == 'repository':
         if scelta_i_pr == 'issues':
             while True:
                 repository = input("\nIndica il repository (Per uscire digita esc) ")
@@ -77,9 +77,6 @@ def filter_github():
 
 
 def filter_issues_by_path(path_file, status_filter, author_filter):
-    status_filter = status_filter
-    author_filter = author_filter
-
     with open(path_file, 'r', encoding='utf-8') as file:
         issues = json.load(file)
         filtered_issues = issues
@@ -98,9 +95,6 @@ def filter_issues_by_path(path_file, status_filter, author_filter):
 
 
 def filter_pull_request_by_path(path_file, status_filter, author_filter):
-    status_filter = status_filter
-    author_filter = author_filter
-
     with open(path_file, 'r', encoding='utf-8') as file:
         pull_request = json.load(file)
         filtered_pull_request = pull_request
@@ -120,9 +114,6 @@ def filter_pull_request_by_path(path_file, status_filter, author_filter):
 
 
 def filter_github_issues(repository, path_file, status_filter, author_filter):
-    status_filter = status_filter
-    author_filter = author_filter
-
     with open(path_file, 'r', encoding='utf-8') as file:
         issues = json.load(file)
         filtered_issues = issues
@@ -141,9 +132,6 @@ def filter_github_issues(repository, path_file, status_filter, author_filter):
 
 
 def filter_github_pull_request(repository, path_file, status_filter, author_filter):
-    status_filter = status_filter
-    author_filter = author_filter
-
     with open(path_file, 'r', encoding='utf-8') as file:
         pull_request = json.load(file)
         filtered_pull_request = pull_request
@@ -162,15 +150,15 @@ def filter_github_pull_request(repository, path_file, status_filter, author_filt
     return filtered_pr_file_path
 
 
-def create_folder(folder_path, filter):
+def create_folder(folder_path, filter_r):
     os.makedirs(folder_path, exist_ok=True)
     # Aggiungi un timestamp
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
     # Costruisci il percorso del file JSON
     filtered_file_path = os.path.join(folder_path, f'filter_issues_{timestamp}.json')
-    with open(filtered_file_path, 'w') as filtered_file:
-        json.dump(filter, filtered_file, indent=4)
+    with open(filtered_file_path, 'w', encoding='utf-8') as filtered_file:
+        json.dump(filter_r, filtered_file, indent=4)
 
     return filtered_file_path
 
@@ -178,7 +166,7 @@ def create_folder(folder_path, filter):
 def f_path(path):
     if not os.path.exists(path):
         print(f"Il percorso '{path}' non esiste ")
-        return
+        return None
 
     file = input("Inserisci il nome del file json: ")
     # path_file = f"{path}\{file}.json"
@@ -186,7 +174,7 @@ def f_path(path):
 
     if not os.path.exists(path_file):
         print(f"Il percorso '{path_file}' non esiste.")
-        return
+        return None
 
     return path_file
 
@@ -195,7 +183,7 @@ def state():
     status_filter = input("Indica lo stato da filtrare (es. open, closed, etc.): ")
     if not status_filter:
         print("Lo stato non è presente")
-        return
+        return None
     return status_filter
 
 
@@ -203,6 +191,6 @@ def user_login():
     author_filter = input("Indica lo user (login) da filtrare: ")
     if not author_filter:
         print("L'utente non è presente")
-        return
+        return None
 
     return author_filter

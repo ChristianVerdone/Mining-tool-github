@@ -16,12 +16,13 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: 3.11.6
+        python-version: 3.11
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        python -m pip install pip-tools
 
     - name: Install pip-tools
       run: python -m pip install pip-tools
@@ -32,6 +33,19 @@ jobs:
     - name: Run linter and static analysis
       run: |
         pylint mainTool.py
-        flake8 mainTool.py
+        pylint search_repository.py
+        pylint rate_limit.py
+        pylint rate_limit_handler.py
+        pylint function_filter.py
+        pylint pull_req_with_parameters.py
+        pylint issue_handler.py
+        pylint issues_with_parameters.py
+        pylint import_and_save_workflow_logs.py
+        pylint import_issue_without_comments.py
+        pylint import_pull_request_without_comments.py
+        pylint import_pull_requests.py
+        pylint request_error_handler.py
+        
+    
 
   

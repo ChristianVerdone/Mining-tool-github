@@ -28,7 +28,3 @@ def wait_for_rate_limit_reset(remaining, resetTime):
             # Fa dormire il programma per diffTime secondi, quindi attende fino a quando
             # il limite di richieste API è stato resettato prima di continuare con le richieste successive.
             time.sleep(diffTime)
-            # print("Passo 2")
-        
-        # print("Passo 3")
-    # print("Passo 4")

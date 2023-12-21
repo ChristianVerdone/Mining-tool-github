@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import json
 import requests
@@ -5,7 +6,7 @@ import mainTool
 import rate_limit_handler
 import request_error_handler
 import rate_limit
-from datetime import datetime
+
 
 
 def request_github_issues(token, owner, repository, i):
@@ -16,7 +17,7 @@ def request_github_issues(token, owner, repository, i):
     headers = {'Authorization': 'Bearer ' + token}  # Replace with your GitHub token
 
     # Make the GET request to the GitHub API
-    response = requests.get(api_url, headers=headers)
+    response = requests.get(api_url, headers=headers, timeout=30)
 
     mainTool.requests_count += 1
     rate_limit.rate_minute()
@@ -28,30 +29,29 @@ def request_github_issues(token, owner, repository, i):
 
 
 def github_issues_with_par(token):
-    
     while True:
         # Richiedi all'utente di inserire l'owner e il repository
         owner = input("Inserisci il nome dell'owner (utente su GitHub): ")
         repository = input("Inserisci il nome del repository su GitHub: ")
-        
+
         if repository == 'esci' or owner == 'esci':
             print("Uscita dalla funzione.")
             break  # Esci dal ciclo while
-        
+
         # Aggiungi un timestamp
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
         # Creiamo la directory
         issues_folder = make_issues_directory(repository)
-        
+
         # Costruisci il percorso del file JSON con il timestamp nel titolo
         file_path = os.path.join(issues_folder, f'issues_with_parameters_{timestamp}.json')
         i = 1
         temp = None
-        
+
         while True:
             response = request_github_issues(token, owner, repository, i)
-            
+
             i = i + 1
             #print(response.status_code)
 
@@ -68,10 +68,10 @@ def github_issues_with_par(token):
                 return
             # alla prima iterazione temp sarà None e lo rendo un oggetto json assegnando il valore di issues
             if temp is None:
-                temp = extracted_params   
+                temp = extracted_params
             # altrimenti inserisco in coda a temp gli elementi delle issues successive
             else:
-                temp.extend(extracted_params) 
+                temp.extend(extracted_params)
 
         with open(file_path, 'w', encoding='utf-8') as json_file:
             json.dump(temp, json_file, ensure_ascii=False, indent=4)
