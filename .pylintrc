@@ -9,11 +9,15 @@ persistent=no
 [MESSAGES CONTROL]
 
 # Disabilita alcuni avvertimenti specifici
-# invalid-name : Segnalato quando i nomi di variabili o funzioni non seguono le convenzioni di denominazione PEP 8. Ad esempio, se una variabile è chiamata MyVar invece di my_var.
-# missing-docstring: Segnalato quando una funzione, un modulo o una classe non ha una docstring (stringa di documentazione). Le docstring sono utili per documentare il codice.
-# too-many-locals: Indica che una funzione ha un numero elevato di variabili locali. Questo può rendere la funzione difficile da comprendere e manutenere.
+# invalid-name : Segnalato quando i nomi di variabili o funzioni non seguono le convenzioni di denominazione PEP 8. 
+#                Ad esempio, se una variabile è chiamata MyVar invece di my_var.
+# missing-docstring: Segnalato quando una funzione, un modulo o una classe non ha una docstring (stringa di documentazione). 
+#                    Le docstring sono utili per documentare il codice.
+# too-many-locals: Indica che una funzione ha un numero elevato di variabili locali. 
+#                  Questo può rendere la funzione difficile da comprendere e manutenere.
 # unused-import: Avverte quando un modulo è importato ma non utilizzato nel codice.
-# no-member: Indica che si sta tentando di accedere a un membro (attributo o metodo) di un oggetto che Pylint non riconosce come definito nel codice. Può verificarsi quando si utilizzano oggetti dinamici.                                
+# no-member: Indica che si sta tentando di accedere a un membro (attributo o metodo) di un oggetto che Pylint 
+#            non riconosce come definito nel codice. Può verificarsi quando si utilizzano oggetti dinamici.                                
 disable=invalid-name, missing-docstring,too-many-locals, unused-import, no-member 
 
 [REPORTS]
@@ -39,26 +43,35 @@ output-format=text
 # indentation-parameters=4
 
 [BASIC]
-
 # Abilita o disabilita funzionalità di base (ad esempio, false positives su alcuni warning)
-#Indica che si sta tentando di accedere a un membro (attributo o metodo) di un oggetto che Pylint non riconosce come definito nel codice. Può verificarsi quando si utilizzano oggetti dinamici.
-#Questa configurazione specifica alcuni "buoni nomi" (good names), cioè nomi di variabili che Pylint considererà accettabili e non genererà avvertimenti.
+# Indica che si sta tentando di accedere a un membro (attributo o metodo) di un oggetto che 
+# Pylint non riconosce come definito nel codice. Può verificarsi quando si utilizzano oggetti dinamici.
+# Questa configurazione specifica alcuni "buoni nomi" (good names), cioè nomi di variabili che Pylint 
+# considererà accettabili e non genererà avvertimenti.
 good-names=i, j, k, ex, Run, _
 
 [IMPORTS]
-
 # Specifica gli import che sono consentiti o vietati
 
 [DESIGN]   #da rivedere
-
 # Controlla la complessità del codice e altri aspetti di design
-# La sezione [DESIGN] nel file di configurazione Pylint è utilizzata per controllare diversi aspetti di design del codice, come la complessità della funzione, la quantità di argomenti, il numero di variabili locali e altro.
-max-args=90 #Impone che una funzione non debba avere più di 5 argomenti. Se il numero di argomenti supera questa soglia, Pylint genererà un avvertimento.
-max-locals=90 #Limita il numero di variabili locali in una funzione a 15. Se il numero di variabili locali supera questa soglia, verrà generato un avvertimento
-max-branches=90 #Impone che una funzione non debba avere più di 10 rami (dichiarazioni di if, elif, ecc.). Oltre questa soglia, verranno generati avvertimenti.
-max-statements=90 #Limita il numero totale di dichiarazioni in una funzione a 50. Se il numero di dichiarazioni supera questa soglia, Pylint genererà un avvertimento.
-max-parents=90 #Limita il numero di classi parenti per una classe a 7.
-max-attributes=90 #Limita il numero di attributi in una classe a 7.
+# La sezione [DESIGN] nel file di configurazione Pylint è utilizzata per 
+# controllare diversi aspetti di design del codice, come la complessità della funzione, 
+# la quantità di argomenti, il numero di variabili locali e altro.
+# Impone che una funzione non debba avere più di 6 argomenti. 
+# Se il numero di argomenti supera questa soglia, Pylint genererà un avvertimento.
+max-args=6 
+# Limita il numero di variabili locali in una funzione a 18.
+# Se il numero di variabili locali supera questa soglia, verrà generato un avvertimento
+max-locals=18 
+# Impone che una funzione non debba avere più di 12 rami (dichiarazioni di if, elif, ecc.). 
+# Oltre questa soglia, verranno generati avvertimenti.
+max-branches=12 
+# Limita il numero totale di dichiarazioni in una funzione a 90. 
+# Se il numero di dichiarazioni supera questa soglia, Pylint genererà un avvertimento.
+max-statements=90  
+max-parents=8 #Limita il numero di classi parenti per una classe a 8.
+max-attributes=8 #Limita il numero di attributi in una classe a 8.
 
 [LOGGING]
 
@@ -68,19 +81,23 @@ logging-modules=logging
 [EXCEPTIONS]
 
 # Configura Pylint per riconoscere alcune eccezioni comuni
-#i0023: Riguarda "usare la funzione 'xxx'". Pylint di solito segnala un avvertimento quando una funzione deprecata o obsoleta viene utilizzata.
-#i0011: Riguarda "errori indefiniti". Pylint di solito segnala un avvertimento quando si fa riferimento a variabili o attributi non definiti.
+#i0023: Riguarda "usare la funzione 'xxx'". Pylint di solito segnala un avvertimento 
+#       quando una funzione deprecata o obsoleta viene utilizzata.
+#i0011: Riguarda "errori indefiniti". Pylint di solito segnala un avvertimento quando si fa 
+#       riferimento a variabili o attributi non definiti.
 #C0301: Riguarda "linea di codice troppo lunga"
 #WO603: Riguarda "variabili globali"
-
 disable=i0023, i0011, C0301, W0603
 
 [UNITTEST]
-#nel file di configurazione Pylint è utilizzata per configurare Pylint in modo da riconoscere il codice di test, spesso scritto utilizzando il framework di testing integrato di Python, unittest.
-
+# nel file di configurazione Pylint è utilizzata per configurare Pylint in modo da riconoscere il codice di test, 
+# spesso scritto utilizzando il framework di testing integrato di Python, unittest.
 # Configura Pylint per riconoscere il codice di test
-# missing-docstring: Disabilita l'avvertimento relativo alla mancanza di docstring (stringa di documentazione) per le funzioni o i metodi di test. Nei test unitari, potrebbe non essere necessario avere una docstring per ciascun test, e questa configurazione consente di ignorare tali avvertimenti.
-# invalid-name: Disabilita l'avvertimento relativo a nomi di variabili o funzioni che non seguono le convenzioni di denominazione PEP 8 all'interno del codice di test.
+# missing-docstring: Disabilita l'avvertimento relativo alla mancanza di docstring (stringa di documentazione) 
+# per le funzioni o i metodi di test. Nei test unitari, potrebbe non essere necessario avere una docstring per ciascun test, 
+# e questa configurazione consente di ignorare tali avvertimenti.
+# invalid-name: Disabilita l'avvertimento relativo a nomi di variabili o funzioni che non seguono le convenzioni di 
+# denominazione PEP 8 all'interno del codice di test.
 disable= missing-docstring, invalid-name 
 
 [IDENTIFIERS]
