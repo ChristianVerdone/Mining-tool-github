@@ -66,8 +66,8 @@ def request_github(token, owner, repository):
     # Utilizza il token di Github per autenticarsi
     headers = {'Authorization': 'Bearer ' + token}
     # GET request al GitHub API
-    # timeout=10 specifica che la richiesta HTTP si interromperà dopo 10 secondi se non viene ricevuta una risposta.
-    response = requests.get(api_url, headers=headers, timeout=10)
+    # timeout=10 specifica che la richiesta HTTP si interromperà dopo 30 secondi se non viene ricevuta una risposta.
+    response = requests.get(api_url, headers=headers, timeout=30)
     rate_limit_handler.wait_for_rate_limit_reset(response.headers['X-RateLimit-Remaining'],
                                                  response.headers['X-RateLimit-Reset'])
     return response

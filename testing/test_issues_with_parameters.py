@@ -97,7 +97,8 @@ def test_request_github_issues():
 
     mock_req.assert_called_once_with(
         f'https://api.github.com/repos/{owner}/{repository}/issues?per_page=100&page={i}',
-        headers={'Authorization': 'Bearer ' + token}
+        headers={'Authorization': 'Bearer ' + token},
+        timeout=30
     )
     mock_rate.assert_called()
     mock_limit.assert_called()

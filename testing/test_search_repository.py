@@ -154,7 +154,8 @@ def test_request_github():
 
     # Assicuriamoci che la richiesta GET sia stata effettuata con i parametri corretti
     mock_get.assert_called_with(f'https://api.github.com/repos/{owner}/{repository}',
-                                headers={'Authorization': 'Bearer ' + token})
+                                headers={'Authorization': 'Bearer ' + token},
+                                timeout=30)
 
     # Assicuriamoci che la funzione abbia restituito una risposta
     assert isinstance(response, requests.Response)
