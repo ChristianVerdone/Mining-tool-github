@@ -1,7 +1,7 @@
 # Mining-tool-github
-# GitHub Mining Tool
 
-Questo progetto è un tool di mining per GitHub che offre diverse funzionalità utili per l'analisi e l'estrazione di dati da repository. Di seguito sono descritte le principali funzionalità offerte dal tool:
+
+Questo progetto è un tool di mining per GitHub che offre diverse funzionalità utili per l'estrazione di dati da repository. Di seguito sono descritte le principali funzionalità offerte dal tool:
 
 ## Funzionalità
 

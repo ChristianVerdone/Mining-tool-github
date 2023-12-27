@@ -58,6 +58,7 @@ def controller_repo(token):
         with open('repo.txt', 'w', encoding='utf-8') as repo_file:
             for repo in repositories_found:
                 repo_file.write(f"{repo}\n")
+            print(f"Le repositories presenti su GitHub sono salvate nel file: {repo_file.name}")
 
 
 def request_github(token, owner, repository):
