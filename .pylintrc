@@ -53,7 +53,7 @@ good-names=i, j, k, ex, Run, _
 [IMPORTS]
 # Specifica gli import che sono consentiti o vietati
 
-[DESIGN]   #da rivedere
+[DESIGN]
 # Controlla la complessità del codice e altri aspetti di design
 # La sezione [DESIGN] nel file di configurazione Pylint è utilizzata per 
 # controllare diversi aspetti di design del codice, come la complessità della funzione, 
