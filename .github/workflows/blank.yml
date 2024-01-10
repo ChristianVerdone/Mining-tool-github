@@ -45,6 +45,10 @@ jobs:
         pylint import_pull_request_without_comments.py
         pylint import_pull_requests.py
         pylint request_error_handler.py
+
+    - name: Run tests
+      run: |
+        pytest mainTool.py
         
     
 
