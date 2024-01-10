@@ -48,7 +48,7 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest test_*.py
+        pytest testing/test_*.py
         
     
 
