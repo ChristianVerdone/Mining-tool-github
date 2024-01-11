@@ -420,13 +420,13 @@ def test_create_folder_creates_directory_and_file(temp_folder):
 # Test con path e file esistente
 def test_f_path():
     # Path della directory dove cercare il file
-    file_path = r"tensorflow_data\issues"
+    file_path = r"testing/tensorflow_data/issues"
     # Path completo della directory con il file alla fine
-    path_file = r"tensorflow_data\issues\issues_with_comments_2023-11-16_10-53-48.json"
+    path_file = r"testing/tensorflow_data/issues/issues_with_comments_2023-11-16_17-15-59.json"
 
     with patch('os.path.exists') as mock_os_path, \
             patch('builtins.print') as mock_print, \
-            patch('builtins.input', return_value="issues_with_comments_2023-11-16_10-53-48"):
+            patch('builtins.input', return_value="issues_with_comments_2023-11-16_17-15-59"):
         # Il nome del file deve essere uguale a quello che cerchiamo
         result = function_filter.f_path(file_path)
 
