@@ -49,6 +49,7 @@ jobs:
     - name: Run tests
       run: |
          coverage run -m pytest -n 54 testing/
+         coverage html
         
     
 
