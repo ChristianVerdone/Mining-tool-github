@@ -18,7 +18,7 @@ def test_controller_repo_2(monkeypatch):
 
     # Input simulati
     inputs = iter([
-        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github',  # Path della repo dove si cerca il file
+        r'testing',  # Path della repo dove si cerca il file
         'repositories',
         'esci'
     ])
@@ -53,7 +53,7 @@ def test_controller_repo(monkeypatch):
     token = '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'
 
     inputs = iter([
-        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github',  # Path della repo dove si cerca il file
+        r'testing',  # Path della repo dove si cerca il file
         'repositories',
         'esci'
     ])
@@ -73,10 +73,10 @@ def test_controller_repo_not_file(monkeypatch, capsys):
     # Inserisci il tuo token
     token = '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'
     inputs = iter([
-        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github',  # Path della repo dove si cerca il file
+        r'testing',  # Path della repo dove si cerca il file
         'file_not_exists'
     ])
-    path_file = r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github/file_not_exists.txt'
+    path_file = r'testing/file_not_exists.txt'
 
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
 
