@@ -72,7 +72,7 @@ def test_filter_github_success(monkeypatch, capsys):
         'path',  # Simula l'input 'path'
         'issues',  # Simula l'input 'issues'
         # Si inserisce un percorso che dipende da chi esegue il test dove si vuole cercare il file
-        r'tensorflow_data\issues',  # Simula l'input del percorso
+        r'testing/tensorflow_data/issues',  # Simula l'input del percorso
         'issues_with_comments_2023-11-16_17-15-59',
         'open',
         'glemaitre',
@@ -104,7 +104,7 @@ def test_filter_github_success_pr(monkeypatch, capsys):
         'path',  # Simula l'input 'path'
         'pull_request',  # Simula l'input 'issues'
         # Si inserisce un percorso che dipende da chi esegue il test dove si vuole cercare il file
-        r'tensorflow_data\pull_requests',  # Simula l'input del percorso
+        r'testing/tensorflow_data/pull_requests',  # Simula l'input del percorso
         # Si utilizza un file presente nella directory
         'pull_requests_2023-11-16_12-28-24',
         'open',
