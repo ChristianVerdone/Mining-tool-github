@@ -48,7 +48,7 @@ def test_flusso_di_controllo():
 
 def test_output():
     # Verifica che il file JSON sia stato creato. #da cambiare il file .json
-    with open('testing/scikit-learn_data/issues_without_comments/issues_without_comments_2024-01-11_17-56-17.json', "r",
+    with open('Mining-tool-github/blob/main/testing/tensorflow_data/pull_requests/pull_requests_2023-11-16_12-28-24.json', "r",
               # da modificare con un path giusto
               encoding='utf-8') as json_file:
         issues = json.load(json_file)
