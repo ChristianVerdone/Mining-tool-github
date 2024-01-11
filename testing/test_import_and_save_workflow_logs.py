@@ -8,7 +8,7 @@ import import_and_save_workflow_logs
 
 def test_make_issue_directory_path_not_exists():
     with patch('os.makedirs') as pyMakeDir:
-        import_and_save_workflow_logs.save_github_workflow_logs("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", "test", "test")
+        import_and_save_workflow_logs.save_github_workflow_logs("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", "test", "test")
 
     pyMakeDir.assert_called()
 
@@ -57,7 +57,7 @@ def test_output():
 
 def test_call_rate_limit():
     with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
-        import_and_save_workflow_logs.save_github_workflow_logs('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', "jmpoep",
+        import_and_save_workflow_logs.save_github_workflow_logs('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', "jmpoep",
                                                                 "vmprotect-3.5.1")
 
     pyRateLimit.assert_called()
@@ -65,7 +65,7 @@ def test_call_rate_limit():
 
 def test_not_workflow_log():  # metodo da rivedere
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
-        import_and_save_workflow_logs.save_github_workflow_logs('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',
+        import_and_save_workflow_logs.save_github_workflow_logs('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',
                                                                 'geeks-r-us',
                                                                 'mqtt-panel')
 
@@ -77,6 +77,6 @@ def test_not_workflow_log():  # metodo da rivedere
 
 def test_request_github_workflow_logs():  # da inserire il proprio token prima di eseguire
     i = 0
-    response = import_and_save_workflow_logs.get_github_workflow_logs('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', 'keras-team',
+    response = import_and_save_workflow_logs.get_github_workflow_logs('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', 'keras-team',
                                                                       'keras-core', i)
     assert response.status_code == 200
