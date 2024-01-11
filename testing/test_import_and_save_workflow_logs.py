@@ -47,7 +47,7 @@ def test_flusso_di_controllo():
 
 def test_output():
     # Verifica che il file JSON sia stato creato. #da modificare il file .json
-    with open('scikit-learn_data/workflow_logs/workflow_logs_2023-11-23_17-20-32.json', "r",
+    with open('testing/scikit-learn_data/workflow_logs/workflow_logs_2023-11-23_17-20-32.json', "r",
               # da modificare con path giusto
               encoding='utf-8') as json_file:
         workflow_runs = json.load(json_file)
