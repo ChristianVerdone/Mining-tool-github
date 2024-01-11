@@ -22,7 +22,7 @@ def test_request_github_pull_requests():
 
     mock_req.assert_called_once_with(
         f'https://api.github.com/repos/{owner}/{repository}/pulls?per_page=100&page={i}',
-        headers={'Authorization': 'Bearer ' + token}
+        headers={'Authorization': 'Bearer ' + token},
         timeout=30 
     )
     mock_rate.assert_called()
