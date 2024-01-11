@@ -1,0 +1,21 @@
+# .coveragerc
+
+[run]
+# Specifica i moduli o i percorsi che devono essere inclusi nella copertura
+source = .
+source = testing
+
+# Escludi alcuni file o percorsi dalla copertura
+omit = */test_*, */venv/*
+
+# Eseguire il codice solo una volta (utile per applicazioni che generano code coverage)
+parallel = True
+
+[report]
+# Formato del report di copertura (può essere html, xml, o altro)
+show_missing = True
+skip_covered = True
+
+[html]
+# Directory in cui verranno generati i report HTML (opzionale)
+directory = coverage_html_report
