@@ -48,7 +48,7 @@ def test_flusso_di_controllo():
 
 def test_output():
     # Verifica che il file JSON sia stato creato.
-    with open('tensorflow_data/issues/issues_with_comments_2023-11-16_17-15-59.json', "r",
+    with open('testing/tensorflow_data/issues/issues_with_comments_2023-11-16_17-15-59.json', "r",
               encoding='utf-8') as json_file:
         issues = json.load(json_file)
 
