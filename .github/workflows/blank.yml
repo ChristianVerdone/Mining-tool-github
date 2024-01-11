@@ -45,10 +45,6 @@ jobs:
         pylint import_pull_request_without_comments.py
         pylint import_pull_requests.py
         pylint request_error_handler.py
-
-    - name: Write Auth File
-      run: |
-        echo "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" > auth.txt
         
     - name: Run tests
       run: |
