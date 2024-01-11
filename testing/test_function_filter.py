@@ -72,8 +72,8 @@ def test_filter_github_success(monkeypatch, capsys):
         'path',  # Simula l'input 'path'
         'issues',  # Simula l'input 'issues'
         # Si inserisce un percorso che dipende da chi esegue il test dove si vuole cercare il file
-        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github\tensorflow_data\issues',  # Simula l'input del percorso
-        'issues_with_comments_2023-11-16_10-53-48',
+        r'tensorflow_data\issues',  # Simula l'input del percorso
+        'issues_with_comments_2023-11-16_17-15-59',
         'open',
         'glemaitre',
         'esc'  # Simula l'input 'esc' per uscire
@@ -104,9 +104,9 @@ def test_filter_github_success_pr(monkeypatch, capsys):
         'path',  # Simula l'input 'path'
         'pull_request',  # Simula l'input 'issues'
         # Si inserisce un percorso che dipende da chi esegue il test dove si vuole cercare il file
-        r'D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github\tensorflow_data\pull_requests',  # Simula l'input del percorso
+        r'tensorflow_data\pull_requests',  # Simula l'input del percorso
         # Si utilizza un file presente nella directory
-        'pull_requests_2023-11-20_11-02-58',
+        'pull_requests_2023-11-16_12-28-24',
         'open',
         'elfringham',
         'esc'  # Simula l'input 'esc' per uscire
@@ -160,7 +160,7 @@ def test_filter_github_repo_success(monkeypatch, capsys):
         'repository',  # Simula l'input 'path'
         'issues',  # Simula l'input 'issues'
         'tensorflow',  # Simula l'input del percorso
-        'issues_with_comments_2023-11-16_10-53-48',
+        'issues_with_comments_2023-11-16_17-15-59',
         'open',
         'psunn',
         'esc'  # Simula l'input 'esc' per uscire
@@ -214,7 +214,7 @@ def test_filter_github_repo_success_pr(monkeypatch, capsys):
         'repository',  # Simula l'input 'path'
         'pull_request',  # Simula l'input 'issues'
         'tensorflow',  # Simula l'input del percorso
-        'pull_requests_2023-11-20_11-02-58',
+        'pull_requests_2023-11-16_12-28-24',
         'open',
         'elfringham',
         'esc'  # Simula l'input 'esc' per uscire
@@ -420,13 +420,13 @@ def test_create_folder_creates_directory_and_file(temp_folder):
 # Test con path e file esistente
 def test_f_path():
     # Path della directory dove cercare il file
-    file_path = r"D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github\testing\tensorflow_data\issues"
+    file_path = r"tensorflow_data\issues"
     # Path completo della directory con il file alla fine
-    path_file = r"D:\UNIVERSITA\INGEGNERIA_DEL_SOFTWARE\Mining-tool-github\testing\tensorflow_data\issues\issues_with_comments_2023-11-16_10-53-48.json"
+    path_file = r"tensorflow_data\issues\issues_with_comments_2023-11-16_10-53-48.json"
 
     with patch('os.path.exists') as mock_os_path, \
             patch('builtins.print') as mock_print, \
-            patch('builtins.input', return_value="issues_with_comments_2023-11-16_10-53-48"):
+            patch('builtins.input', return_value="issues_with_comments_2023-11-16_17-15-59"):
         # Il nome del file deve essere uguale a quello che cerchiamo
         result = function_filter.f_path(file_path)
 
