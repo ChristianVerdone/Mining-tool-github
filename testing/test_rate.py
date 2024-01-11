@@ -29,17 +29,19 @@ def test_rate_minute_below_limit():
 # requests > 900
 def test_rate_minute_above_limit():
     # Imposta il tempo in modo che sia trascorso meno di un minuto
-    mainTool.start_time = time.time() - 30
+    mock_time = 1704989477.27253  # Sostituisci questo con il valore atteso
+    mainTool.start_time = mock_time - 30
     # Numero di richieste superiore al limite
     mainTool.requests_count = 950
 
-    with patch('time.sleep') as mock_sleep:
+     with patch('time.time', return_value=mock_time) as mock_time_function,
+     with patch('time.sleep') as mock_sleep:
         rate_minute()
 
     # Verifica che il conteggio delle richieste e il tempo di inizio
     # siano stati resettati dopo il superamento del limite
     assert mainTool.requests_count == 0
-    assert mainTool.start_time == time.time()
+    assert mainTool.start_time == mock_time
     # Verifica che la funzione time.sleep è stata chiamata
     mock_sleep.assert_called()
 
