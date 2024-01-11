@@ -48,7 +48,7 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest testing/test_mainTool.py
+         coverage run -m pytest testing/test_mainTool.py
         
     
 
