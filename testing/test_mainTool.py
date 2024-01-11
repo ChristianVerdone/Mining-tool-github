@@ -90,7 +90,7 @@ def test_importIssuewithoutcomments(monkeypatch):
 
 def test_newAuth_filterOutput(monkeypatch):
     inputs = iter(['newAuth',
-                   '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',  # inserire token valido
+                   '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',  # inserire token valido
                    'filterOutput',
                    'repository',
                    'issues',
@@ -108,7 +108,7 @@ def test_newAuth_filterOutput(monkeypatch):
 def test_newAuthNotValid(monkeypatch):
     inputs = iter(['newAuth',
                    'rg',  # token non valido
-                   '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',  # token valido
+                   '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',  # token valido
                    'esci'])
 
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
