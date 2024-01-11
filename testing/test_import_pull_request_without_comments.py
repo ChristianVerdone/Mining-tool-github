@@ -50,7 +50,7 @@ def test_flusso_di_controllo():
 
 def test_output():
     # Verifica che il file JSON sia stato creato. #da modificare il file .json
-    with open('scikit-learn_data/pull_requests_without_comments/pull_requests_2024-01-11_17-46-42.json', "r",
+    with open('testing/scikit-learn_data/pull_requests_without_comments/pull_requests_2024-01-11_17-46-42.json', "r",
               # da modificare con giusto path
               encoding='utf-8') as json_file:
         pullrequests = json.load(json_file)
