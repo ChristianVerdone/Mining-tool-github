@@ -439,7 +439,7 @@ def test_f_path():
 # Rivedere -> Test con path e file non esistenti
 def test_f_path_non_existing(monkeypatch, capsys):
     path = "C:\\some\\path2"
-    path_file = "C:\\some\\path2\\file.json"
+    path_file = "C:\\some\\path2/file.json"
 
     monkeypatch.setattr('builtins.input', lambda _: "file")
 
