@@ -426,7 +426,7 @@ def test_f_path():
 
     with patch('os.path.exists') as mock_os_path, \
             patch('builtins.print') as mock_print, \
-            patch('builtins.input', return_value="issues_with_comments_2023-11-16_17-15-59"):
+            patch('builtins.input', return_value="issues_with_comments_2023-11-16_10-53-48"):
         # Il nome del file deve essere uguale a quello che cerchiamo
         result = function_filter.f_path(file_path)
 
