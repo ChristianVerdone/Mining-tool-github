@@ -10,7 +10,7 @@ from unittest.mock import patch
 # Test per verificare l'uscita dalla funzione
 def test_github_issues_with_par_exit(capsys, monkeypatch):
     # Inserisci il tuo token
-    token = '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'
+    token = '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'
 
     inputs = iter(['esci',
                    'esci'])
@@ -84,7 +84,7 @@ def test_extract_params_from_issues():
 # Test per verificare la richiesta
 def test_request_github_issues():
     # Parametri di esempio
-    token = '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'  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
+    token = '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'  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
     owner = 'tensorflow'
     repository = 'tensorflow'
     i = 1
@@ -112,7 +112,7 @@ def test_request_github_issues():
 # 4) Infine esce dalla funzione
 def test_github_issues_with_par(monkeypatch, capsys):
     # Parametri di esempio
-    token = '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'  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
+    token = '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'  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
 
     inputs = iter([
         'tensorflow',
