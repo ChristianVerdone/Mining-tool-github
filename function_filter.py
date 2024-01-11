@@ -46,7 +46,7 @@ def filter_github():
                     print("Uscita dalla funzione.")
                     break  # Esci dal ciclo while
 
-                path = f"{repository}_data/issues"
+                path = f"testing/{repository}_data/issues"
 
                 path_file = f_path(path)
 
