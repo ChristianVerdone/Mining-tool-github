@@ -47,16 +47,19 @@ jobs:
         pylint import_pull_requests.py
         pylint request_error_handler.py
         
-    - name: Run tests
+    - name: Run Tests with Coverage
       run: |
-         pytest -n 54 --cov --cov-report=html:coverage_re testing/
-         
-    - name: Upload coverage report as artifact
+        coverage run -m pytest -n 54 testing/
+
+    - name: Generate HTML Coverage Report
+      run: |
+        coverage html
+
+    - name: Upload Coverage Report as Artifact
       uses: actions/upload-artifact@v2
       with:
         name: coverage-report
-        path: coverage_re
-        
+        path: htmlcov
     
 
   
