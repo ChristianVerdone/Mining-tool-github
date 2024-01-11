@@ -9,7 +9,7 @@ from import_pull_requests import request_github_pull_requests
 # Test per verificare la richiesta
 def test_request_github_pull_requests():
     # Parametri di esempio
-    token = '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'  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
+    token = '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'  # Sostituire il token con il proprio e ricordarsi di rimuoverlo
     owner = 'tensorflow'
     repository = 'tensorflow'
     i = 1
@@ -31,7 +31,7 @@ def test_request_github_pull_requests():
 
 def test_not_pull_request():
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
-        import_pull_requests.save_github_pull_requests('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', 'keras-team',
+        import_pull_requests.save_github_pull_requests('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', 'keras-team',
                                                        'keras-core')
 
         # Verifica che il file JSON sia stato creato.
@@ -42,7 +42,7 @@ def test_not_pull_request():
 
 def test_request_github_pulls():
     i = 0
-    response = import_pull_requests.request_github_pull_requests('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',
+    response = import_pull_requests.request_github_pull_requests('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',
                                                                  'keras-team', 'keras-core', i)
 
     assert response.status_code == 200
@@ -52,7 +52,7 @@ def test_request_github_pulls():
 def test_input_valido():
     with patch('import_pull_requests.import_pull_request_comments') as pyHasComments:
         pyHasComments.return_value = {'comment': 'This is a comment'}
-        import_pull_requests.save_github_pull_requests('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', "jmpoep",
+        import_pull_requests.save_github_pull_requests('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', "jmpoep",
                                                        "vmprotect-3.5.1")
 
     pyHasComments.assert_called()
@@ -61,7 +61,7 @@ def test_input_valido():
 def test_input_valido_no_comments():
     with patch('import_pull_requests.import_pull_request_comments') as pyHasComments:
         pyHasComments.return_value = {'comment': 'This is a comment'}
-        import_pull_requests.save_github_pull_requests('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', "ChristianVerdone",
+        import_pull_requests.save_github_pull_requests('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', "ChristianVerdone",
                                                        "testing")
 
     pyHasComments.assert_called()
@@ -92,6 +92,6 @@ def test_import_pull_requests_no_Token(monkeypatch):
 
 def test_import_pull_requests_200():
     with patch('builtins.open', create=True) as mock_open:
-        import_pull_requests.save_github_pull_requests('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',
+        import_pull_requests.save_github_pull_requests('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',
                                                        'tensorflow', 'tensorflow')
     mock_open.assert_called()
