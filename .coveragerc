@@ -5,7 +5,7 @@
 source = . 
 
 # Escludi alcuni file o percorsi dalla copertura
-omit = */test_*, */venv/*
+omit = */testing/test_*, */venv/*
 
 # Eseguire il codice solo una volta (utile per applicazioni che generano code coverage)
 parallel = True
