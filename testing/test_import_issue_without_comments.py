@@ -9,7 +9,7 @@ import import_issue_without_comments
 # da modificare per unit testing
 def test_make_issue_directory_path_not_exists():
     with patch('os.makedirs') as pyMakeDir:
-        import_issue_without_comments.save_github_issues_without_comments("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", "test", "test")
+        import_issue_without_comments.save_github_issues_without_comments("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", "test", "test")
 
     pyMakeDir.assert_called()
 
@@ -66,7 +66,7 @@ def test_output():
 
 def test_call_rate_limit():
     with patch('rate_limit_handler.wait_for_rate_limit_reset') as pyRateLimit:
-        import_issue_without_comments.save_github_issues_without_comments('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',
+        import_issue_without_comments.save_github_issues_without_comments('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',
                                                                           "jmpoep",
                                                                           "vmprotect-3.5.1")
 
@@ -75,7 +75,7 @@ def test_call_rate_limit():
 
 def test_not_issue():
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
-        import_issue_without_comments.save_github_issues_without_comments('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',
+        import_issue_without_comments.save_github_issues_without_comments('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',
                                                                           'keras-team',
                                                                           'keras-core')
 
@@ -87,7 +87,7 @@ def test_not_issue():
 
 def test_request_github_issues():
     i = 0
-    response = import_issue_without_comments.request_github_issues('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',
+    response = import_issue_without_comments.request_github_issues('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',
                                                                    'keras-team',
                                                                    'keras-core', i)
 
