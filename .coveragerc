@@ -2,10 +2,10 @@
 
 [run]
 # Specifica i moduli o i percorsi che devono essere inclusi nella copertura
-source = . 
+source = Mining-tool-github 
 
 # Escludi alcuni file o percorsi dalla copertura
-omit = testing/test_*, */venv/*
+omit = venv/*
 
 # Eseguire il codice solo una volta (utile per applicazioni che generano code coverage)
 parallel = True
