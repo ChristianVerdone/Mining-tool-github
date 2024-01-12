@@ -1,9 +1,19 @@
 import json
 import os
 import shutil
+import sys
 from unittest.mock import patch
 
 import pytest
+
+# Ottieni il percorso del file corrente
+current_file_path = os.path.abspath(__file__)
+
+# Ottieni il percorso della directory principale del progetto
+project_root = os.path.abspath(os.path.join(current_file_path, ".."))
+
+# Aggiungi la directory principale del progetto al percorso di Python
+sys.path.append(project_root)
 
 import function_filter
 
