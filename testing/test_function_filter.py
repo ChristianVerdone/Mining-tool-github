@@ -423,7 +423,7 @@ def test_f_path():
     # Path della directory dove cercare il file
     file_path = r"testing/tensorflow_data/issues"
     # Path completo della directory con il file alla fine
-    path_file = r"testing/tensorflow_data/issues\issues_with_comments_2023-11-16_17-15-59.json"
+    path_file = r"testing/tensorflow_data/issues/issues_with_comments_2023-11-16_17-15-59.json"
 
     with patch('os.path.exists') as mock_os_path, \
             patch('builtins.print') as mock_print, \
@@ -440,7 +440,7 @@ def test_f_path():
 # Rivedere -> Test con path e file non esistenti
 def test_f_path_non_existing(monkeypatch, capsys):
     path = "C:\\some\\path2"
-    path_file = "C:\\some\\path2\\file.json"
+    path_file = "C:\\some\\path2/file.json"
 
     monkeypatch.setattr('builtins.input', lambda _: "file")
 
