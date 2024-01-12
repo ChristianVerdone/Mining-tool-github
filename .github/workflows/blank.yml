@@ -47,17 +47,7 @@ jobs:
         pylint import_pull_requests.py
         pylint request_error_handler.py
         
-    - name: Run Tests
+    - name: Run tests and generate coverage report
       run: |
-         coverage run --rcfile=.coveragerc -m pytest testing/ 
-         
-
-    - name: Generate HTML Coverage Report
-      run: |
-        coverage html -d coverage_html_report
-        
-    - name: Upload Coverage Report as Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage_html_report
-        path: coverage_html_report
+        coverage run --source=Mining-tool-github -m pytest testing/
+        coverage html
