@@ -47,6 +47,6 @@ jobs:
         pylint import_pull_requests.py
         pylint request_error_handler.py
         
-    - name: Run Tests
+    - name: Run tests and generate coverage report
       run: |
-        coverage run --rcfile=.coveragerc -m pytest -n 54 testing/
+        pytest --cov --cov-report html
