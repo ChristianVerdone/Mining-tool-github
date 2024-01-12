@@ -50,3 +50,13 @@ jobs:
     - name: Run Tests
       run: |
          coverage run --rcfile=.coveragerc -m pytest testing/
+
+    - name: Generate HTML Coverage Report
+      run: |
+        coverage html -d coverage_html_report
+        
+    - name: Upload Coverage Report as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage_html_report
+        path: coverage_html_report
