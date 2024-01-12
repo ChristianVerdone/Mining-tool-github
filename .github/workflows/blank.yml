@@ -49,5 +49,5 @@ jobs:
         
     - name: Run tests and generate coverage report
       run: |
-        ls -R
-        pytest testing/
+        coverage run --source=Mining-tool-github -m pytest testing/
+        coverage html
