@@ -13,6 +13,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Imposta i permessi
+      run: |
+        chmod -R +w Mining-tool-github
+
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
@@ -54,7 +58,7 @@ jobs:
          
     - name: Generate HTML Coverage Report
       run: |
-        coverage html testing
+        coverage html -d ./testing
         
     - name: Upload Coverage Report as Artifact
       uses: actions/upload-artifact@v2
