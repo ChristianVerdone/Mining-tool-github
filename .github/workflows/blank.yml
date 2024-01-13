@@ -55,7 +55,8 @@ jobs:
          
     - name: Generate HTML Coverage Report
       run: |
-        coverage html -d coverage_html
+      
+        coverage html -d /home/runner/work/Mining-tool-github/Mining-tool-github/coverage_html
         echo "sono qui: $(pwd)"
         
     - name: Upload Coverage Report as Artifact
