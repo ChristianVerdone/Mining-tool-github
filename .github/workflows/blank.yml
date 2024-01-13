@@ -53,14 +53,3 @@ jobs:
          coverage run --rcfile=.coveragerc -m pytest testing/ 
          echo "sono qui: $(pwd)"
          
-    - name: Generate HTML Coverage Report
-      run: |
-      
-        coverage html --data-file .coverage
-        echo "sono qui: $(pwd)"
-        
-    - name: Upload Coverage Report as Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage_html
-        path: coverage_html
