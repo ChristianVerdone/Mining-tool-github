@@ -54,7 +54,7 @@ jobs:
          
     - name: Generate HTML Coverage Report
       run: |
-        coverage html -d ./testing/
+        coverage html testing
         
     - name: Upload Coverage Report as Artifact
       uses: actions/upload-artifact@v2
