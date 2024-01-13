@@ -50,11 +50,17 @@ jobs:
         
     - name: Run Tests
       run: |
-         sudo coverage run --rcfile=.coveragerc -m pytest testing/ 
+         coverage run --rcfile=.coveragerc -m pytest testing/ 
+         current_directory=$(pwd)
+         echo "La directory corrente è: $current_directory"
+         displayName: 'Stampa la directory corrente'
          
     - name: Generate HTML Coverage Report
       run: |
-        sudo coverage html -d coverage_html
+        coverage html -d coverage_html
+        current_directory=$(pwd)
+        echo "La directory corrente è: $current_directory"
+        displayName: 'Stampa la directory corrente'
         
     - name: Upload Coverage Report as Artifact
       uses: actions/upload-artifact@v2
