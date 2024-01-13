@@ -14,7 +14,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Use the updated GitHub token
-      run: echo "export GITHUB_TOKEN=${{secrets.RUNNER_TOKEN}}" >> $GITHUB_ENV
+      run: echo "GITHUB_TOKEN=${{secrets.RUNNER_TOKEN}}" >> $GITHUB_ENV
       shell: bash
 
     - name: Set up Python
