@@ -58,10 +58,10 @@ jobs:
          
     - name: Generate HTML Coverage Report
       run: |
-        coverage html -d ./testing
+        coverage html -d coverage_html
         
     - name: Upload Coverage Report as Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: testing
-        path: ./testing
+        name: coverage_html
+        path: coverage_html
