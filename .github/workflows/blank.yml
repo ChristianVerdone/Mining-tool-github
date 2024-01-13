@@ -13,11 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Use the updated GitHub token
-      run: echo "GITHUB_TOKEN=${{ secrets.RUNNER_TOKEN }}"
-      env: 
-        GITHUB_TOKEN: ${{ secrets.RUNNER_TOKEN }}
-
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
@@ -55,14 +50,11 @@ jobs:
         
     - name: Run Tests
       run: |
-         coverage run --rcfile=.coveragerc -m pytest testing/ 
-    
-    - name: Install coverage
-      run: pip install coverage
+         sudo coverage run --rcfile=.coveragerc -m pytest testing/ 
          
     - name: Generate HTML Coverage Report
       run: |
-        coverage html -d coverage_html
+        sudo coverage html -d coverage_html
         
     - name: Upload Coverage Report as Artifact
       uses: actions/upload-artifact@v2
