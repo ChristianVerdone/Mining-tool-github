@@ -2,7 +2,7 @@
 
 [run]
 # Specifica i moduli o i percorsi che devono essere inclusi nella copertura
-source = Mining-tool-github 
+source = . 
 
 # Escludi alcuni file o percorsi dalla copertura
 omit = venv/*
