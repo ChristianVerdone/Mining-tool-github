@@ -17,4 +17,4 @@ skip_covered = True
 
 [html]
 # Directory in cui verranno generati i report HTML (opzionale)
-directory = coverage_html_report
+directory = ./testing
