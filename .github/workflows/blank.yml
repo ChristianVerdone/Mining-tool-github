@@ -50,13 +50,13 @@ jobs:
         
     - name: Run Tests
       run: |
-         coverage run -m pytest testing/ && coverage html
+         coverage run --rcfile=.coveragerc -m pytest testing/ 
          echo "sono qui: $(pwd)"
          
     - name: Generate HTML Coverage Report
       run: |
       
-        coverage html -d /home/runner/work/Mining-tool-github/Mining-tool-github/coverage_html
+        coverage html --data-file .coverage
         echo "sono qui: $(pwd)"
         
     - name: Upload Coverage Report as Artifact
