@@ -50,7 +50,7 @@ jobs:
         
     - name: Run Tests
       run: |
-         coverage run -m pytest testing/ 
+         coverage run -m pytest testing/ && coverage html
          echo "sono qui: $(pwd)"
          
     - name: Generate HTML Coverage Report
