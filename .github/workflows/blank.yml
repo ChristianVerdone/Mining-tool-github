@@ -51,5 +51,6 @@ jobs:
     - name: Run Tests
       run: |
          coverage run --rcfile=.coveragerc -m pytest testing/ 
+         coverage report
          echo "sono qui: $(pwd)"
          
