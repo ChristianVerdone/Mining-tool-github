@@ -15,7 +15,7 @@ jobs:
 
     - name: Imposta i permessi
       run: |
-        chmod -R +w Mining-tool-github
+        chmod -R +w .
 
     - name: Set up Python
       uses: actions/setup-python@v3
