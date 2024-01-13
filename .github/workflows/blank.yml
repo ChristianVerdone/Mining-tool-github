@@ -13,9 +13,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Imposta i permessi
-      run: |
-        chmod -R +w .
+    - name: Use the updated GitHub token
+      run: echo "export GITHUB_TOKEN=${{ secrets.RUNNER_TOKEN }}" >> $GITHUB_ENV
+      shell: bash
 
     - name: Set up Python
       uses: actions/setup-python@v3
