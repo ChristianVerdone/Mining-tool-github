@@ -15,7 +15,6 @@ jobs:
 
     - name: Use the updated GitHub token
       run: echo "GITHUB_TOKEN=${{ secrets.RUNNER_TOKEN }}" >> $GITHUB_ENV
-      shell: bash
 
     - name: Set up Python
       uses: actions/setup-python@v3
