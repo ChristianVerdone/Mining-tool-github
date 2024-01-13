@@ -4,6 +4,8 @@
 # Specifica i moduli o i percorsi che devono essere inclusi nella copertura
 source = . 
 
+data_file = .coverage
+
 # Escludi alcuni file o percorsi dalla copertura
 omit = venv/*
 
